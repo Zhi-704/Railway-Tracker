@@ -1,0 +1,23 @@
+# data files/directories
+.DS_Store
+*.csv
+
+# venv
+.venv
+
+# env
+.env
+
+# pytest
+pycache/
+*.pyc
+.pytest_cache
+.coverage
+
+# terraform
+.terraform*
+*.tfvars
+*.tfstate*
+
+# streamlit
+secrets.toml
