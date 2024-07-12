@@ -1,6 +1,6 @@
 # National Rail
 
-This project contains code for interacting with the National Rail API to retrieve information about train services in the UK.
+This folder contains code for interacting with the National Rail API to retrieve information about train services in the UK. For more information about National Rail API, visit https://raildata.org.uk/dataProduct/P-cf16832d-d971-46e7-8883-4fca2101d3fa/specification.
 
 ## Prerequisites
 

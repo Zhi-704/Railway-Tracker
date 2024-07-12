@@ -10,7 +10,9 @@ from dotenv import load_dotenv
 
 CRS = "LST"
 
-if __name__ == "__main__":
+
+def get_data_from_api() -> None:
+    """Gets the data from the realtime trains api and saves it to a file"""
     load_dotenv()
 
     base_url = "https://api.rtt.io/api/v1/json/search"
@@ -25,3 +27,7 @@ if __name__ == "__main__":
 
     with open("data.json", "w", encoding="utf-8") as file:
         json.dump(response.json(), file, indent=4)
+
+
+if __name__ == "__main__":
+    get_data_from_api()
