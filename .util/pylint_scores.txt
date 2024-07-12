@@ -14,8 +14,7 @@ Your code has been rated at 10.00/10
 realtime_trains/extract.py:7:0: E0401: Unable to import 'requests.auth' (import-error)
 realtime_trains/extract.py:8:0: E0401: Unable to import 'requests' (import-error)
 realtime_trains/extract.py:9:0: E0401: Unable to import 'dotenv' (import-error)
-realtime_trains/extract.py:16:4: C0103: Constant name "base_url" doesn't conform to UPPER_CASE naming style (invalid-name)
 
 ------------------------------------------------------------------
-Your code has been rated at 0.59/10 (previous run: 0.83/10, -0.25)
+Your code has been rated at 2.11/10 (previous run: 0.83/10, +1.27)
 
