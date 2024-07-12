@@ -4,3 +4,8 @@
 
 # Railway-Tracker
 
+https://www.realtimetrains.co.uk/about/developer/pull/docs/
+
+```
+api.rtt.io/api/v1/json/search/<filter>
+```
