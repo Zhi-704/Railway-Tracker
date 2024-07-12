@@ -1,6 +1,6 @@
 # Realtime Trains
 
-This folder provides functionality to retrieve real-time train information from the RealTime Trains API. For more information about RealTime Trains API, visit https://www.realtimetrains.co.uk/about/developer/pull/docs/.
+This folder provides functionality to retrieve real-time train information from the RealTime Trains API. For more information about RealTime Trains API, visit https://www.realtimetrains.co.uk/about/developer/pull/docs/. The API is queried using `api.rtt.io/api/v1/json/search/<filter>`. 
 
 ## Prerequisites
 
