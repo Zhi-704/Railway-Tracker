@@ -1,19 +1,12 @@
-************* Module extract
-national_rail/extract.py:5:0: E0401: Unable to import 'requests' (import-error)
-national_rail/extract.py:6:0: E0401: Unable to import 'dotenv' (import-error)
 
------------------------------------
-Your code has been rated at 1.67/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module extract
-realtime_trains/extract.py:7:0: E0401: Unable to import 'requests.auth' (import-error)
-realtime_trains/extract.py:8:0: E0401: Unable to import 'requests' (import-error)
-realtime_trains/extract.py:9:0: E0401: Unable to import 'dotenv' (import-error)
 
-------------------------------------------------------------------
-Your code has been rated at 2.11/10 (previous run: 1.67/10, +0.44)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
