@@ -1,6 +1,8 @@
 # data files/directories
 .DS_Store
 *.csv
+*.json
+*.xml
 
 # venv
 .venv
@@ -9,6 +11,7 @@
 .env
 
 # pytest
+__pycache__
 pycache/
 *.pyc
 .pytest_cache

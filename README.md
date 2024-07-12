@@ -3,4 +3,3 @@
 [![badge](./.github/badges/number_of_tests.svg)](./.util/pylint_scores.txt)
 
 # Railway-Tracker
-
