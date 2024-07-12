@@ -1,10 +1,9 @@
 ************* Module extract
 national_rail/extract.py:5:0: E0401: Unable to import 'requests' (import-error)
 national_rail/extract.py:6:0: E0401: Unable to import 'dotenv' (import-error)
-national_rail/extract.py:15:4: C0103: Variable name "headersDict" doesn't conform to snake_case naming style (invalid-name)
 
 -----------------------------------
-Your code has been rated at 0.83/10
+Your code has been rated at 1.67/10
 
 
 ------------------------------------
@@ -16,5 +15,5 @@ realtime_trains/extract.py:8:0: E0401: Unable to import 'requests' (import-error
 realtime_trains/extract.py:9:0: E0401: Unable to import 'dotenv' (import-error)
 
 ------------------------------------------------------------------
-Your code has been rated at 2.11/10 (previous run: 0.83/10, +1.27)
+Your code has been rated at 2.11/10 (previous run: 1.67/10, +0.44)
 
