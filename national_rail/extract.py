@@ -12,12 +12,12 @@ def get_data_from_api() -> None:
 
     url = "https://api1.raildata.org.uk/1010-knowlegebase-incidents-xml-feed1_0/incidents.xml"
 
-    headersDict = {
+    headers = {
         "x-apikey": ENV["APIKEY"],
         "User-Agent": ""
     }
 
-    response = get(url, headers=headersDict, timeout=10)
+    response = get(url, headers=headers, timeout=10)
 
     with open("data.xml", "w", encoding="utf-8") as file:
         file.write(response.text)
