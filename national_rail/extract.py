@@ -55,7 +55,7 @@ def get_national_rail_data(output_file: str) -> None:
     """
     load_dotenv()
 
-    data = get_data_from_api(ENV["APIKEY"])
+    data = get_data_from_api(ENV["API_KEY"])
     if data:
         save_data_to_file(data, output_file)
     else:
