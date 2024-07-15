@@ -1,3 +1,14 @@
+************* Module transform
+national_rail/transform.py:33:4: W0621: Redefining name 'incidents' from outer scope (line 57) (redefined-outer-name)
+national_rail/transform.py:38:0: C0116: Missing function or method docstring (missing-function-docstring)
+national_rail/transform.py:42:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
+national_rail/transform.py:8:0: C0411: standard import "xml.etree.ElementTree" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+national_rail/transform.py:4:0: W0611: Unused environ imported from os as ENV (unused-import)
+national_rail/transform.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+
+-----------------------------------
+Your code has been rated at 7.69/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
