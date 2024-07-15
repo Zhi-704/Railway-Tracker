@@ -45,5 +45,5 @@ provider "aws" {
 # }
 
 data "aws_vpc" "c11-vpc" {
-    id = var.AWS_C11_VPC
+    id = var.C11_VPC
 }
