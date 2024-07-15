@@ -5,7 +5,7 @@ This directory focuses on **terraforming** all the AWS cloud services that are u
 
 ## Installation
 
-1. Navigate to the project directory:
+Navigate to the project directory:
 
 ```bash
 cd terraform
@@ -39,6 +39,8 @@ Before running the script, you need to set up your AWS credentials. Create a new
 ```text
 AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY
 AWS_SECRET_KEY=YOUR_AWS_SECRET_KEY
+
+C11_VPC=YOUR_VPC
 
 DB_USERNAME=YOUR_DB_USERNAME
 DB_PASSWORD=YOUR_DB_PASSWORD
