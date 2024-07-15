@@ -1,3 +1,5 @@
+# Terraform code to create AWS services: RDS
+
 # Cloud provider:
 provider "aws" {
     region = var.AWS_REGION
