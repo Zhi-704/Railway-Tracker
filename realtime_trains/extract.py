@@ -59,13 +59,15 @@ def save_data_to_file(data: dict, filename: str) -> None:
         json.dump(data, file, indent=4)
 
 
-def main(station_code: str, output_file: str) -> None:
+def get_realtime_trains_data(station_code: str, output_file: str) -> None:
     """
-    Main function to retrieve data from the realtime trains API and save it to a file.
+    Retrieves data from the realtime trains API for the given station code and saves it to a file.
+
+    Args:
+        station_code (str): The station code or location identifier.
+        output_file (str): The name of the output file to save the data.
     """
     load_dotenv()
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
 
     username = ENV.get("USERNAME")
     password = ENV.get("PASSWORD")
@@ -86,4 +88,6 @@ def main(station_code: str, output_file: str) -> None:
 
 
 if __name__ == "__main__":
-    main("LDS", "data.json")
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
+    get_realtime_trains_data("LDS", "data.json")
