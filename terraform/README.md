@@ -53,6 +53,5 @@ DB_IP=YOUR_DB_IP
 DB_PORT=YOUR_DB_PORT
 ```
 
-The variables ```DB_NAME```, ```DB_IP```, ```DB_PORT``` can only be populated once the RDS has been created. 
 
 The script will automatically load the AWS keys and database details from this file.
