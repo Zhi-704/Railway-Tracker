@@ -9,6 +9,10 @@ variable "AWS_REGION" {
     default = "eu-west-2"
 }
 
+variable "AWS_C11_VPC"{
+    type = string
+}
+
 
 variable "DB_USERNAME" {
     type = string
@@ -25,3 +29,4 @@ variable "DB_IP"{
 variable "DB_PORT"{
     type = string
 }
+
