@@ -10,11 +10,6 @@ This directory focuses on **terraforming** all the AWS cloud services that are u
 ```bash
 cd terraform
 ```
-2. Install the required Python packages:
-
-```bash
-pip install -r requirements.txt
-```
 
 ## Usage
 
