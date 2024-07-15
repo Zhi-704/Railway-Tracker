@@ -2,13 +2,6 @@
 
 This folder provides functionality to retrieve real-time train information from the RealTime Trains API. For more information about RealTime Trains API, visit https://www.realtimetrains.co.uk/about/developer/pull/docs/. The API is queried using `api.rtt.io/api/v1/json/search/<filter>`. 
 
-## Prerequisites
-
-Before running this project, ensure you have the following installed:
-
-- Python 3.6 or later
-- pip (Python package installer)
-
 ## Installation
 
 1. Navigate to the project directory:
@@ -35,10 +28,11 @@ This will prompt you to enter a station name or code. After providing the input,
 
 ## Configuration
 
-Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `realtime_trains` directory and add the following lines, replacing `YOUR_API_KEY` with your actual API key:
+Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `realtime_trains` directory and add the following lines, replacing `YOUR_USERNAME` and `YOUR_PASSWORD` with your actual username and password:
 
 ```text
-NATIONAL_RAIL_API_KEY=YOUR_API_KEY
+USERNAME=YOUR_USERNAME
+PASSWORD=YOUR_PASSWORD
 ```
 
-The script will automatically load the API key from this file.
+The script will automatically load the username and password from this file.
