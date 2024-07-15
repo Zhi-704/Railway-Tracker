@@ -39,7 +39,7 @@ terraform destroy
 
 
 ## Configuration
-Before running the script, you need to set up your AWS credentials. Create a new file called `.terraform.tfvars` in the `terraform` directory and add the following lines, replacing `YOUR_...` with your actual values:
+Before running the script, you need to set up your AWS credentials. Create a new file called `.terraform.tfvars` in the `terraform` directory and add the following lines, with your actual AWS keys and database details:
 
 ```text
 AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY
@@ -55,4 +55,4 @@ DB_PORT=YOUR_DB_PORT
 
 The variables ```DB_NAME```, ```DB_IP```, ```DB_PORT``` can only be populated once the RDS has been created. 
 
-The script will automatically load the variables from this file.
+The script will automatically load the AWS keys and database details from this file.
