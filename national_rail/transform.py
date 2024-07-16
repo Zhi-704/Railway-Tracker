@@ -1,14 +1,11 @@
 """ Module for transforming data received from the National Rail API into a 
     useful format. """
 
-from os import environ as ENV
 import logging
-import re
 
-from dotenv import load_dotenv
+from datetime import datetime, timedelta
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
-from datetime import datetime, timezone, timedelta
 
 
 def read_data_from_file(filename: str) -> str:
@@ -110,16 +107,14 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
 
         summary = find_text_element(incident, 'ns:Summary', namespaces)
 
-        description_html = find_text_element(
-            incident, 'ns:Description', namespaces)
-        description = convert_html_to_text(description_html)
+        description = convert_html_to_text(find_text_element(
+            incident, 'ns:Description', namespaces))
 
         uri = find_text_element(
             incident, "ns:InfoLinks/ns:InfoLink/ns:Uri", namespaces).replace('/n', " ").strip()
 
-        routes_affected_html = find_text_element(
-            incident, "ns:Affects/ns:RoutesAffected", namespaces)
-        routes_affected = convert_html_to_text(routes_affected_html)
+        routes_affected = convert_html_to_text(find_text_element(
+            incident, "ns:Affects/ns:RoutesAffected", namespaces))
 
         data = {
             'incident_number': incident_number,
@@ -154,15 +149,15 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
 
-    namespaces = {'ns': 'http://nationalrail.co.uk/xml/incident',
-                  'com': 'http://nationalrail.co.uk/xml/common'}
+    nr_namespaces = {'ns': 'http://nationalrail.co.uk/xml/incident',
+                     'com': 'http://nationalrail.co.uk/xml/common'}
 
     national_rail_data = read_data_from_file("test_data.xml")
 
     national_rail_tree_root = reverse_tree(load_tree_root(national_rail_data))
 
-    incidents = get_incidents(national_rail_tree_root, namespaces)
+    all_incidents = get_incidents(national_rail_tree_root, nr_namespaces)
 
-    incidents_dataset = process_pt_incidents(incidents, namespaces)
+    incidents_dataset = process_pt_incidents(all_incidents, nr_namespaces)
 
     logging.info("Transform complete")
