@@ -1,14 +1,15 @@
 ************* Module transform
-national_rail/transform.py:33:4: W0621: Redefining name 'incidents' from outer scope (line 97) (redefined-outer-name)
-national_rail/transform.py:78:0: C0116: Missing function or method docstring (missing-function-docstring)
-national_rail/transform.py:82:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
-national_rail/transform.py:99:4: E0602: Undefined variable 'process_pt_incidents' (undefined-variable)
+national_rail/transform.py:25:29: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
+national_rail/transform.py:31:54: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
+national_rail/transform.py:38:59: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
+national_rail/transform.py:46:25: W0621: Redefining name 'incidents' from outer scope (line 120) (redefined-outer-name)
+national_rail/transform.py:46:54: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
 national_rail/transform.py:8:0: C0411: standard import "xml.etree.ElementTree" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 national_rail/transform.py:4:0: W0611: Unused environ imported from os as ENV (unused-import)
 national_rail/transform.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
 
 -----------------------------------
-Your code has been rated at 5.93/10
+Your code has been rated at 8.43/10
 
 
 ------------------------------------
