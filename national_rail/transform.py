@@ -26,7 +26,7 @@ def reverse_tree(root: ET.Element) -> ET.Element:
     """ Creates a new tree containing the root and its elements in reverse, to allow
         for traversing the tree in reverse. Returns the new tree by its root. """
 
-    reversed_elements = list(reversed(list(root.iter())))
+    reversed_elements = reversed(list(root.iter()))
     new_root = ET.Element("root")
 
     for element in reversed_elements:
@@ -41,7 +41,7 @@ def get_incidents(root: str, namespaces: dict) -> ET.Element:
     return root.findall('ns:PtIncident', namespaces)
 
 
-def find_text_element(element: ET.Element, path: str, namespaces: str) -> str:
+def find_text_element(element: ET.Element, path: str, namespaces: str) -> str | None:
     """ Searches for element by path and namespace, returns text if element exists. """
 
     element_found = element.find(path, namespaces)
@@ -72,14 +72,14 @@ def convert_to_datetime(time: str) -> datetime:
 def check_creation_within_last_5_minutes(creation_time: datetime) -> bool:
     """ Checks that the creation time of an incident occurred within the last 5 minutes. """
 
-    current_time = datetime.now()
-    time_diff = current_time - creation_time
+    time_diff = datetime.now() - creation_time
 
     return time_diff <= timedelta(minutes=5)
 
 
 def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[dict]:
     """ Extracts relevant data for each incident reported. """
+
     dataset = []
 
     for incident in incidents:
@@ -87,7 +87,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         creation_time = convert_to_datetime(find_text_element(
             incident, 'ns:CreationTime', namespaces))
 
-        if not check_creation_within_last_5_minutes(creation_time):
+        if check_creation_within_last_5_minutes(creation_time):
             # remove not to allow all incidents
             logging.info("No new incidents found within the last 5 minutes")
             break
