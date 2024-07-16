@@ -1,6 +1,7 @@
 ************* Module main_page
 dashboard/main_page.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 dashboard/main_page.py:1:0: E0401: Unable to import 'streamlit' (import-error)
+dashboard/main_page.py:2:0: E0401: Unable to import 'st_pages' (import-error)
 
 -----------------------------------
 Your code has been rated at 0.00/10
