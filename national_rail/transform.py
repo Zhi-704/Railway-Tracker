@@ -87,7 +87,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         creation_time = convert_to_datetime(find_text_element(
             incident, 'ns:CreationTime', namespaces))
 
-        if check_creation_within_last_5_minutes(creation_time):
+        if not check_creation_within_last_5_minutes(creation_time):
             # remove not to allow all incidents
             logging.info("No new incidents found within the last 5 minutes")
             break
