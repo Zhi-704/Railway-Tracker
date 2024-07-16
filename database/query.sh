@@ -2,4 +2,4 @@
 
 source .env
 export PGPASSWORD=$DB_PASSWORD
-psql --host $DB_HOST -U $DB_USER -p $DB_PORT $DB_NAME -f query.sql
+psql --host $DB_IP -U $DB_USERNAME -p $DB_PORT $DB_NAME -f query.sql
