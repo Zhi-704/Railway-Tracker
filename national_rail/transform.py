@@ -133,7 +133,9 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
     return dataset
 
 
-if __name__ == "__main__":
+def transform():
+    """ Transforms NationalRail data to retrieve incidents and operators. """
+
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
 
@@ -151,3 +153,5 @@ if __name__ == "__main__":
     incidents_dataset = process_pt_incidents(all_incidents, nr_namespaces)
 
     logging.info("Transformation of NationalRail completed successfully")
+
+    return incidents_dataset
