@@ -12,32 +12,13 @@ from dotenv import load_dotenv
 
 
 def get_api_url(station_code: str, date: str) -> str:
-    """
-    Constructs the API URL for the given station code and date.
-
-    Args:
-        station_code (str): The station code or location identifier.
-        date (str): The date in the format "YYYY/MM/DD".
-
-    Returns:
-        str: The constructed API URL.
-    """
+    """Constructs the API URL for the given station code and date."""
     base_url = "https://api.rtt.io/api/v1/json/search"
     return f"{base_url}/{station_code}/{date}"
 
 
 def get_data_from_api(url: str, username: str, password: str) -> dict | None:
-    """
-    Retrieves data from the realtime trains API and returns the response as a dictionary.
-
-    Args:
-        url (str): The API URL.
-        username (str): The username for authentication.
-        password (str): The password for authentication.
-
-    Returns:
-        dict | None: The API response as a dictionary, or None if an error occurred.
-    """
+    """Retrieves data from the realtime trains API and returns the response as a dictionary."""
     try:
         response = get(url, auth=HTTPBasicAuth(username, password), timeout=10)
         response.raise_for_status()
@@ -48,25 +29,12 @@ def get_data_from_api(url: str, username: str, password: str) -> dict | None:
 
 
 def save_data_to_file(json_data: dict, filename: str) -> None:
-    """
-    Saves the provided data to a JSON file.
-
-    Args:
-        data (dict): The data to be saved.
-        filename (str): The name of the file to save the data to.
-    """
+    """Saves the provided data to a JSON file."""
     with open(filename, "w", encoding="utf-8") as file:
         json.dump(json_data, file, indent=4)
 
-
 def get_realtime_trains_data(station_code: str) -> dict | None:
-    """
-    Retrieves data from the realtime trains API for the given station code and saves it to a file.
-
-    Args:
-        station_code (str): The station code or location identifier.
-        output_file (str): The name of the output file to save the data.
-    """
+    """Retrieves data from realtime trains API for the given station code and saves it to a file"""
 
     username = ENV.get("REALTIME_USERNAME")
     password = ENV.get("REALTIME_PASSWORD")
