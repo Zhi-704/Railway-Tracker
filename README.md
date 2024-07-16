@@ -10,3 +10,4 @@ Before running this project, ensure you have the following installed:
 
 - Python 3.6 or later
 - pip (Python package installer)
+

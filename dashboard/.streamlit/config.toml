@@ -1,0 +1,17 @@
+[logger]
+level = "info"
+messageFormat = "%(asctime)s %(message)s"
+
+[client]
+showSidebarNavigation = true
+
+[browser]
+gatherUsageStats = false
+
+[theme]
+base = "light"
+primaryColor = "#FAEBC8"
+backgroundColor = "#242424"
+secondaryBackgroundColor = "#023139"
+textColor = "#FFFFFF"
+font = "serif"
