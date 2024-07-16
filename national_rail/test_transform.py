@@ -13,7 +13,7 @@ class TransformationTests(unittest.TestCase):
     """ Class for testing functions from the transform.py file. """
 
     def setUp(self):
-        # This method will run before each test
+
         with open("test_data.xml", "r", encoding="utf-8") as file:
             self.data = file.read()
 
