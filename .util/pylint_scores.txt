@@ -6,17 +6,13 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module transform
-realtime_trains/transform.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 
------------------------------------
-Your code has been rated at 8.57/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 ************* Module extract
-realtime_trains/extract.py:84:4: R1705: Unnecessary "else" after "return", remove the "else" and de-indent the code inside it (no-else-return)
 realtime_trains/extract.py:62:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
-realtime_trains/extract.py:62:48: W0613: Unused argument 'output_file' (unused-argument)
 
 -------------------------------------------------------------------
-Your code has been rated at 9.35/10 (previous run: 10.00/10, -0.65)
+Your code has been rated at 9.76/10 (previous run: 10.00/10, -0.24)
 
