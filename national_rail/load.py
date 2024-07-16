@@ -35,6 +35,7 @@ def upload_incident(incident: dict) -> int:
 
 
 def load_incidents(incidents_data: list[dict]) -> None:
+    """ Loads all incidents created within the last 5 minutes to the RDS. """
     conn = get_connection()
 
     for incident in incidents_data:
