@@ -3,13 +3,17 @@
 
 from os import environ as ENV
 import logging
+import re
 
 from dotenv import load_dotenv
 import xml.etree.ElementTree as ET
+from bs4 import BeautifulSoup
+from datetime import datetime, timezone, timedelta
 
 
 def read_data_from_file(filename: str) -> str:
     """ Opens file, reads and returns its content as a String. """
+
     with open(filename, "r", encoding="utf-8") as file:
         f = file.read()
     return f
@@ -58,22 +62,38 @@ def find_all_text_elements(element: ET.Element, path: str, namespaces: str) -> l
 
 def convert_html_to_text(html_text: str) -> str:
     """ Extracts String from html text and returns it."""
-    ...
+
+    soup = BeautifulSoup(html_text, 'lxml')
+    return soup.get_text(separator=' ', strip=True)
+
+
+def convert_to_datetime(time: str) -> datetime:
+    """ Converts string in datetime format into a datetime object and returns it. """
+
+    return datetime.fromisoformat(time.replace('Z', ''))
+
+
+def check_creation_within_last_5_minutes(creation_time: datetime) -> bool:
+    """ Checks that the creation time of an incident occurred within the last 5 minutes. """
+
+    current_time = datetime.now()
+    time_diff = current_time - creation_time
+
+    return time_diff <= timedelta(minutes=5)
 
 
 def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[dict]:
     """ Extracts relevant data for each incident reported. """
     dataset = []
 
-    # for element in reversed(list(root.iter())):
     for incident in incidents:
-        creation_time = find_text_element(
-            incident, 'ns:CreationTime', namespaces)
 
-        # if creation_time > 5 mins:
-        #     break
+        creation_time = convert_to_datetime(find_text_element(
+            incident, 'ns:CreationTime', namespaces))
 
-        # exit loop once creation time > 5 mins
+        if not check_creation_within_last_5_minutes(creation_time):
+            # remove not to allow all incidents
+            break
 
         incident_number = find_text_element(
             incident, 'ns:IncidentNumber', namespaces)
@@ -90,14 +110,16 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
 
         summary = find_text_element(incident, 'ns:Summary', namespaces)
 
-        description = find_text_element(
-            incident, 'ns:Description', namespaces)  # html
+        description_html = find_text_element(
+            incident, 'ns:Description', namespaces)
+        description = convert_html_to_text(description_html)
 
         uri = find_text_element(
             incident, "ns:InfoLinks/ns:InfoLink/ns:Uri", namespaces).replace('/n', " ").strip()
 
-        routes_affected = find_text_element(
-            incident, "ns:Affects/ns:RoutesAffected", namespaces)  # html
+        routes_affected_html = find_text_element(
+            incident, "ns:Affects/ns:RoutesAffected", namespaces)
+        routes_affected = convert_html_to_text(routes_affected_html)
 
         data = {
             'incident_number': incident_number,
@@ -121,6 +143,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         print(summary)
         print(uri)
         print(routes_affected)
+        print(description)
 
         print("\n")
 
