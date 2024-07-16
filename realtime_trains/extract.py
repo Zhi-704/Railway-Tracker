@@ -74,7 +74,7 @@ def get_realtime_trains_data(station_code: str) -> dict | None:
     if not username or not password:
         logging.error(
             "Username and password are required environment variables.")
-        return
+        return None
 
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y/%m/%d")
     logging.info("Retrieving data...")
@@ -85,7 +85,7 @@ def get_realtime_trains_data(station_code: str) -> dict | None:
         logging.info("Data successfully retrieved.")
         return station_data
     logging.error("Failed to retrieve data from the API.")
-    return
+    return None
 
 
 if __name__ == "__main__":
