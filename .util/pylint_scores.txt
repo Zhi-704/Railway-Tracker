@@ -10,6 +10,21 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module national_rail
+national_rail/national_rail.py:13:4: C0103: Constant name "filename" doesn't conform to UPPER_CASE naming style (invalid-name)
+
+-----------------------------------
+Your code has been rated at 9.00/10
+
+************* Module load
+national_rail/load.py:29:20: W0613: Unused argument 'incident' (unused-argument)
+national_rail/load.py:37:0: C0116: Missing function or method docstring (missing-function-docstring)
+national_rail/load.py:38:4: W0612: Unused variable 'conn' (unused-variable)
+national_rail/load.py:7:0: W0611: Unused execute_values imported from psycopg2.extras (unused-import)
+
+-----------------------------------
+Your code has been rated at 7.78/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
