@@ -1,5 +1,5 @@
-"""Module for transforming data received from the National Rail API into a 
-    useful format."""
+""" Module for transforming data received from the National Rail API into a 
+    useful format. """
 
 from os import environ as ENV
 import logging
@@ -20,6 +20,19 @@ def load_tree_root(national_rail_xml: str) -> ET.Element:
 
     tree = ET.ElementTree(ET.fromstring(national_rail_xml))
     return tree.getroot()
+
+
+def reverse_tree(root: ET.Element) -> ET.Element:
+    """ Creates a new tree containing the root and its elements in reverse, to allow
+        for traversing the tree in reverse. Returns the new tree by its root. """
+
+    reversed_elements = list(reversed(list(root.iter())))
+    new_root = ET.Element("root")
+
+    for element in reversed_elements:
+        new_root.append(element)
+
+    return new_root
 
 
 def get_incidents(root: str, namespaces: dict) -> ET.Element:
@@ -43,22 +56,30 @@ def find_all_text_elements(element: ET.Element, path: str, namespaces: str) -> l
     return [e.text for e in elements_found if e.text]
 
 
+def convert_html_to_text(html_text: str) -> str:
+    """ Extracts String from html text and returns it."""
+    ...
+
+
 def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[dict]:
     """ Extracts relevant data for each incident reported. """
     dataset = []
 
+    # for element in reversed(list(root.iter())):
     for incident in incidents:
+        creation_time = find_text_element(
+            incident, 'ns:CreationTime', namespaces)
+
+        # if creation_time > 5 mins:
+        #     break
+
+        # exit loop once creation time > 5 mins
+
         incident_number = find_text_element(
             incident, 'ns:IncidentNumber', namespaces)
 
-        # operator code:  many to many?
         operator_codes = find_all_text_elements(
             incident, "ns:Affects/ns:Operators/ns:AffectedOperator/ns:OperatorRef", namespaces)
-
-        # disruption info --- REMOVE!
-
-        creation_time = find_text_element(
-            incident, 'ns:CreationTime', namespaces)
 
         start_time = find_text_element(
             incident, 'ns:ValidityPeriod/com:StartTime', namespaces)
@@ -80,7 +101,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
 
         data = {
             'incident_number': incident_number,
-            'operator_codes': operator_codes,
+            'operator_codes': operator_codes,  # list
             'creation_time': creation_time,
             'start_time': start_time,
             'end_time': end_time,
@@ -115,10 +136,10 @@ if __name__ == "__main__":
 
     national_rail_data = read_data_from_file("test_data.xml")
 
-    national_rail_tree_root = load_tree_root(national_rail_data)
+    national_rail_tree_root = reverse_tree(load_tree_root(national_rail_data))
 
     incidents = get_incidents(national_rail_tree_root, namespaces)
 
-    process_pt_incidents(incidents, namespaces)
+    incidents_dataset = process_pt_incidents(incidents, namespaces)
 
-    # print(len(incidents))
+    logging.info("Transform complete")
