@@ -12,8 +12,7 @@ def read_data_from_file(filename: str) -> str:
     """ Opens file, reads and returns its content as a String. """
 
     with open(filename, "r", encoding="utf-8") as file:
-        f = file.read()
-    return f
+        return file.read()
 
 
 def load_tree_root(national_rail_xml: str) -> ET.Element:
@@ -90,6 +89,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
 
         if not check_creation_within_last_5_minutes(creation_time):
             # remove not to allow all incidents
+            logging.info("No new incidents found within the last 5 minutes")
             break
 
         incident_number = find_text_element(
