@@ -118,7 +118,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
 
         data = {
             'incident_number': incident_number,
-            'operator_codes': operator_codes,  # list
+            'operator_codes': operator_codes,
             'creation_time': creation_time,
             'start_time': start_time,
             'end_time': end_time,
