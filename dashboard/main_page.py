@@ -1,3 +1,4 @@
+"""Main page for the dashboard, authored by fm1psy"""
 import streamlit as st
 from st_pages import Page, show_pages
 
