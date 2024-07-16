@@ -1,4 +1,4 @@
-"""Gets the information from the realtime trains API"""
+"""Gets the information from the RealTime Trains API"""
 
 import json
 from os import environ as ENV
@@ -47,7 +47,7 @@ def get_data_from_api(url: str, username: str, password: str) -> dict | None:
         return None
 
 
-def save_data_to_file(data: dict, filename: str) -> None:
+def save_data_to_file(json_data: dict, filename: str) -> None:
     """
     Saves the provided data to a JSON file.
 
@@ -56,10 +56,10 @@ def save_data_to_file(data: dict, filename: str) -> None:
         filename (str): The name of the file to save the data to.
     """
     with open(filename, "w", encoding="utf-8") as file:
-        json.dump(data, file, indent=4)
+        json.dump(json_data, file, indent=4)
 
 
-def get_realtime_trains_data(station_code: str, output_file: str) -> None:
+def get_realtime_trains_data(station_code: str) -> dict | None:
     """
     Retrieves data from the realtime trains API for the given station code and saves it to a file.
 
@@ -67,27 +67,29 @@ def get_realtime_trains_data(station_code: str, output_file: str) -> None:
         station_code (str): The station code or location identifier.
         output_file (str): The name of the output file to save the data.
     """
-    load_dotenv()
 
-    username = ENV.get("USERNAME")
-    password = ENV.get("PASSWORD")
+    username = ENV.get("REALTIME_USERNAME")
+    password = ENV.get("REALTIME_PASSWORD")
 
     if not username or not password:
         logging.error(
             "Username and password are required environment variables.")
-        return
+        return None
 
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y/%m/%d")
+    logging.info("Retrieving data...")
     api_url = get_api_url(station_code, yesterday)
 
-    data = get_data_from_api(api_url, username, password)
-    if data:
-        save_data_to_file(data, output_file)
-    else:
-        logging.error("Failed to retrieve data from the API.")
+    station_data = get_data_from_api(api_url, username, password)
+    if station_data:
+        logging.info("Data successfully retrieved.")
+        return station_data
+    logging.error("Failed to retrieve data from the API.")
+    return None
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    get_realtime_trains_data("LDS", "data.json")
+    load_dotenv()
+    data = [get_realtime_trains_data("LDS")]
