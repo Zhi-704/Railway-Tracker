@@ -1,4 +1,4 @@
-"""Gets the information from the realtime trains API"""
+"""Gets the information from the RealTime Trains API"""
 
 import json
 from os import environ as ENV
@@ -59,7 +59,7 @@ def save_data_to_file(json_data: dict, filename: str) -> None:
         json.dump(json_data, file, indent=4)
 
 
-def get_realtime_trains_data(station_code: str, output_file: str) -> dict | None:
+def get_realtime_trains_data(station_code: str) -> dict | None:
     """
     Retrieves data from the realtime trains API for the given station code and saves it to a file.
 
@@ -83,20 +83,13 @@ def get_realtime_trains_data(station_code: str, output_file: str) -> dict | None
     station_data = get_data_from_api(api_url, username, password)
     if station_data:
         logging.info("Data successfully retrieved.")
-        # save_data_to_file(station_data, output_file)
         return station_data
-    else:
-        logging.error("Failed to retrieve data from the API.")
-        return None
+    logging.error("Failed to retrieve data from the API.")
+    return
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
-    data = [get_realtime_trains_data("LDS", "data.json")]
-    print(type(data))
-    print(len(data))
-    print("Location data:")
-    print(data[0]["location"])
-    print("Services length: ", len(data[0]["services"]))
+    data = [get_realtime_trains_data("LDS")]
