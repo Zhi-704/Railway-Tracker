@@ -1,15 +1,17 @@
 ************* Module transform
-national_rail/transform.py:25:29: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
-national_rail/transform.py:31:54: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
-national_rail/transform.py:38:59: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
-national_rail/transform.py:46:25: W0621: Redefining name 'incidents' from outer scope (line 120) (redefined-outer-name)
-national_rail/transform.py:46:54: W0621: Redefining name 'namespaces' from outer scope (line 113) (redefined-outer-name)
+national_rail/transform.py:38:29: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
+national_rail/transform.py:44:54: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
+national_rail/transform.py:51:59: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
+national_rail/transform.py:61:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
+national_rail/transform.py:59:25: W0613: Unused argument 'html_text' (unused-argument)
+national_rail/transform.py:64:25: W0621: Redefining name 'incidents' from outer scope (line 141) (redefined-outer-name)
+national_rail/transform.py:64:54: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
 national_rail/transform.py:8:0: C0411: standard import "xml.etree.ElementTree" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 national_rail/transform.py:4:0: W0611: Unused environ imported from os as ENV (unused-import)
 national_rail/transform.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.43/10
+Your code has been rated at 8.33/10
 
 
 ------------------------------------
