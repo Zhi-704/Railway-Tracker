@@ -130,18 +130,6 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         }
         dataset.append(data)
 
-        print(incident_number)
-        print(operator_codes)
-        print(creation_time)
-        print(start_time, end_time)
-        print(is_planned)
-        print(summary)
-        print(uri)
-        print(routes_affected)
-        print(description)
-
-        print("\n")
-
     return dataset
 
 
@@ -149,10 +137,12 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
 
+    logging.info("Transformation of NationalRail has began")
+
     nr_namespaces = {'ns': 'http://nationalrail.co.uk/xml/incident',
                      'com': 'http://nationalrail.co.uk/xml/common'}
 
-    national_rail_data = read_data_from_file("test_data.xml")
+    national_rail_data = read_data_from_file("data.xml")
 
     national_rail_tree_root = reverse_tree(load_tree_root(national_rail_data))
 
@@ -160,4 +150,4 @@ if __name__ == "__main__":
 
     incidents_dataset = process_pt_incidents(all_incidents, nr_namespaces)
 
-    logging.info("Transform complete")
+    logging.info("Transformation of NationalRail completed successfully")
