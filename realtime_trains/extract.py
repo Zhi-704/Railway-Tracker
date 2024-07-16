@@ -35,7 +35,7 @@ def save_data_to_file(data: dict, filename: str) -> None:
 
 
 def get_realtime_trains_data(station_code: str, output_file: str) -> None:
-    """Retrieves data from the realtime trains API for the given station code and saves it to a file."""
+    """Retrieves data from realtime trains API for the given station code and saves it to a file"""
     load_dotenv()
 
     username = ENV.get("USERNAME")
