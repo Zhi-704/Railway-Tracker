@@ -133,7 +133,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
     return dataset
 
 
-def transform():
+def transform_national_rail_data(data_file: str):
     """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.basicConfig(level=logging.INFO,
@@ -144,7 +144,7 @@ def transform():
     nr_namespaces = {'ns': 'http://nationalrail.co.uk/xml/incident',
                      'com': 'http://nationalrail.co.uk/xml/common'}
 
-    national_rail_data = read_data_from_file("data.xml")
+    national_rail_data = read_data_from_file(data_file)
 
     national_rail_tree_root = reverse_tree(load_tree_root(national_rail_data))
 
