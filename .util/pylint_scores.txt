@@ -1,17 +1,19 @@
 ************* Module transform
-national_rail/transform.py:38:29: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
-national_rail/transform.py:44:54: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
-national_rail/transform.py:51:59: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
-national_rail/transform.py:61:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
-national_rail/transform.py:59:25: W0613: Unused argument 'html_text' (unused-argument)
-national_rail/transform.py:64:25: W0621: Redefining name 'incidents' from outer scope (line 141) (redefined-outer-name)
-national_rail/transform.py:64:54: W0621: Redefining name 'namespaces' from outer scope (line 134) (redefined-outer-name)
-national_rail/transform.py:8:0: C0411: standard import "xml.etree.ElementTree" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+national_rail/transform.py:42:29: W0621: Redefining name 'namespaces' from outer scope (line 157) (redefined-outer-name)
+national_rail/transform.py:48:54: W0621: Redefining name 'namespaces' from outer scope (line 157) (redefined-outer-name)
+national_rail/transform.py:55:59: W0621: Redefining name 'namespaces' from outer scope (line 157) (redefined-outer-name)
+national_rail/transform.py:85:0: R0914: Too many local variables (17/15) (too-many-locals)
+national_rail/transform.py:85:25: W0621: Redefining name 'incidents' from outer scope (line 164) (redefined-outer-name)
+national_rail/transform.py:85:54: W0621: Redefining name 'namespaces' from outer scope (line 157) (redefined-outer-name)
+national_rail/transform.py:9:0: C0411: standard import "xml.etree.ElementTree" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+national_rail/transform.py:11:0: C0411: standard import "datetime.datetime" should be placed before third party imports "dotenv.load_dotenv", "bs4.BeautifulSoup" (wrong-import-order)
 national_rail/transform.py:4:0: W0611: Unused environ imported from os as ENV (unused-import)
-national_rail/transform.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+national_rail/transform.py:6:0: W0611: Unused import re (unused-import)
+national_rail/transform.py:8:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+national_rail/transform.py:11:0: W0611: Unused timezone imported from datetime (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.33/10
+Your code has been rated at 8.40/10
 
 
 ------------------------------------
