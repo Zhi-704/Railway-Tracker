@@ -62,7 +62,5 @@ The `schema.sql` file defines the following tables:
 When making changes to the database schema, follow these steps:
 
 1. Update the `schema.sql` file with the desired changes.
-
 2. Run the `clear.sh` script to apply the changes to your local database for testing.
-
 3. Update the `query.sql` file with any new queries or modifications as needed.
