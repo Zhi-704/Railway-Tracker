@@ -23,8 +23,11 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module load
-realtime_trains/load.py:4:0: W0611: Unused import logging (unused-import)
+realtime_trains/load.py:41:4: W0622: Redefining built-in 'id' (redefined-builtin)
+realtime_trains/load.py:68:15: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:79:0: R1711: Useless return at end of function or method (useless-return)
+realtime_trains/load.py:85:8: W0612: Unused variable 'station_id' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 9.17/10
+Your code has been rated at 9.20/10
 
