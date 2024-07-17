@@ -133,7 +133,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
     return dataset
 
 
-def transform_xml_file(national_rail_xml: str, namespace: dict):
+def transform_xml_file(national_rail_xml: str, namespace: dict) -> list[dict]:
     """ Takes the root of the xml file and finds all incidents and their
         relevant data, populates a list of dictionary and returns it."""
 
@@ -144,7 +144,7 @@ def transform_xml_file(national_rail_xml: str, namespace: dict):
     return incidents_dataset
 
 
-def transform():
+def transform() -> list[dict]:
     """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.info("Transformation of NationalRail has began")
@@ -164,4 +164,4 @@ def transform():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    transform()
+    transformed_data = transform()
