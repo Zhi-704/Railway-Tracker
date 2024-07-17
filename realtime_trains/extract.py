@@ -24,7 +24,7 @@ def get_data_from_api(url: str, username: str, password: str) -> dict | None:
         response.raise_for_status()
         return response.json()
     except RequestException as e:
-        logging.error("Error occurred while fetching data from API: %s", e)
+        logging.error("Extract: Error occurred while fetching data from API: %s", e)
         return None
 
 
@@ -41,7 +41,7 @@ def get_realtime_trains_data(station_code: str) -> dict | None:
 
     if not username or not password:
         logging.error(
-            "Username and password are required environment variables.")
+            "Extract: Username and password are required environment variables.")
         return None
 
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y/%m/%d")
@@ -52,7 +52,7 @@ def get_realtime_trains_data(station_code: str) -> dict | None:
     if station_data:
         logging.info("Data successfully retrieved.")
         return station_data
-    logging.error("Failed to retrieve data from the API.")
+    logging.error("Extract: Failed to retrieve data from the API.")
     return None
 
 
