@@ -33,3 +33,39 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
+************* Module clean_national_rail
+archive/clean_national_rail.py:11:0: W0404: Reimport 'connect' (imported line 8) (reimported)
+archive/clean_national_rail.py:31:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_national_rail.py:4:0: W0611: Unused environ imported from os (unused-import)
+archive/clean_national_rail.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+
+-----------------------------------
+Your code has been rated at 8.33/10
+
+************* Module archive
+archive/archive.py:16:0: C0116: Missing function or method docstring (missing-function-docstring)
+archive/archive.py:4:0: W0611: Unused environ imported from os (unused-import)
+archive/archive.py:7:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+archive/archive.py:8:0: W0611: Unused connect imported from psycopg2 (unused-import)
+archive/archive.py:9:0: W0611: Unused connection imported from psycopg2.extensions (unused-import)
+archive/archive.py:9:0: W0611: Unused cursor imported from psycopg2.extensions (unused-import)
+archive/archive.py:10:0: W0611: Unused RealDictCursor imported from psycopg2.extras (unused-import)
+
+-----------------------------------
+Your code has been rated at 5.62/10
+
+************* Module clean_real_time_trains
+archive/clean_real_time_trains.py:12:0: W0404: Reimport 'connect' (imported line 9) (reimported)
+archive/clean_real_time_trains.py:33:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_real_time_trains.py:5:0: W0611: Unused environ imported from os (unused-import)
+archive/clean_real_time_trains.py:8:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
+
+-----------------------------------
+Your code has been rated at 8.52/10
+
+************* Module connect
+archive/connect.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+
+-----------------------------------
+Your code has been rated at 9.00/10
+
