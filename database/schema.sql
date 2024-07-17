@@ -1,30 +1,16 @@
 -- Creates the schema for the database
 
-DROP TABLE IF EXISTS incident, cancellation, station_performance_archive, users, cancel_code, station, subscription, waypoint, operator;
+DROP TABLE IF EXISTS subscriber, incident, operator, affected_operator, services, station, waypoint, performance_archive, cancel_code, cancellation CASCADE;
 
-CREATE TABLE operator(
-    operator_code CHAR(2) PRIMARY KEY,
-    operator_name TEXT NOT NULL UNIQUE
-);
 
-CREATE TABLE station(
-    station_crs CHAR(3) PRIMARY KEY,
-    station_name TEXT NOT NULL UNIQUE
-);
-
-CREATE TABLE users(
-    user_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+CREATE TABLE subscriber(
+    subscriber_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     email TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE cancel_code(
-    cancel_code CHAR(2) PRIMARY KEY,
-    cause TEXT NOT NULL UNIQUE
-);
-
 CREATE TABLE incident(
-    incident_number SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    operator_code CHAR(2) NOT NULL REFERENCES operator(operator_code),
+    incident_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    incident_number TEXT NOT NULL UNIQUE,
     creation_time TIMESTAMP(0) NOT NULL,
     incident_start TIMESTAMP(0) NOT NULL,
     incident_end TIMESTAMP(0) NOT NULL,
@@ -35,41 +21,59 @@ CREATE TABLE incident(
     affected_routes TEXT NOT NULL
 );
 
-CREATE TABLE station_performance_archive(
-    performance_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    station_crs CHAR(3) NOT NULL REFERENCES station(station_crs),
-    avg_delay SMALLINT NOT NULL,
-    cancellation_count SMALLINT NOT NULL,
-    creation_date TIMESTAMP(0) NOT NULL
+CREATE TABLE operator(
+    operator_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    operator_code CHAR(2) NOT NULL UNIQUE,
+    operator_name TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE subscription(
-    subscription_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    user_id SMALLINT NOT NULL REFERENCES users(user_id),
-    operator_code CHAR(2) NOT NULL REFERENCES operator(operator_code)
+CREATE TABLE affected_operator(
+    affected_operator_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    incident_id SMALLINT NOT NULL REFERENCES incident(incident_id),
+    operator_id SMALLINT NOT NULL REFERENCES operator(operator_id)
+);
+
+CREATE TABLE services(
+    service_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    operator_id SMALLINT REFERENCES operator(operator_id),
+    service_uid TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE station(
+    station_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    station_crs CHAR(3) NOT NULL UNIQUE,
+    station_name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE waypoint(
-    waypoint_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    waypoint_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     run_date TIMESTAMP(0) NOT NULL,
     booked_arrival TIMESTAMP(0) NOT NULL,
     actual_arrival TIMESTAMP(0) NOT NULL,
     booked_departure TIMESTAMP(0) NOT NULL,
     actual_departure TIMESTAMP(0) NOT NULL,
-    operator_code CHAR(2) NOT NULL REFERENCES operator(operator_code),
-    station_crs CHAR(3) NOT NULL REFERENCES station(station_crs)
+    service_id SMALLINT NOT NULL REFERENCES services(service_id),
+    station_id SMALLINT NOT NULL REFERENCES station(station_id)
+);
+
+CREATE TABLE performance_archive(
+    performance_archive_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    station_id SMALLINT NOT NULL REFERENCES station(station_id),
+    avg_delay SMALLINT NOT NULL,
+    cancellation_count SMALLINT NOT NULL,
+    creation_date TIMESTAMP(0) NOT NULL
+);
+
+CREATE TABLE cancel_code(
+    cancel_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    cancel_code CHAR(2) NOT NULL UNIQUE,
+    cause TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE cancellation(
     cancellation_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    cancel_code CHAR(2) NOT NULL REFERENCES cancel_code(cancel_code),
-    waypoint_id INT NOT NULL REFERENCES waypoint(waypoint_id)
-);
-
-CREATE TABLE affected_operator(
-    affected_operator_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    incident_number SMALLINT NOT NULL REFERENCES incident(incident_number),
-    operator_code CHAR(2) NOT NULL REFERENCES operator(operator_code)
+    cancel_id SMALLINT NOT NULL REFERENCES cancel_code(cancel_id),
+    waypoint_id BIGINT NOT NULL REFERENCES waypoint(waypoint_id)
 );
 
 INSERT INTO operator(operator_code, operator_name)
