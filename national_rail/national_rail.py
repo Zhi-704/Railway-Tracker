@@ -5,13 +5,11 @@ import extract
 import transform
 import load
 
+FILENAME = "data.xml"     # 'test_data.xml'
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-
-    FILENAME = "data.xml"
-    # 'test_data.xml'
 
     extract.get_national_rail_data(FILENAME)
 

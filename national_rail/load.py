@@ -1,6 +1,7 @@
 """ Loads incident data into the RDS database. """
 from os import environ
 from dotenv import load_dotenv
+import logging
 
 from psycopg2 import connect
 from psycopg2.extensions import connection, cursor
@@ -34,28 +35,35 @@ def upload_incident(conn: connection, incident: dict) -> int:
         RETURNING incident_id;
     """
 
-    cur = get_cursor(conn)
-    cur.execute(query, (
-        incident["incident_number"],
-        incident["creation_time"],
-        incident["start_time"],
-        incident["end_time"],
-        incident["is_planned"],
-        incident["summary"],
-        incident["description"],
-        incident["uri"],
-        incident["routes_affected"],
+    try:
+        cur = get_cursor(conn)
+        cur.execute(query, (
+            incident["incident_number"],
+            incident["creation_time"],
+            incident["start_time"],
+            incident["end_time"],
+            incident["is_planned"],
+            incident["summary"],
+            incident["description"],
+            incident["uri"],
+            incident["routes_affected"],
 
-    ))
+        ))
 
-    incident_id = cur.fetchall()[0]['incident_id']
-    conn.commit()
-    cur.close()
+        incident_id = cur.fetchall()[0]['incident_id']
+        conn.commit()
+        cur.close()
+        logging.info("Load: Inserted incident")
+
+    except Exception as e:
+        conn.rollback()
+        logging.error("Load: Error occurred inserting incident", e)
+        incident_id = None
 
     return incident_id
 
 
-def check_if_exists(conn: connection, table_name: str, conditions: dict) -> bool:
+def check_if_exists(conn: connection, table_name: str, conditions: dict) -> dict | None:
     """ Checks if a certain data value already exists inside a relation. """
 
     query = f'''SELECT * FROM {table_name} WHERE {
@@ -88,11 +96,17 @@ def upload_affected_operator(conn: connection, incident_id: int, operator_id: st
         RETURNING affected_operator_id;
     """
 
-    cur = get_cursor(conn)
-    cur.execute(query, (incident_id, operator_id))
+    try:
+        cur = get_cursor(conn)
+        cur.execute(query, (incident_id, operator_id))
 
-    conn.commit()
-    cur.close()
+        conn.commit()
+        cur.close()
+        logging.info("Load: Inserted affected operator")
+
+    except Exception as e:
+        conn.rollback()
+        logging.error("Load: Error occurred inserting affected operator", e)
 
 
 def load_incidents(incidents_data: list[dict]) -> None:
