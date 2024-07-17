@@ -133,11 +133,19 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
     return dataset
 
 
-def transform_national_rail_data(data_file: str):
-    """ Transforms NationalRail data to retrieve incidents and operators. """
+def transform_xml_file(national_rail_xml: str, namespace: dict) -> list[dict]:
+    """ Takes the root of the xml file and finds all incidents and their
+        relevant data, populates a list of dictionary and returns it."""
 
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
+    national_rail_tree_root = reverse_tree(load_tree_root(national_rail_xml))
+    all_incidents = get_incidents(national_rail_tree_root, namespace)
+    incidents_dataset = process_pt_incidents(all_incidents, namespace)
+
+    return incidents_dataset
+
+
+def transform() -> list[dict]:
+    """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.info("Transformation of NationalRail has began")
 
@@ -146,12 +154,14 @@ def transform_national_rail_data(data_file: str):
 
     national_rail_data = read_data_from_file(data_file)
 
-    national_rail_tree_root = reverse_tree(load_tree_root(national_rail_data))
-
-    all_incidents = get_incidents(national_rail_tree_root, nr_namespaces)
-
-    incidents_dataset = process_pt_incidents(all_incidents, nr_namespaces)
+    incidents_data = transform_xml_file(national_rail_data, nr_namespaces)
 
     logging.info("Transformation of NationalRail completed successfully")
 
-    return incidents_dataset
+    return incidents_data
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
+    transformed_data = transform()
