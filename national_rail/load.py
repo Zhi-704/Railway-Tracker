@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 from psycopg2 import connect
 from psycopg2.extensions import connection, cursor
-from psycopg2.extras import RealDictCursor, execute_values
+from psycopg2.extras import RealDictCursor
 
 import transform  # just for development
 
@@ -81,7 +81,7 @@ def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
     return None
 
 
-def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_id: str) -> None:
+def upload_affected_operator(conn: connection, incident_id: int, operator_id: str) -> None:
     """ Inserts an affected operator with an incident id and operator id. """
 
     query = """
@@ -109,7 +109,7 @@ def load_incidents(incidents_data: list[dict]) -> None:
             operator_id = get_operator_code_id(conn, operator_code)
 
             if operator_id:
-                upload_affected_operator_assignment(
+                upload_affected_operator(
                     conn, incident_id, operator_id)
 
     conn.close()
