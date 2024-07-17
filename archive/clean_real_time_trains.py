@@ -16,16 +16,7 @@ def get_all_stations(conn: connection) -> list[dict]:
         FROM station;
     """
 
-    try:
-        cur = db_connection.get_cursor(conn)
-        cur.execute(query)
-
-        conn.commit()
-        station_ids = cur.fetchall()
-        cur.close()
-
-    except Exception as e:
-        conn.rollback()
+    station_ids = db_connection.execute(conn, query, ())
 
     return station_ids
 
@@ -40,18 +31,9 @@ def get_month_old_waypoints(conn: connection, station_id: str) -> list[dict]:
             AND station_id = %s;
     """
 
-    try:
-        cur = db_connection.get_cursor(conn)
-        cur.execute(query, (station_id,))
+    outdated_waypoints = db_connection.execute(conn, query, (station_id,))
 
-        conn.commit()
-        waypoints = cur.fetchall()
-        cur.close()
-
-    except Exception as e:
-        conn.rollback()
-
-    return waypoints
+    return outdated_waypoints
 
 
 def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
@@ -70,20 +52,12 @@ def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
         GROUP BY station_id;
     """
 
-    try:
-        cur = db_connection.get_cursor(conn)
-        cur.execute(query, (station_id,))
+    avg_delay = db_connection.execute(conn, query, (station_id,))
 
-        conn.commit()
-        avg_delay = cur.fetchone()
-        cur.close()
-
-    except Exception as e:
-        conn.rollback()
+    if avg_delay:
+        avg_delay = avg_delay[0]['avg_overall_delay']
 
     return avg_delay
-
-    # and later delete these waypoints - cascade?
 
 
 def compute_cancellation_count_for_station(conn: connection, station_id: int) -> dict:
@@ -99,16 +73,11 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
         WHERE w.station_id = %s
             AND run_date <= CURRENT_DATE - INTERVAL '1 month';
     """
-    try:
-        cur = db_connection.get_cursor(conn)
-        cur.execute(query, (station_id,))
 
-        conn.commit()
-        cancellation_count = cur.fetchone()
-        cur.close()
+    cancellation_count = db_connection.execute(conn, query, (station_id,))
 
-    except Exception as e:
-        conn.rollback()
+    if cancellation_count:
+        cancellation_count = cancellation_count[0]['cancellation_count']
 
     return cancellation_count
 
@@ -116,8 +85,7 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
 def insert_performance_archive(conn: connection, archive_data: dict) -> None:
     """ Insert performance data about each station into the archive.
         Creation date is date of inserting into archive. """
-
-    # can maybe do execute many, and pass in a list of dicts
+    # maybe can do execute many .. pass in list of dict
 
     query = """
         INSERT INTO performance_archive (station_id, avg_delay, cancellation_count, creation_date) 
@@ -140,7 +108,7 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
 
     except Exception as e:
         conn.rollback()
-        logging.error("Load: Error occurred inserting incident %s", e)
+        logging.error("Clean: Error occurred inserting incident %s", e)
 
 
 def delete_cancellation(conn: connection, waypoint_id: int) -> None:
@@ -150,6 +118,8 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         DELETE FROM cancellation 
         WHERE waypoint_id = %s;
     """
+    # CHECK DELETE WORKS!
+    # db_connection.execute(conn, query, ())
 
 
 def delete_waypoint(conn: connection, waypoint_id: int) -> None:
@@ -159,6 +129,9 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
+
+    # CHECK DELETE WORKS!
+    # db_connection.execute(conn, query, ())
 
 
 def clean_real_time_trains_data():
@@ -178,15 +151,11 @@ def clean_real_time_trains_data():
 
         # # 2) compute performance metrics
         avg_delay = compute_avg_delay_for_station(conn, station_id)
-        if avg_delay:
-            avg_delay = avg_delay['avg_overall_delay']
 
         cancellation_count = compute_cancellation_count_for_station(
             conn, station_id)
-        if cancellation_count:
-            cancellation_count = cancellation_count['cancellation_count']
 
-        # print(station_id)
+        print(station_id)
         # print(old_waypoints)
         # print(avg_delay)
         # print(cancellation_count)

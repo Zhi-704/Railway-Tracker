@@ -1,4 +1,5 @@
 from os import environ
+import logging
 
 from dotenv import load_dotenv
 from psycopg2 import connect
@@ -21,3 +22,25 @@ def get_connection() -> connection:
 def get_cursor(conn: connection) -> cursor:
     """ Retrieves cursor and returns it. """
     return conn.cursor(cursor_factory=RealDictCursor)
+
+
+def execute(conn: connection, query: str, data: tuple) -> dict | None:
+    """ Executes SQL queries on AWS RDS, and returns result. 
+        Uses fetchall(). """
+
+    try:
+        cur = get_cursor(conn)
+
+        cur.execute(query, (data))
+
+        conn.commit()
+        result = cur.fetchall()
+        cur.close()
+
+        logging.info("Clean: successful: %s", data)
+
+    except Exception as e:
+        conn.rollback()
+        logging.error("Clean: Error occurred when executing archive - %s", e)
+
+    return result
