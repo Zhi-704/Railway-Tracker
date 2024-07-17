@@ -10,10 +10,10 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
 
-    filename = "data.xml"
+    FILENAME = "data.xml"
 
-    extract.get_national_rail_data(filename)
+    extract.get_national_rail_data(FILENAME)
 
-    incidents_data = transform.transform_national_rail_data(filename)
+    incidents_data = transform.transform_national_rail_data(FILENAME)
 
     load.load_incidents(incidents_data)
