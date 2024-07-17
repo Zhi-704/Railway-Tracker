@@ -20,14 +20,12 @@ national_rail/national_rail.py:17:21: E1101: Module 'transform' has no 'transfor
 Your code has been rated at 4.00/10
 
 ************* Module load
-national_rail/load.py:33:0: C0301: Line too long (104/100) (line-too-long)
-national_rail/load.py:33:0: C0116: Missing function or method docstring (missing-function-docstring)
-national_rail/load.py:49:20: W0613: Unused argument 'incident' (unused-argument)
-national_rail/load.py:68:19: E1101: Module 'transform' has no 'transform_national_rail_data' member (no-member)
+national_rail/load.py:78:0: C0301: Line too long (102/100) (line-too-long)
+national_rail/load.py:116:19: E1101: Module 'transform' has no 'transform_national_rail_data' member (no-member)
 national_rail/load.py:7:0: W0611: Unused execute_values imported from psycopg2.extras (unused-import)
 
 -----------------------------------
-Your code has been rated at 6.40/10
+Your code has been rated at 8.41/10
 
 
 ------------------------------------
