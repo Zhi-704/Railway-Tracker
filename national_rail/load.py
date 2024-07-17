@@ -67,7 +67,7 @@ def check_if_exists(conn: connection, table_name: str, conditions: dict) -> bool
     cur.execute(query, tuple(conditions.values()))
     result = cur.fetchone()
 
-    return result
+    return result if result else None
 
 
 def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
