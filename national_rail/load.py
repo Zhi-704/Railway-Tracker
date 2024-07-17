@@ -26,40 +26,88 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
-# def get_operator_code_id(conn: connection, operator_code: str) -> int:
-#     """ Retrieves operator code id """
+def upload_incident(conn: connection, incident: dict) -> int:
+    """ Takes an incident and uploads to the database, returning the incident id. """
+
+    # removed operator code
+    query = """
+        INSERT INTO incident (incident_number, incident_start, incident_end, is_planned, incident_summary,
+            incident_description, incident_uri, affected_routes)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) 
+        RETURNING incident_id;
+    """
+    cur = get_cursor(conn)
+    cur.execute(query, (
+        incident["incident_number"],
+        incident["creation_time"],
+        incident["start_time"],
+        incident["end_time"],
+        incident["is_planned"],
+        incident["summary"],
+        incident["description"],
+        incident["uri"],
+        incident["routes_affected"],
+
+    ))
+
+    incident_id = cur.fetchall()
+    conn.commit()
+    cur.close()
+
+    return incident_id
 
 
-def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_code: str) -> None:
+def get_operator_code_id(conn: connection, operator_code: str) -> int:
+    """ Retrieves operator id from operator table in database, by operator code. """
 
     query = """
-        INSERT INTO affected_operator (incident_number, operator_code)
-        VALUES (%s, %s)
-
-        ON CONFLICT 
+        SELECT operator_id FROM operator 
+        WHERE operator_code = (%s);
     """
 
     cur = get_cursor(conn)
-    cur.execute(query, (incident_id, operator_code))
+    cur.execute(query, (operator_code))
+    operator_id = cur.fetchall()
+
+    conn.commit()
+    cur.close()
+
+    return operator_id
+
+
+def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_id: str) -> None:
+    """ Inserts an affected operator with an incident id and operator id. """
+
+    query = """
+        INSERT INTO affected_operator (incident_id, operator_id)
+        VALUES (%s, %s)
+        RETURNING affected_operator_id;
+    """
+
+    cur = get_cursor(conn)
+    cur.execute(query, (incident_id, operator_id))
 
     conn.commit()
     cur.close()
 
 
-def upload_incident(incident: dict) -> int:
-    """ Takes an incident and uploads to the database, returning the incident id. """
-    # or do execute many with all incidents.
-
-    # then iterate through each incident and upload operators to operator assignment table.
-    # if operator doesn't exist; add it.
-
-
 def load_incidents(incidents_data: list[dict]) -> None:
     """ Loads all incidents created within the last 5 minutes to the RDS. """
+
     conn = get_connection()
 
     for incident in incidents_data:
         print(incident['incident_number'])
+        # upload incident:
+
+        incident_id = upload_incident(conn, incident)
+
+        # get operator id:
+        for operator_code in incident["operator_codes"]:
+            operator_id = get_operator_code_id(conn, operator_code)
+
+            # upload assignment:
+            upload_affected_operator_assignment(conn, incident_id, operator_id)
 
     conn.close()
 
