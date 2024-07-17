@@ -37,7 +37,6 @@ def upload_incident(conn: connection, incident: dict) -> int:
         RETURNING incident_id;
     """
 
-    print("\n")
     cur = get_cursor(conn)
     cur.execute(query, (
         incident["incident_number"],
@@ -80,25 +79,12 @@ def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
     if operator:
         return operator['operator_id']
 
-        # query = """
-        #     SELECT operator_id FROM operator
-        #     WHERE operator_code = (%s);
-        # """
-
-        # cur = get_cursor(conn)
-        # cur.execute(query, (operator_code))
-        # operator_id = cur.fetchall()
-
-        # conn.commit()
-        # cur.close()
-
     return None
 
 
 def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_id: str) -> None:
     """ Inserts an affected operator with an incident id and operator id. """
-    print(incident_id)
-    print(operator_id)
+
     query = """
         INSERT INTO affected_operator (incident_id, operator_id)
         VALUES (%s, %s)
