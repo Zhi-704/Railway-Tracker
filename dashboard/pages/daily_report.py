@@ -8,8 +8,20 @@ import streamlit as st
 from os import environ
 
 
+def get_s3_client() -> client:
+    """return an S3 client"""
+    try:
+        s3_client = client('s3',
+                           aws_access_key_id=environ['AWS_ACCESS_KEY'],
+                           aws_secret_access_key=environ['AWS_SECRET_KEY'])
+        return s3_client
+    except Exception as e:
+        print(e)
+        return None
+
+
 def get_ses_client() -> client:
-    """"""
+    """return an SES client"""
     try:
         s3_client = client('ses',
                            aws_access_key_id=environ['AWS_ACCESS_KEY'],
