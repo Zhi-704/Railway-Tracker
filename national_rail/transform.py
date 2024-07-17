@@ -159,10 +159,3 @@ def transform_national_rail_data(data_file) -> list[dict]:
     logging.info("Transformation of NationalRail completed successfully")
 
     return incidents_data
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
-    transformed_data = transform_national_rail_data('test_data.xml')
-    print(transformed_data)

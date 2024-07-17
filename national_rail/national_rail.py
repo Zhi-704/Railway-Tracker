@@ -11,6 +11,7 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
 
     FILENAME = "data.xml"
+    # 'test_data.xml'
 
     extract.get_national_rail_data(FILENAME)
 

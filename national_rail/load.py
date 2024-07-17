@@ -6,8 +6,6 @@ from psycopg2 import connect
 from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
 
-import transform  # just for development
-
 
 def get_connection() -> connection:
     """ Retrieves connection and returns it. """
@@ -113,8 +111,3 @@ def load_incidents(incidents_data: list[dict]) -> None:
                     conn, incident_id, operator_id)
 
     conn.close()
-
-
-if __name__ == "__main__":
-    load_incidents(transform.transform_national_rail_data("test_data.xml"))
-    # just for development
