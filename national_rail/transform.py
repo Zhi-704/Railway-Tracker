@@ -144,7 +144,7 @@ def transform_xml_file(national_rail_xml: str, namespace: dict) -> list[dict]:
     return incidents_dataset
 
 
-def transform() -> list[dict]:
+def transform(data_file) -> list[dict]:
     """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.info("Transformation of NationalRail has began")
