@@ -29,7 +29,6 @@ def get_cursor(conn: connection) -> cursor:
 def upload_incident(conn: connection, incident: dict) -> int:
     """ Takes an incident and uploads to the database, returning the incident id. """
 
-    # removed operator code
     query = """
         INSERT INTO incident (incident_number, creation_time, incident_start, incident_end, is_planned, incident_summary,
             incident_description, incident_uri, affected_routes)
@@ -59,7 +58,7 @@ def upload_incident(conn: connection, incident: dict) -> int:
 
 
 def check_if_exists(conn: connection, table_name: str, conditions: dict) -> bool:
-    '''Checks if a certain data value already exists inside a relation'''
+    """ Checks if a certain data value already exists inside a relation. """
 
     query = f'''SELECT * FROM {table_name} WHERE {
         ' AND '.join([f'{key} = %s' for key in conditions.keys()])}'''
@@ -68,7 +67,7 @@ def check_if_exists(conn: connection, table_name: str, conditions: dict) -> bool
     cur.execute(query, tuple(conditions.values()))
     result = cur.fetchone()
 
-    return result if result else None
+    return result
 
 
 def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
