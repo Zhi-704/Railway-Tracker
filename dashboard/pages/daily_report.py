@@ -20,11 +20,27 @@ def get_ses_client() -> client:
         return None
 
 
+def create_subscription_form() -> dict | None:
+    """create a subscription form to the summary report"""
+    email = ""
+    with st.form("summary_subscription", clear_on_submit=True, border=True):
+        email = st.text_input("Email:")
+        submit = st.form_submit_button()
+
+    if email != "" and submit:
+        st.success(f"Email entered: {email}")
+        return {'email': email}
+
+    return None
+
+
 def deploy_page():
     """"""
     st.title("Summary Report")
     st.subheader(
         "If you wish to subscribe to a daily report on our tracking results, submit your email below.")
+    input = create_subscription_form()
+    ses = get_ses_client()
 
 
 if __name__ == "__main__":
