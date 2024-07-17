@@ -17,7 +17,7 @@ national_rail/national_rail.py:13:4: C0103: Constant name "filename" doesn't con
 Your code has been rated at 9.00/10
 
 ************* Module load
-national_rail/load.py:85:0: C0301: Line too long (102/100) (line-too-long)
+national_rail/load.py:84:0: C0301: Line too long (102/100) (line-too-long)
 national_rail/load.py:7:0: W0611: Unused execute_values imported from psycopg2.extras (unused-import)
 
 -----------------------------------
