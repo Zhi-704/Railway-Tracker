@@ -2,11 +2,9 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module transform
-national_rail/transform.py:167:23: E1120: No value for argument 'data_file' in function call (no-value-for-parameter)
 
------------------------------------
-Your code has been rated at 9.24/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
@@ -14,26 +12,24 @@ Your code has been rated at 10.00/10
 
 ************* Module national_rail
 national_rail/national_rail.py:13:4: C0103: Constant name "filename" doesn't conform to UPPER_CASE naming style (invalid-name)
-national_rail/national_rail.py:17:21: E1101: Module 'transform' has no 'transform_national_rail_data' member (no-member)
 
 -----------------------------------
-Your code has been rated at 4.00/10
+Your code has been rated at 9.00/10
 
 ************* Module load
-national_rail/load.py:78:0: C0301: Line too long (102/100) (line-too-long)
-national_rail/load.py:116:19: E1101: Module 'transform' has no 'transform_national_rail_data' member (no-member)
+national_rail/load.py:85:0: C0301: Line too long (102/100) (line-too-long)
 national_rail/load.py:7:0: W0611: Unused execute_values imported from psycopg2.extras (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.41/10
+Your code has been rated at 9.58/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
 
--------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 9.24/10, +0.76)
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 
 --------------------------------------------------------------------
