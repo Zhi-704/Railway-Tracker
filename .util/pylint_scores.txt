@@ -14,9 +14,15 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module load
+national_rail/load.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/load.py:60:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+national_rail/load.py:107:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/load.py:109:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+national_rail/load.py:4:0: C0411: standard import "logging" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 7.68/10
 
 
 ------------------------------------
