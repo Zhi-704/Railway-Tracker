@@ -1,6 +1,6 @@
 -- Creates the schema for the database
 
-DROP TABLE IF EXISTS incident, cancellation, station_performance_archive, users, cancel_code, station, subscription, waypoint, operator, affected_operator CASCADE;
+DROP TABLE IF EXISTS incident, cancellation, station_performance_archive, users, cancel_code, station, subscription, waypoint, operator;
 
 CREATE TABLE operator(
     operator_code CHAR(2) PRIMARY KEY,
