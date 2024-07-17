@@ -1,7 +1,7 @@
 """ Loads incident data into the RDS database. """
 from os import environ
-from dotenv import load_dotenv
 import logging
+from dotenv import load_dotenv
 
 from psycopg2 import connect
 from psycopg2.extensions import connection, cursor
@@ -57,7 +57,7 @@ def upload_incident(conn: connection, incident: dict) -> int:
 
     except Exception as e:
         conn.rollback()
-        logging.error("Load: Error occurred inserting incident", e)
+        logging.error("Load: Error occurred inserting incident %s", e)
         incident_id = None
 
     return incident_id
@@ -106,7 +106,7 @@ def upload_affected_operator(conn: connection, incident_id: int, operator_id: st
 
     except Exception as e:
         conn.rollback()
-        logging.error("Load: Error occurred inserting affected operator", e)
+        logging.error("Load: Error occurred inserting affected operator %s", e)
 
 
 def load_incidents(incidents_data: list[dict]) -> None:
