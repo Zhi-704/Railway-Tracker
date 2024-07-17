@@ -26,11 +26,17 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
+# def get_operator_code_id(conn: connection, operator_code: str) -> int:
+#     """ Retrieves operator code id """
+
+
 def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_code: str) -> None:
 
     query = """
         INSERT INTO affected_operator (incident_number, operator_code)
         VALUES (%s, %s)
+
+        ON CONFLICT 
     """
 
     cur = get_cursor(conn)
