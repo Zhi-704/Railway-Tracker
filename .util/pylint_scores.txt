@@ -10,11 +10,9 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module national_rail
-national_rail/national_rail.py:13:4: C0103: Constant name "filename" doesn't conform to UPPER_CASE naming style (invalid-name)
 
------------------------------------
-Your code has been rated at 9.00/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
