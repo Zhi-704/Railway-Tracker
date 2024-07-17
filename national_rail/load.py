@@ -103,8 +103,6 @@ def load_incidents(incidents_data: list[dict]) -> None:
     conn = get_connection()
 
     for incident in incidents_data:
-        print(incident['incident_number'])
-
         incident_id = upload_incident(conn, incident)
 
         for operator_code in incident["operator_codes"]:
