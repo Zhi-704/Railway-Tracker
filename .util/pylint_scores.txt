@@ -22,3 +22,9 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
+************* Module load
+realtime_trains/load.py:4:0: W0611: Unused import logging (unused-import)
+
+-----------------------------------
+Your code has been rated at 9.17/10
+
