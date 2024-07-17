@@ -11,5 +11,9 @@
 -- SELECT * FROM operator;
 
 
-
+SELECT incident_number, creation_time FROM incident;
 SELECT * FROM affected_operator;
+
+
+DELETE FROM affected_operator;
+DELETE FROM incident;

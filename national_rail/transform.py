@@ -87,7 +87,7 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         creation_time = convert_to_datetime(find_text_element(
             incident, 'ns:CreationTime', namespaces))
 
-        if not check_creation_within_last_5_minutes(creation_time):
+        if check_creation_within_last_5_minutes(creation_time):
             # remove not to allow all incidents
             logging.info("No new incidents found within the last 5 minutes")
             break
@@ -144,7 +144,7 @@ def transform_xml_file(national_rail_xml: str, namespace: dict) -> list[dict]:
     return incidents_dataset
 
 
-def transform(data_file) -> list[dict]:
+def transform_national_rail_data(data_file) -> list[dict]:
     """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.info("Transformation of NationalRail has began")
@@ -164,4 +164,5 @@ def transform(data_file) -> list[dict]:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    transformed_data = transform()
+    transformed_data = transform_national_rail_data('test_data.xml')
+    print(transformed_data)

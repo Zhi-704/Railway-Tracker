@@ -31,11 +31,13 @@ def upload_incident(conn: connection, incident: dict) -> int:
 
     # removed operator code
     query = """
-        INSERT INTO incident (incident_number, incident_start, incident_end, is_planned, incident_summary,
+        INSERT INTO incident (incident_number, creation_time, incident_start, incident_end, is_planned, incident_summary,
             incident_description, incident_uri, affected_routes)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) 
         RETURNING incident_id;
     """
+
+    print("\n")
     cur = get_cursor(conn)
     cur.execute(query, (
         incident["incident_number"],
@@ -50,34 +52,53 @@ def upload_incident(conn: connection, incident: dict) -> int:
 
     ))
 
-    incident_id = cur.fetchall()
+    incident_id = cur.fetchall()[0]['incident_id']
     conn.commit()
     cur.close()
 
     return incident_id
 
 
-def get_operator_code_id(conn: connection, operator_code: str) -> int:
-    """ Retrieves operator id from operator table in database, by operator code. """
+def check_if_exists(conn: connection, table_name: str, conditions: dict) -> bool:
+    '''Checks if a certain data value already exists inside a relation'''
 
-    query = """
-        SELECT operator_id FROM operator 
-        WHERE operator_code = (%s);
-    """
+    query = f'''SELECT * FROM {table_name} WHERE {
+        ' AND '.join([f'{key} = %s' for key in conditions.keys()])}'''
 
     cur = get_cursor(conn)
-    cur.execute(query, (operator_code))
-    operator_id = cur.fetchall()
+    cur.execute(query, tuple(conditions.values()))
+    result = cur.fetchone()
 
-    conn.commit()
-    cur.close()
+    return result if result else None
 
-    return operator_id
+
+def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
+    """ Retrieves operator id from operator table in database, by operator code. """
+
+    operator = check_if_exists(conn, 'operator',
+                               conditions={'operator_code': operator_code})
+    if operator:
+        return operator['operator_id']
+
+        # query = """
+        #     SELECT operator_id FROM operator
+        #     WHERE operator_code = (%s);
+        # """
+
+        # cur = get_cursor(conn)
+        # cur.execute(query, (operator_code))
+        # operator_id = cur.fetchall()
+
+        # conn.commit()
+        # cur.close()
+
+    return None
 
 
 def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_id: str) -> None:
     """ Inserts an affected operator with an incident id and operator id. """
-
+    print(incident_id)
+    print(operator_id)
     query = """
         INSERT INTO affected_operator (incident_id, operator_id)
         VALUES (%s, %s)
@@ -98,20 +119,19 @@ def load_incidents(incidents_data: list[dict]) -> None:
 
     for incident in incidents_data:
         print(incident['incident_number'])
-        # upload incident:
 
         incident_id = upload_incident(conn, incident)
 
-        # get operator id:
         for operator_code in incident["operator_codes"]:
             operator_id = get_operator_code_id(conn, operator_code)
 
-            # upload assignment:
-            upload_affected_operator_assignment(conn, incident_id, operator_id)
+            if operator_id:
+                upload_affected_operator_assignment(
+                    conn, incident_id, operator_id)
 
     conn.close()
 
 
 if __name__ == "__main__":
-    load_incidents(transform.transform_national_rail_data("testing.xml"))
+    load_incidents(transform.transform_national_rail_data("test_data.xml"))
     # just for development
