@@ -31,7 +31,7 @@ This will prompt you to enter a station name or code. After providing the input,
 Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `national_rail` directory and add the following lines, replacing `YOUR_API_KEY` with your actual API key:
 
 ```text
-API_KEY=YOUR_API_KEY
+NATIONAL_RAIL_API_KEY=YOUR_API_KEY
 ```
 
 The script will automatically load the API key from this file.
