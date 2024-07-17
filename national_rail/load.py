@@ -81,10 +81,8 @@ def get_operator_code_id(conn: connection, operator_code: str) -> int | None:
 
     operator = check_if_exists(conn, 'operator',
                                conditions={'operator_code': operator_code})
-    if operator:
-        return operator['operator_id']
 
-    return None
+    return operator['operator_id'] if operator else None
 
 
 def upload_affected_operator(conn: connection, incident_id: int, operator_id: str) -> None:
