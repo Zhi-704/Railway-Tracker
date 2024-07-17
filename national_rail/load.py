@@ -26,6 +26,20 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
+def upload_affected_operator_assignment(conn: connection, incident_id: int, operator_code: str) -> None:
+
+    query = """
+        INSERT INTO affected_operator (incident_number, operator_code)
+        VALUES (%s, %s)
+    """
+
+    cur = get_cursor(conn)
+    cur.execute(query, (incident_id, operator_code))
+
+    conn.commit()
+    cur.close()
+
+
 def upload_incident(incident: dict) -> int:
     """ Takes an incident and uploads to the database, returning the incident id. """
     # or do execute many with all incidents.
@@ -40,6 +54,8 @@ def load_incidents(incidents_data: list[dict]) -> None:
 
     for incident in incidents_data:
         print(incident['incident_number'])
+
+    conn.close()
 
 
 if __name__ == "__main__":
