@@ -115,7 +115,6 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         DELETE FROM cancellation 
         WHERE waypoint_id = %s;
     """
-    # CHECK DELETE WORKS!
     db_connection.execute(conn, query, ())
 
 
@@ -126,7 +125,6 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
-    # CHECK DELETE WORKS!
     db_connection.execute(conn, query, ())
 
 
