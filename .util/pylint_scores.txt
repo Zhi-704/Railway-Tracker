@@ -55,14 +55,17 @@ archive/archive.py:21:19: W0613: Unused argument 'context' (unused-argument)
 Your code has been rated at 7.69/10
 
 ************* Module clean_real_time_trains
-archive/clean_real_time_trains.py:106:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:111:42: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:121:38: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:173:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
-archive/clean_real_time_trains.py:174:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
+archive/clean_real_time_trains.py:110:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_real_time_trains.py:94:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+archive/clean_real_time_trains.py:105:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+archive/clean_real_time_trains.py:112:8: E1205: Too many arguments for logging format string (logging-too-many-args)
+archive/clean_real_time_trains.py:117:42: W0613: Unused argument 'waypoint_id' (unused-argument)
+archive/clean_real_time_trains.py:127:38: W0613: Unused argument 'waypoint_id' (unused-argument)
 archive/clean_real_time_trains.py:179:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
 archive/clean_real_time_trains.py:180:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
+archive/clean_real_time_trains.py:185:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
+archive/clean_real_time_trains.py:186:18: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
 
 -----------------------------------
-Your code has been rated at 6.52/10
+Your code has been rated at 4.49/10
 
