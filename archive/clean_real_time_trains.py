@@ -91,6 +91,8 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
 
     try:
         cur = db_connection.get_cursor(conn)
+        logging.info("station id %s",
+                     archive_data["station_id"], archive_data["avg_delay"])
 
         cur.execute(query, (
             archive_data["station_id"],
@@ -100,12 +102,16 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
 
         conn.commit()
         cur.close()
+        logging.info("station id %s",
+                     archive_data["station_id"], archive_data["avg_delay"])
         logging.info("Clean: Inserted archive for station: %s",
                      archive_data["station_id"])
 
     except Exception as e:
         conn.rollback()
-        logging.error("Clean: Error occurred inserting incident %s", e)
+        logging.info("station id %s",
+                     archive_data["station_id"], archive_data["avg_delay"])
+        logging.error("Clean: Error occurred inserting archive %s", e)
 
 
 def delete_cancellation(conn: connection, waypoint_id: int) -> None:

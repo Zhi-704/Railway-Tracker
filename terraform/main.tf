@@ -24,25 +24,25 @@ provider "aws" {
 #     password                     = var.DB_PASSWORD
 # }
 
-resource "aws_security_group" "c11-railway-tracker-RDS-sg-terrafrom" {
-    name = "c11-railway-tracker-RDS-sg-terrafrom"
-    description = "Security group for connecting to RDS database"
-    vpc_id = data.aws_vpc.c11-vpc.id
+# resource "aws_security_group" "c11-railway-tracker-RDS-sg-terrafrom" {
+#     name = "c11-railway-tracker-RDS-sg-terrafrom"
+#     description = "Security group for connecting to RDS database"
+#     vpc_id = data.aws_vpc.c11-vpc.id
 
-    egress {
-        from_port        = 0
-        to_port          = 0
-        protocol         = "-1"
-        cidr_blocks      = ["0.0.0.0/0"]
-    }
+#     egress {
+#         from_port        = 0
+#         to_port          = 0
+#         protocol         = "-1"
+#         cidr_blocks      = ["0.0.0.0/0"]
+#     }
 
-    ingress {
-        from_port = 5432
-        to_port = 5432
-        protocol = "tcp"
-        cidr_blocks      = ["0.0.0.0/0"]
-    }
-}
+#     ingress {
+#         from_port = 5432
+#         to_port = 5432
+#         protocol = "tcp"
+#         cidr_blocks      = ["0.0.0.0/0"]
+#     }
+# }
 
 data "aws_vpc" "c11-vpc" {
     id = var.C11_VPC
@@ -52,6 +52,9 @@ data "aws_vpc" "c11-vpc" {
 
 
 # ARCHIVE PROCESS: LAMBDA 
+    # policy document
+    # iam role
+    # lambda
 
 data "aws_iam_policy_document" "c11-railway-tracker-archive-lambda-policy-document" {
     statement {
@@ -82,23 +85,34 @@ resource "aws_lambda_function" "c11-railway-tracker-archive-lambda-function" {
     variables = {
       ACCESS_KEY_ID     = var.AWS_ACCESS_KEY,
       SECRET_ACCESS_KEY = var.AWS_SECRET_KEY,
-      DB_HOST           = var.DB_IP,
+      DB_IP             = var.DB_IP,
       DB_NAME           = var.DB_NAME,
-      DB_USER           = var.DB_USERNAME,
-      DB_PASS           = var.DB_PASSWORD,
+      DB_USERNAME       = var.DB_USERNAME,
+      DB_PASSWORD       = var.DB_PASSWORD,
       DB_PORT           = var.DB_PORT,
     }
   }
 }
 
 # ARCHIVE EVENT BRIDGE SCHEDULE:
-    # - policy document ^^
+    # policy document
     # iam role
     # event bridge schedule lambda at 9:30
 
+data "aws_iam_policy_document" "c11-railway-tracker-archive-schedule-policy-document" {
+    statement {
+            actions    = ["sts:AssumeRole"]
+            effect     = "Allow"
+            principals {
+                type        = "Service"
+                identifiers = ["scheduler.amazonaws.com"]
+            }
+    }
+}
+
 resource "aws_iam_role" "c11-railway-tracker-archive-schedule-role" {
   name               = "c11-railway-tracker-archive-schedule-role"
-  assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-lambda-policy-document.json
+  assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-schedule-policy-document.json
 }
 
 resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
@@ -106,7 +120,7 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
   name = "c11-railway-tracker-archive-schedule"
   group_name = "default"
 
-  schedule_expression = "cron(*/2 * * * *)"
+  schedule_expression = "cron(*/2 * * * ? *)"
 #   "cron(0 9 * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
