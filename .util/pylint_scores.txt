@@ -36,20 +36,11 @@ Your code has been rated at 9.77/10 (previous run: 10.00/10, -0.23)
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module load
-realtime_trains/load.py:57:0: C0301: Line too long (105/100) (line-too-long)
-realtime_trains/load.py:133:0: C0301: Line too long (116/100) (line-too-long)
-realtime_trains/load.py:201:0: C0301: Line too long (112/100) (line-too-long)
-realtime_trains/load.py:214:0: C0301: Line too long (106/100) (line-too-long)
-realtime_trains/load.py:84:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:121:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:133:0: R0914: Too many local variables (24/15) (too-many-locals)
-realtime_trains/load.py:207:11: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:133:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
-realtime_trains/load.py:237:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:271:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:305:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:316:0: R1711: Useless return at end of function or method (useless-return)
+realtime_trains/load.py:57:0: R0914: Too many local variables (24/15) (too-many-locals)
+realtime_trains/load.py:142:11: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:246:0: R0913: Too many arguments (6/5) (too-many-arguments)
+realtime_trains/load.py:273:15: W0718: Catching too general exception Exception (broad-exception-caught)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.25/10 (previous run: 9.63/10, -0.38)
+Your code has been rated at 9.69/10 (previous run: 9.63/10, +0.06)
 
