@@ -60,13 +60,22 @@ def get_db_cursor(conn: connection) -> cursor:
         return None
 
 
+def is_email_already_subscribed(email: str, conn: connection) -> bool:
+    """check if the email given has already subscribed to the database"""
+    with get_db_cursor(conn) as curs:
+        curs.execute(f"""SELECT COUNT(*) FROM users WHERE email='{email}'""")
+        res = curs.fetchone()
+
+    return res == 1
+
+
 def is_email_valid(email: str) -> bool:
     """return a bool based on whether this is a valid email"""
     emaiL_regex = re.compile(r"^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$")
     return re.match(pattern=emaiL_regex, string=email) is not None
 
 
-def create_subscription_form() -> dict | None:
+def get_from_subscription_form() -> dict:
     """create a subscription form to the summary report"""
     email = ""
     with st.form("summary_subscription", clear_on_submit=True, border=True):
@@ -74,10 +83,13 @@ def create_subscription_form() -> dict | None:
         submit = st.form_submit_button()
 
     if email != "" and submit:
-        st.success(f"Email entered: {email}")
-        return {'email': email}
+        if not is_email_valid(email):
+            st.error("This is not a valid email.")
+        else:
+            st.success(f"Email entered: {email}")
+            return {'email': email}
 
-    return None
+    return {}
 
 
 def deploy_page():
@@ -85,9 +97,12 @@ def deploy_page():
     st.title("Summary Report")
     st.subheader(
         "If you wish to subscribe to a daily report on our tracking results, submit your email below.")
-    input = create_subscription_form()
+    input = get_from_subscription_form()
     ses = get_ses_client()
     conn = get_db_connection()
+
+    if input.get("email", None) and is_email_already_subscribed(input["email"], conn):
+        st.error("This email is already subscribed to the summary report.")
 
 
 if __name__ == "__main__":
