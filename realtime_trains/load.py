@@ -17,7 +17,7 @@ REQUIRED_FIELDS_SERVICE = ["locationDetail",
                            "serviceUid", "atocCode", "atocName"]
 REQUIRED_FIELDS_LOCATION = ["name", "crs"]
 CANCELLATION_FIELDS = ["cancelReasonCode",
-                       "cancelReasonShortText", "cancelReasonLongText"]
+                       "cancelReasonLongText"]
 
 
 def get_connection() -> DBConnection:
@@ -54,15 +54,49 @@ def get_id_if_exists(cur: DBCursor, table_name: str, conditions: dict[any]) -> i
     return table_id[0] if table_id is not None else None
 
 
-def insert_or_get_cancellation(cancelled_service: dict, waypoint_id: int, conn: DBConnection, cur: DBCursor):
+def insert_or_get_cancellation(cancel_code_id: int, waypoint_id: int, conn: DBConnection, cur: DBCursor):
     '''Inserts a cancelled journey into the database'''
-    ...
+    cancellations_conditions = {
+        'cancel_code_id': cancel_code_id,
+        'waypoint_id': waypoint_id
+    }
+
+    cancellation_id = get_id_if_exists(
+        cur, "cancellation", cancellations_conditions)
+
+    if cancellation_id is None:
+        query = '''
+        INSERT INTO cancellation (cancel_code_id, waypoint_id)
+        VALUES
+        (%s, %s)
+        RETURNING cancellation_id
+        '''
+
+        try:
+            cur.execute(query, (
+                cancel_code_id,
+                waypoint_id
+            ))
+            cancellation_id = cur.fetchone()[0]
+            logging.info("Cancellation %s added!",
+                         cancellation_id)
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logging.error(
+                "Load: Error occurred inserting cancellation: %s", e)
+            cancellation_id = None
+    else:
+        logging.info("Cancellation %s retrieved!",
+                     cancellation_id)
+
+    return cancellation_id
 
 
-def insert_or_get_cancel_code(cancelled_service: dict, conn: DBConnection, cur: DBCursor):
-    '''Inserts a cancelled journey into the database'''
+def insert_or_get_cancel_code(cancelled_service_loc: dict, conn: DBConnection, cur: DBCursor):
+    '''Inserts a cancel code into the database'''
     cancel_code_conditions = {
-        'cancel_code': cancelled_service["cancelReasonCode"]
+        'cancel_code': cancelled_service_loc["cancelReasonCode"]
     }
 
     cancel_code_id = get_id_if_exists(
@@ -77,12 +111,12 @@ def insert_or_get_cancel_code(cancelled_service: dict, conn: DBConnection, cur: 
 
         try:
             cur.execute(query, (
-                cancelled_service["cancelReasonCode"],
-                cancelled_service["cancelReasonLongText"]
+                cancelled_service_loc["cancelReasonCode"],
+                cancelled_service_loc["cancelReasonLongText"]
             ))
             cancel_code_id = cur.fetchone()[0]
             logging.info("Cancel Code %s added!",
-                         cancelled_service["cancelReasonCode"])
+                         cancelled_service_loc["cancelReasonCode"])
             conn.commit()
         except Exception as e:
             conn.rollback()
@@ -90,8 +124,8 @@ def insert_or_get_cancel_code(cancelled_service: dict, conn: DBConnection, cur: 
                 "Load: Error occurred inserting Cancel Code: %s", e)
             cancel_code_id = None
     else:
-        logging.info("Service %s retrieved!",
-                     cancelled_service["cancelReasonCode"])
+        logging.info("Cancel Code %s retrieved!",
+                     cancelled_service_loc["cancelReasonCode"])
 
     return cancel_code_id
 
@@ -175,10 +209,6 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
         logging.error(
             "Load: Error occurred inserting Waypoint: %s", e)
         return None
-
-    for key in service_dict:
-        if key in CANCELLATION_FIELDS:
-            insert_or_get_cancellation(service_dict, waypoint_id, conn, cur)
 
 
 def insert_or_get_service(service_dict: dict, operator_id: int, conn: DBConnection, cur: DBCursor) -> int:
@@ -296,6 +326,17 @@ def import_to_database(stations: list[dict]) -> None:
             waypoint_id = insert_or_get_waypoint(
                 station_id, service_id, service, conn, cur)
 
+            for key in service["locationDetail"]:
+                if key in CANCELLATION_FIELDS:
+                    print("ENTERED!!!!!!")
+                    cancel_code_id = insert_or_get_cancel_code(
+                        service["locationDetail"], conn, cur)
+                    insert_or_get_cancellation(
+                        cancel_code_id, waypoint_id, conn, cur)
+                    break
+
+            print("\n-----------------------------")
+
     cur.close()
     conn.close()
 
@@ -307,6 +348,6 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
     data = [get_realtime_trains_data("LDS")]
-    data[0]["services"] = data[0]["services"][:100]
+    data[0]["services"] = data[0]["services"][:200]
     modified_data = process_all_stations(data)
     import_to_database(modified_data)
