@@ -9,3 +9,4 @@ SELECT * FROM station;
 SELECT * FROM subscription;
 SELECT * FROM waypoint;
 SELECT * FROM operator;
+

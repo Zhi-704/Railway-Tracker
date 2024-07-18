@@ -144,7 +144,7 @@ def transform_xml_file(national_rail_xml: str, namespace: dict) -> list[dict]:
     return incidents_dataset
 
 
-def transform() -> list[dict]:
+def transform_national_rail_data(data_file) -> list[dict]:
     """ Transforms NationalRail data to retrieve incidents and operators. """
 
     logging.info("Transformation of NationalRail has began")
@@ -152,16 +152,10 @@ def transform() -> list[dict]:
     nr_namespaces = {'ns': 'http://nationalrail.co.uk/xml/incident',
                      'com': 'http://nationalrail.co.uk/xml/common'}
 
-    national_rail_data = read_data_from_file("data.xml")
+    national_rail_data = read_data_from_file(data_file)
 
     incidents_data = transform_xml_file(national_rail_data, nr_namespaces)
 
     logging.info("Transformation of NationalRail completed successfully")
 
     return incidents_data
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
-    transformed_data = transform()

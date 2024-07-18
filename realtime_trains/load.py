@@ -49,11 +49,11 @@ def insert_or_get_cancellation(cancelled_service: dict, waypoint_id: int, conn: 
     ...
 
 
-def insert_or_get_waypoint(station_id: int, service: dict, conn: DBConnection, cur: DBCursor):
+def insert_or_get_waypoint(station_id: int, service_id: int, service: dict, conn: DBConnection, cur: DBCursor):
     '''Inserts or gets a journey from the database'''
     waypoint_conditions = {
         'station_id': station_id,
-
+        'service_id': service_id
     }
 
     waypoint_id = get_id_if_exists(cur, "station", waypoint_conditions)

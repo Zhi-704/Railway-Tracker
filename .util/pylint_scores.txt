@@ -14,11 +14,20 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module transform
-realtime_trains/transform.py:5:0: W0611: Unused save_data_to_file imported from extract (unused-import)
+************* Module load
+national_rail/load.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/load.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
--------------------------------------------------------------------
-Your code has been rated at 9.77/10 (previous run: 10.00/10, -0.23)
+-----------------------------------
+Your code has been rated at 9.63/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+--------------------------------------------------------------------
+Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 
 --------------------------------------------------------------------
