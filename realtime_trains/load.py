@@ -59,6 +59,43 @@ def insert_or_get_cancellation(cancelled_service: dict, waypoint_id: int, conn: 
     ...
 
 
+def insert_or_get_cancel_code(cancelled_service: dict, conn: DBConnection, cur: DBCursor):
+    '''Inserts a cancelled journey into the database'''
+    cancel_code_conditions = {
+        'cancel_code': cancelled_service["cancelReasonCode"]
+    }
+
+    cancel_code_id = get_id_if_exists(
+        cur, "cancel_code", cancel_code_conditions)
+    if cancel_code_id is None:
+        query = '''
+        INSERT INTO cancel_code (cancel_code, cause)
+        VALUES
+        (%s, %s)
+        RETURNING cancel_code_id
+        '''
+
+        try:
+            cur.execute(query, (
+                cancelled_service["cancelReasonCode"],
+                cancelled_service["cancelReasonLongText"]
+            ))
+            cancel_code_id = cur.fetchone()[0]
+            logging.info("Cancel Code %s added!",
+                         cancelled_service["cancelReasonCode"])
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            logging.error(
+                "Load: Error occurred inserting Cancel Code: %s", e)
+            cancel_code_id = None
+    else:
+        logging.info("Service %s retrieved!",
+                     cancelled_service["cancelReasonCode"])
+
+    return cancel_code_id
+
+
 def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict, conn: DBConnection, cur: DBCursor):
     '''Inserts or gets a journey from the database'''
 

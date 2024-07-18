@@ -43,7 +43,7 @@ CREATE TABLE service(
 CREATE TABLE station(
     station_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     station_crs CHAR(3) NOT NULL UNIQUE,
-    station_name TEXT NOT NULL UNIQUE
+    station_name TEXT NOT NULL
 );
 
 CREATE TABLE waypoint(
@@ -68,8 +68,9 @@ CREATE TABLE performance_archive(
 
 CREATE TABLE cancel_code(
     cancel_code_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    cancel_code CHAR(2) NOT NULL UNIQUE,
-    cause TEXT NOT NULL UNIQUE
+    cancel_code CHAR(2) NOT NULL,
+    cause TEXT NOT NULL,
+    UNIQUE (cancel_code, cause)
 );
 
 CREATE TABLE cancellation(
