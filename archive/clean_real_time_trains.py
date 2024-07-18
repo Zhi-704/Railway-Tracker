@@ -43,8 +43,6 @@ def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
     query = """
         SELECT 
             station_id,
-            AVG(actual_arrival - booked_arrival) AS arrival_avg,
-            AVG(actual_departure - booked_departure) AS departure_avg,
             AVG((actual_arrival - booked_arrival)+(actual_departure - booked_departure))avg_overall_delay
         FROM waypoint
         WHERE station_id = %s
