@@ -38,9 +38,18 @@ def get_cursor(conn: DBConnection) -> DBCursor:
 
 def get_id_if_exists(cur: DBCursor, table_name: str, conditions: dict[any]) -> int | None:
     '''Checks if a certain data value already exists inside a table and retrieves their id'''
-    query = f'''SELECT {table_name}_id FROM {table_name} \
-        WHERE {' AND '.join([f'{key} = %s' for key in conditions.keys()])}'''
-    cur.execute(query, tuple(conditions.values()))
+    where_clauses = []
+    values = []
+    for key, value in conditions.items():
+        if value is None:
+            where_clauses.append(f"{key} IS NULL")
+        else:
+            where_clauses.append(f"{key} = %s")
+            values.append(value)
+
+    query = f'''SELECT {table_name}_id FROM {table_name}
+        WHERE {' AND '.join(where_clauses)}'''
+    cur.execute(query, tuple(values))
     table_id = cur.fetchone()
     return table_id[0] if table_id is not None else None
 
@@ -96,6 +105,20 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
             actual_departure = actual_departure_day.replace(
                 hour=int(actual_departure_str[:2]), minute=int(actual_departure_str[2:]))
 
+        conditions = {
+            "run_date": run_date,
+            "booked_arrival": booked_arrival,
+            "actual_arrival": actual_arrival,
+            "booked_departure": booked_departure,
+            "actual_departure": actual_departure,
+            "service_id": service_id,
+            "station_id": station_id
+        }
+        existing_id = get_id_if_exists(cur, "waypoint", conditions)
+        if existing_id:
+            logging.info("Retrieved Waypoint with ID: %s", existing_id)
+            return existing_id
+
         query = '''
         INSERT INTO waypoint (
             run_date, booked_arrival, actual_arrival, booked_departure, actual_departure, service_id, station_id
@@ -108,24 +131,17 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
         ))
         waypoint_id = cur.fetchone()[0]
         conn.commit()
-        logging.info(f"Waypoint inserted with ID: {waypoint_id}")
-        return waypoint_id
+        logging.info("Inserted Waypoint with ID: %s", waypoint_id)
 
     except Exception as e:
         conn.rollback()
-        logging.error(f"Error inserting waypoint: {e}")
+        logging.error(
+            "Load: Error occurred inserting Waypoint: %s", e)
         return None
 
-    # waypoint_conditions = {
-    #     'station_id': station_id,
-    #     'service_id': service_id
-    # }
-
-    # waypoint_id = get_id_if_exists(cur, "station", waypoint_conditions)
-
-    # for key in service_dict:
-    #     if key in CANCELLATION_FIELDS:
-    #         insert_or_get_cancellation(service_dict, waypoint_id, conn, cur)
+    for key in service_dict:
+        if key in CANCELLATION_FIELDS:
+            insert_or_get_cancellation(service_dict, waypoint_id, conn, cur)
 
 
 def insert_or_get_service(service_dict: dict, operator_id: int, conn: DBConnection, cur: DBCursor) -> int:
@@ -254,5 +270,6 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
     data = [get_realtime_trains_data("LDS")]
+    data[0]["services"] = data[0]["services"][:100]
     modified_data = process_all_stations(data)
     import_to_database(modified_data)
