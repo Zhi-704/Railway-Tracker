@@ -48,13 +48,14 @@ CREATE TABLE station(
 
 CREATE TABLE waypoint(
     waypoint_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    run_date TIMESTAMP(0) NOT NULL,
-    booked_arrival TIMESTAMP(0) NOT NULL,
-    actual_arrival TIMESTAMP(0) NOT NULL,
-    booked_departure TIMESTAMP(0) NOT NULL,
-    actual_departure TIMESTAMP(0) NOT NULL,
+    run_date DATE NOT NULL,
+    booked_arrival TIMESTAMP(0),
+    actual_arrival TIMESTAMP(0),
+    booked_departure TIMESTAMP(0),
+    actual_departure TIMESTAMP(0),
     service_id SMALLINT NOT NULL REFERENCES service(service_id),
-    station_id SMALLINT NOT NULL REFERENCES station(station_id)
+    station_id SMALLINT NOT NULL REFERENCES station(station_id),
+    CHECK (actual_arrival IS NOT NULL OR actual_departure IS NOT NULL)
 );
 
 CREATE TABLE performance_archive(
