@@ -85,7 +85,6 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
 def insert_performance_archive(conn: connection, archive_data: dict) -> None:
     """ Insert performance data about each station into the archive.
         Creation date is date of inserting into archive. """
-    # maybe can do execute many .. pass in list of dict
 
     query = """
         INSERT INTO performance_archive (station_id, avg_delay, cancellation_count, creation_date) 
@@ -119,7 +118,7 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         WHERE waypoint_id = %s;
     """
     # CHECK DELETE WORKS!
-    # db_connection.execute(conn, query, ())
+    db_connection.execute(conn, query, ())
 
 
 def delete_waypoint(conn: connection, waypoint_id: int) -> None:
@@ -129,29 +128,32 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
-
     # CHECK DELETE WORKS!
-    # db_connection.execute(conn, query, ())
+    db_connection.execute(conn, query, ())
+
+
+def get_table_size(conn: connection, table_name: str) -> int:
+    """ Returns the size of the table given by the table_name argument. """
+
+    query = """
+        SELECT COUNT(*) FROM %s;
+    """
+    return db_connection.execute(conn, query, (table_name))
 
 
 def clean_real_time_trains_data():
     """ Cleans RealTimeTrains waypoints data from RDS based on how long ago the train journey
-        occurred. Computed Performance statistics for the archiving process."""
+        occurred. Computed Performance statistics for the archiving process. """
 
     conn = db_connection.get_connection()
 
-    # for each station:
     all_station_ids = get_all_stations(conn)
 
     for station in all_station_ids:
         station_id = station['station_id']
 
-        # get old waypoints for this station:
-        old_waypoints = get_month_old_waypoints(conn, station_id)
-
-        # # 2) compute performance metrics
+        # 2) compute performance metrics
         avg_delay = compute_avg_delay_for_station(conn, station_id)
-
         cancellation_count = compute_cancellation_count_for_station(
             conn, station_id)
 
@@ -159,23 +161,27 @@ def clean_real_time_trains_data():
         # print(old_waypoints)
         # print(avg_delay)
         # print(cancellation_count)
-
         print("\n")
 
-        # # 3) insert performance archive:
+        # 3) insert performance archive:
         data = {
             'station_id': station_id,
             'avg_delay': avg_delay,
             'cancellation_count': cancellation_count
         }
+        insert_performance_archive(conn, data)
 
-        # insert_performance_archive(conn, data)
-
-        # # 4) deal with cancellations and services that they are connected to - delete from DB
+        # # 4) delete cancellations and services that they are connected to
+        old_waypoints = get_month_old_waypoints(conn, station_id)
         for waypoint in old_waypoints:
+            print(get_table_size("waypoint"))
+            print(get_table_size("cancellation"))
 
             delete_cancellation(conn, waypoint['waypoint_id'])
             delete_waypoint(conn, waypoint['waypoint_id'])
+
+            print(get_table_size("waypoint"))
+            print(get_table_size("cancellation"))
 
     conn.close()
 
