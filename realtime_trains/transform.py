@@ -98,5 +98,3 @@ if __name__ == "__main__":
     load_dotenv()
     data = [get_realtime_trains_data("LDS"), get_realtime_trains_data("LST")]
     modified_data = process_all_stations(data)
-    # print("Services num: ", len(modified_data[0]["services"]))
-    # save_data_to_file(modified_data, "modified_data_2.json")
