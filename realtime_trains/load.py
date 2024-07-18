@@ -54,43 +54,57 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
     '''Inserts or gets a journey from the database'''
 
     location_detail = service_dict["locationDetail"]
-    run_date = datetime.strptime(service_dict["runDate"], "%Y-%m-%d")
 
     try:
-        booked_arrival_str = location_detail["gbttBookedArrival"]
-        actual_arrival_str = location_detail["realtimeArrival"]
-        booked_departure_str = location_detail["gbttBookedDeparture"]
-        actual_departure_str = location_detail["realtimeDeparture"]
+        run_date = datetime.strptime(service_dict["runDate"], "%Y-%m-%d")
 
-        booked_arrival_day = run_date + \
-            timedelta(days=1) if location_detail.get(
-                "gbttBookedArrivalNextDay", False) else run_date
-        actual_arrival_day = booked_arrival_day
+        booked_arrival_str = location_detail.get("gbttBookedArrival")
+        actual_arrival_str = location_detail.get("realtimeArrival")
+        booked_departure_str = location_detail.get("gbttBookedDeparture")
+        actual_departure_str = location_detail.get("realtimeDeparture")
 
-        booked_arrival = booked_arrival_day.replace(
-            hour=int(booked_arrival_str[:2]), minute=int(booked_arrival_str[2:]))
-        actual_arrival = actual_arrival_day.replace(
-            hour=int(actual_arrival_str[:2]), minute=int(actual_arrival_str[2:]))
+        booked_arrival = None
+        actual_arrival = None
+        booked_departure = None
+        actual_departure = None
 
-        booked_departure_day = run_date + \
-            timedelta(days=1) if location_detail.get(
-                "gbttBookedDepartureNextDay", False) else run_date
-        actual_departure_day = booked_departure_day
+        if booked_arrival_str:
+            booked_arrival_day = run_date + \
+                timedelta(days=1) if location_detail.get(
+                    "gbttBookedArrivalNextDay", False) else run_date
+            booked_arrival = booked_arrival_day.replace(
+                hour=int(booked_arrival_str[:2]), minute=int(booked_arrival_str[2:]))
 
-        booked_departure = booked_departure_day.replace(
-            hour=int(booked_departure_str[:2]), minute=int(booked_departure_str[2:]))
-        actual_departure = actual_departure_day.replace(
-            hour=int(actual_departure_str[:2]), minute=int(actual_departure_str[2:]))
+        if actual_arrival_str:
+            actual_arrival_day = run_date + \
+                timedelta(days=1) if location_detail.get(
+                    "realtimeArrivalNextDay", False) else run_date
+            actual_arrival = actual_arrival_day.replace(
+                hour=int(actual_arrival_str[:2]), minute=int(actual_arrival_str[2:]))
 
-        query = f'''
+        if booked_departure_str:
+            booked_departure_day = run_date + \
+                timedelta(days=1) if location_detail.get(
+                    "gbttBookedDepartureNextDay", False) else run_date
+            booked_departure = booked_departure_day.replace(
+                hour=int(booked_departure_str[:2]), minute=int(booked_departure_str[2:]))
+
+        if actual_departure_str:
+            actual_departure_day = run_date + \
+                timedelta(days=1) if location_detail.get(
+                    "realtimeDepartureNextDay", False) else run_date
+            actual_departure = actual_departure_day.replace(
+                hour=int(actual_departure_str[:2]), minute=int(actual_departure_str[2:]))
+
+        query = '''
         INSERT INTO waypoint (
             run_date, booked_arrival, actual_arrival, booked_departure, actual_departure, service_id, station_id
-        ) VALUES (%s, %s, %s, %s, %s, {service_id}, {station_id})
+        ) VALUES (%s, %s, %s, %s, %s, %s, %s)
         RETURNING waypoint_id
         '''
 
         cur.execute(query, (
-            run_date, booked_arrival, actual_arrival, booked_departure, actual_departure
+            run_date, booked_arrival, actual_arrival, booked_departure, actual_departure, service_id, station_id
         ))
         waypoint_id = cur.fetchone()[0]
         conn.commit()
@@ -134,7 +148,7 @@ def insert_or_get_service(service_dict: dict, operator_id: int, conn: DBConnecti
                 operator_id,
                 service_dict["serviceUid"]
             ))
-            service_id = cur.fetchone()
+            service_id = cur.fetchone()[0]
             logging.info("Service %s added!", service_dict["serviceUid"])
             conn.commit()
         except Exception as e:
@@ -168,7 +182,7 @@ def insert_or_get_operator(service_dict: dict, conn: DBConnection, cur: DBCursor
                 service_dict["atocCode"],
                 service_dict["atocName"]
             ))
-            operator_id = cur.fetchone()
+            operator_id = cur.fetchone()[0]
             logging.info("Operator %s added!", service_dict["crs"])
             conn.commit()
         except Exception as e:
@@ -202,7 +216,7 @@ def insert_or_get_station(location_dict: dict, conn: DBConnection, cur: DBCursor
                 location_dict["crs"],
                 location_dict["name"]
             ))
-            station_id = cur.fetchone()
+            station_id = cur.fetchone()[0]
             logging.info("Station %s added!", location_dict["crs"])
             conn.commit()
         except Exception as e:
