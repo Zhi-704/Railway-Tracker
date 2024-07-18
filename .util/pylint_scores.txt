@@ -35,9 +35,10 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module db_connection
 archive/db_connection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+archive/db_connection.py:42:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.00/10
+Your code has been rated at 9.13/10
 
 ************* Module clean_national_rail
 archive/clean_national_rail.py:27:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -52,23 +53,15 @@ archive/archive.py:10:0: C0116: Missing function or method docstring (missing-fu
 Your code has been rated at 9.09/10
 
 ************* Module clean_real_time_trains
-archive/clean_real_time_trains.py:27:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:27:4: W0612: Unused variable 'e' (unused-variable)
-archive/clean_real_time_trains.py:51:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:51:4: W0612: Unused variable 'e' (unused-variable)
-archive/clean_real_time_trains.py:81:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:81:4: W0612: Unused variable 'e' (unused-variable)
-archive/clean_real_time_trains.py:110:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:110:4: W0612: Unused variable 'e' (unused-variable)
-archive/clean_real_time_trains.py:141:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/clean_real_time_trains.py:146:24: W0613: Unused argument 'conn' (unused-argument)
-archive/clean_real_time_trains.py:146:42: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:149:4: W0612: Unused variable 'query' (unused-variable)
-archive/clean_real_time_trains.py:155:20: W0613: Unused argument 'conn' (unused-argument)
-archive/clean_real_time_trains.py:155:38: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:158:4: W0612: Unused variable 'query' (unused-variable)
-archive/clean_real_time_trains.py:197:8: W0612: Unused variable 'data' (unused-variable)
+archive/clean_real_time_trains.py:109:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_real_time_trains.py:114:24: W0613: Unused argument 'conn' (unused-argument)
+archive/clean_real_time_trains.py:114:42: W0613: Unused argument 'waypoint_id' (unused-argument)
+archive/clean_real_time_trains.py:117:4: W0612: Unused variable 'query' (unused-variable)
+archive/clean_real_time_trains.py:125:20: W0613: Unused argument 'conn' (unused-argument)
+archive/clean_real_time_trains.py:125:38: W0613: Unused argument 'waypoint_id' (unused-argument)
+archive/clean_real_time_trains.py:128:4: W0612: Unused variable 'query' (unused-variable)
+archive/clean_real_time_trains.py:166:8: W0612: Unused variable 'data' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 8.07/10
+Your code has been rated at 8.57/10
 
