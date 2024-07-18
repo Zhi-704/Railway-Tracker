@@ -6,6 +6,9 @@ from boto3 import client
 from dotenv import load_dotenv
 import streamlit as st
 from os import environ
+from psycopg2 import connect
+from psycopg2.extras import RealDictCursor
+from psycopg2.extensions import connection, cursor
 
 
 def get_s3_client() -> client:
@@ -27,6 +30,30 @@ def get_ses_client() -> client:
                            aws_access_key_id=environ['AWS_ACCESS_KEY'],
                            aws_secret_access_key=environ['AWS_SECRET_KEY'])
         return s3_client
+    except Exception as e:
+        print(e)
+        return None
+
+
+def get_db_connection() -> connection:
+    """return a database connection"""
+    try:
+        return connect(
+            host=environ['DB_HOST'],
+            dbname=environ['DB_NAME'],
+            user=environ['DB_USERNAME'],
+            password=environ['DB_PASSWORD'],
+            port=environ['DB_PORT']
+        )
+    except Exception as e:
+        print(e)
+        return None
+
+
+def get_db_cursor(conn: connection) -> cursor:
+    """return a cursor object based on a given connection"""
+    try:
+        return conn.cursor(cursor_factory=RealDictCursor)
     except Exception as e:
         print(e)
         return None
