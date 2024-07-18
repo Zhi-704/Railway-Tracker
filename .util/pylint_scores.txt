@@ -14,20 +14,31 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module transform
+realtime_trains/transform.py:5:0: W0611: Unused save_data_to_file imported from extract (unused-import)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+-------------------------------------------------------------------
+Your code has been rated at 9.77/10 (previous run: 10.00/10, -0.23)
 
 
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module load
-realtime_trains/load.py:41:4: W0622: Redefining built-in 'id' (redefined-builtin)
-realtime_trains/load.py:68:15: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:79:0: R1711: Useless return at end of function or method (useless-return)
-realtime_trains/load.py:85:8: W0612: Unused variable 'station_id' (unused-variable)
+realtime_trains/load.py:47:0: C0301: Line too long (109/100) (line-too-long)
+realtime_trains/load.py:66:0: C0301: Line too long (106/100) (line-too-long)
+realtime_trains/load.py:49:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
+realtime_trains/load.py:47:31: W0613: Unused argument 'cancelled_service' (unused-argument)
+realtime_trains/load.py:47:56: W0613: Unused argument 'waypoint_id' (unused-argument)
+realtime_trains/load.py:47:74: W0613: Unused argument 'conn' (unused-argument)
+realtime_trains/load.py:47:94: W0613: Unused argument 'cur' (unused-argument)
+realtime_trains/load.py:89:15: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:123:15: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:157:15: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:168:0: R1711: Useless return at end of function or method (useless-return)
+realtime_trains/load.py:174:8: W0612: Unused variable 'station_id' (unused-variable)
+realtime_trains/load.py:177:12: W0612: Unused variable 'service_id' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 9.20/10
+Your code has been rated at 8.62/10
 
