@@ -54,7 +54,6 @@ def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
 
     if avg_delay:
         avg_delay = avg_delay[0]['avg_overall_delay']
-
     return avg_delay
 
 
@@ -102,15 +101,12 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
 
         conn.commit()
         cur.close()
-        logging.info("station id %s",
-                     archive_data["station_id"], archive_data["avg_delay"])
+
         logging.info("Clean: Inserted archive for station: %s",
                      archive_data["station_id"])
 
     except Exception as e:
         conn.rollback()
-        logging.info("station id %s",
-                     archive_data["station_id"], archive_data["avg_delay"])
         logging.error("Clean: Error occurred inserting archive %s", e)
 
 
@@ -154,36 +150,43 @@ def clean_real_time_trains_data():
     for station in all_station_ids:
         station_id = station['station_id']
 
-        # 2) compute performance metrics
-        avg_delay = compute_avg_delay_for_station(conn, station_id)
-        cancellation_count = compute_cancellation_count_for_station(
-            conn, station_id)
-
-        print(station_id)
-        # print(old_waypoints)
-        # print(avg_delay)
-        # print(cancellation_count)
-        print("\n")
-
-        # 3) insert performance archive:
-        data = {
-            'station_id': station_id,
-            'avg_delay': avg_delay,
-            'cancellation_count': cancellation_count
-        }
-        insert_performance_archive(conn, data)
-
         # # 4) delete cancellations and services that they are connected to
         old_waypoints = get_month_old_waypoints(conn, station_id)
-        for waypoint in old_waypoints:
-            print(get_table_size("waypoint"))
-            print(get_table_size("cancellation"))
+        if old_waypoints:
+            # 2) compute performance metrics
+            avg_delay = compute_avg_delay_for_station(conn, station_id)
+            cancellation_count = compute_cancellation_count_for_station(
+                conn, station_id)
 
-            delete_cancellation(conn, waypoint['waypoint_id'])
-            delete_waypoint(conn, waypoint['waypoint_id'])
+            print(station_id)
+            # print(old_waypoints)
+            # print(avg_delay)
+            # print(cancellation_count)
+            print("\n")
 
-            print(get_table_size("waypoint"))
-            print(get_table_size("cancellation"))
+            # 3) insert performance archive:
+            data = {
+                'station_id': station_id,
+                'avg_delay': avg_delay,
+                'cancellation_count': cancellation_count
+            }
+            insert_performance_archive(conn, data)
+
+            for waypoint in old_waypoints:
+                print(get_table_size("waypoint"))
+                print(get_table_size("cancellation"))
+
+                delete_cancellation(conn, waypoint['waypoint_id'])
+                delete_waypoint(conn, waypoint['waypoint_id'])
+
+                print(get_table_size("waypoint"))
+                print(get_table_size("cancellation"))
+
+            logging.info(
+                "Outdated data archived for station: %s", station_id)
+        else:
+            logging.info(
+                "No outdated data found for station: %s", station_id)
 
     conn.close()
 
