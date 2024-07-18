@@ -1,10 +1,12 @@
 """ Unit tests to test load functions. """
 
-from unittest.mock import MagicMock, call, patch
+from unittest.mock import MagicMock, patch
 import os
+from datetime import datetime
+
 import psycopg2
 from psycopg2.extensions import connection, cursor
-from datetime import datetime
+
 from load import (
     get_connection,
     get_cursor,
@@ -30,9 +32,9 @@ def test_get_connection(mock_connect: connection):
     """ Tests get_connection returns connection. """
 
     mock_connect.return_value = "mock_connection"
-    connection = get_connection()
+    db_connection = get_connection()
 
-    assert connection == "mock_connection"
+    assert db_connection == "mock_connection"
     mock_connect.assert_called_once()
 
 
@@ -42,17 +44,18 @@ def test_get_cursor(mock_get_connection: connection):
 
     mock_connection = MagicMock()
     mock_get_connection.return_value = mock_connection
-    cursor = get_cursor(mock_connection)
+    db_cursor = get_cursor(mock_connection)
 
     mock_connection.cursor.assert_called_once_with(
         cursor_factory=psycopg2.extras.RealDictCursor)
-    assert cursor == mock_connection.cursor()
+    assert db_cursor == mock_connection.cursor()
 
 
 @patch("load.get_connection")
 @patch("load.get_cursor")
 def test_upload_incident(mock_get_cursor: cursor, mock_get_connection: connection):
     """ Tests uploading incidents and returning incident id."""
+
     mock_cursor = MagicMock()
     mock_get_cursor.return_value = mock_cursor
     mock_cursor.fetchall.return_value = [{'incident_id': 1}]
@@ -94,6 +97,8 @@ def test_upload_incident(mock_get_cursor: cursor, mock_get_connection: connectio
 @patch("load.get_connection")
 @patch("load.get_cursor")
 def test_check_if_exists(mock_get_cursor: cursor, mock_get_connection: connection):
+    """ Tests that checking if an entry in the database exists works as expected. """
+
     mock_cursor = MagicMock()
     mock_get_cursor.return_value = mock_cursor
     mock_cursor.fetchone.return_value = {'mock_table_id': 1}
@@ -105,15 +110,16 @@ def test_check_if_exists(mock_get_cursor: cursor, mock_get_connection: connectio
                                   conditions=mock_conditions)
 
     assert operator_id == {'mock_table_id': 1}
+
     mock_cursor.execute.assert_called_with(
-        f'''SELECT * FROM {mock_table_name} WHERE {
-            ' AND '.join([f'{key} = %s' for key in mock_conditions.keys()])}''',
-        (tuple(mock_conditions.values())),)
+        'SELECT * FROM mock_table WHERE mock_code = %s', ('XT',),)
 
 
 @patch("load.get_connection")
 @patch("load.get_cursor")
 def test_get_operator_code_id(mock_get_cursor: cursor, mock_get_connection: connection):
+    """ Tests that getting an operator code id returns the id. """
+
     mock_cursor = MagicMock()
     mock_get_cursor.return_value = mock_cursor
     mock_cursor.fetchone.return_value = {'operator_id': 1}
@@ -128,6 +134,8 @@ def test_get_operator_code_id(mock_get_cursor: cursor, mock_get_connection: conn
 @patch("load.get_connection")
 @patch("load.get_cursor")
 def test_upload_affected_operator(mock_get_cursor: cursor, mock_get_connection: connection):
+    """ Tests that uploading an affected operator for incidents inserts as expected. """
+
     mock_cursor = MagicMock()
     mock_get_cursor.return_value = mock_cursor
 
