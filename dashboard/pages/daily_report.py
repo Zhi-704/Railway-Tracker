@@ -2,6 +2,7 @@
 creates a page in the dashboard that allows users to subscribe to a summary report that
 is emailed to them every day. These reports are also stored in an S3 bucket
 """
+import re
 from boto3 import client
 from dotenv import load_dotenv
 import streamlit as st
@@ -59,6 +60,12 @@ def get_db_cursor(conn: connection) -> cursor:
         return None
 
 
+def is_email_valid(email: str) -> bool:
+    """return a bool based on whether this is a valid email"""
+    emaiL_regex = re.compile(r"^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$")
+    return re.match(pattern=emaiL_regex, string=email) is not None
+
+
 def create_subscription_form() -> dict | None:
     """create a subscription form to the summary report"""
     email = ""
@@ -80,6 +87,7 @@ def deploy_page():
         "If you wish to subscribe to a daily report on our tracking results, submit your email below.")
     input = create_subscription_form()
     ses = get_ses_client()
+    conn = get_db_connection()
 
 
 if __name__ == "__main__":
