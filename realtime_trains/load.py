@@ -54,83 +54,11 @@ def get_id_if_exists(cur: DBCursor, table_name: str, conditions: dict[any]) -> i
     return table_id[0] if table_id is not None else None
 
 
-def insert_or_get_cancellation(cancel_code_id: int, waypoint_id: int, conn: DBConnection, cur: DBCursor):
-    '''Inserts a cancelled journey into the database'''
-    cancellations_conditions = {
-        'cancel_code_id': cancel_code_id,
-        'waypoint_id': waypoint_id
-    }
-
-    cancellation_id = get_id_if_exists(
-        cur, "cancellation", cancellations_conditions)
-
-    if cancellation_id is None:
-        query = '''
-        INSERT INTO cancellation (cancel_code_id, waypoint_id)
-        VALUES
-        (%s, %s)
-        RETURNING cancellation_id
-        '''
-
-        try:
-            cur.execute(query, (
-                cancel_code_id,
-                waypoint_id
-            ))
-            cancellation_id = cur.fetchone()[0]
-            logging.info("Cancellation %s added!",
-                         cancellation_id)
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            logging.error(
-                "Load: Error occurred inserting cancellation: %s", e)
-            cancellation_id = None
-    else:
-        logging.info("Cancellation %s retrieved!",
-                     cancellation_id)
-
-    return cancellation_id
-
-
-def insert_or_get_cancel_code(cancelled_service_loc: dict, conn: DBConnection, cur: DBCursor):
-    '''Inserts a cancel code into the database'''
-    cancel_code_conditions = {
-        'cancel_code': cancelled_service_loc["cancelReasonCode"]
-    }
-
-    cancel_code_id = get_id_if_exists(
-        cur, "cancel_code", cancel_code_conditions)
-    if cancel_code_id is None:
-        query = '''
-        INSERT INTO cancel_code (cancel_code, cause)
-        VALUES
-        (%s, %s)
-        RETURNING cancel_code_id
-        '''
-
-        try:
-            cur.execute(query, (
-                cancelled_service_loc["cancelReasonCode"],
-                cancelled_service_loc["cancelReasonLongText"]
-            ))
-            cancel_code_id = cur.fetchone()[0]
-            logging.info("Cancel Code %s added!",
-                         cancelled_service_loc["cancelReasonCode"])
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            logging.error(
-                "Load: Error occurred inserting Cancel Code: %s", e)
-            cancel_code_id = None
-    else:
-        logging.info("Cancel Code %s retrieved!",
-                     cancelled_service_loc["cancelReasonCode"])
-
-    return cancel_code_id
-
-
-def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict, conn: DBConnection, cur: DBCursor):
+def insert_or_get_waypoint(station_id: int,
+                           service_id: int,
+                           service_dict: dict,
+                           conn: DBConnection,
+                           cur: DBCursor):
     '''Inserts or gets a journey from the database'''
 
     location_detail = service_dict["locationDetail"]
@@ -198,11 +126,18 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
         '''
 
         cur.execute(query, (
-            run_date, booked_arrival, actual_arrival, booked_departure, actual_departure, service_id, station_id
+            run_date,
+            booked_arrival,
+            actual_arrival,
+            booked_departure,
+            actual_departure,
+            service_id,
+            station_id
         ))
         waypoint_id = cur.fetchone()[0]
         conn.commit()
         logging.info("Inserted Waypoint with ID: %s", waypoint_id)
+        return waypoint_id
 
     except Exception as e:
         conn.rollback()
@@ -211,38 +146,63 @@ def insert_or_get_waypoint(station_id: int, service_id: int, service_dict: dict,
         return None
 
 
-def insert_or_get_service(service_dict: dict, operator_id: int, conn: DBConnection, cur: DBCursor) -> int:
+def insert_or_get_cancellation(cancel_code_id: int,
+                               waypoint_id: int,
+                               conn: DBConnection,
+                               cur: DBCursor):
+    '''Inserts a cancelled journey into the database'''
+    cancellations_conditions = {
+        'cancel_code_id': cancel_code_id,
+        'waypoint_id': waypoint_id
+    }
+
+    return insert_or_get_entry('cancellation',
+                               cancellations_conditions,
+                               cancellations_conditions,
+                               "number",
+                               conn,
+                               cur)
+
+
+def insert_or_get_cancel_code(cancelled_service_loc: dict, conn: DBConnection, cur: DBCursor):
+    '''Inserts a cancel code into the database'''
+    cancel_code_conditions = {
+        'cancel_code': cancelled_service_loc["cancelReasonCode"]
+    }
+
+    insert_values = {
+        'cancel_code': cancelled_service_loc["cancelReasonCode"],
+        'cause':  cancelled_service_loc["cancelReasonLongText"]
+    }
+
+    return insert_or_get_entry('cancel_code',
+                               insert_values,
+                               cancel_code_conditions,
+                               cancelled_service_loc["cancelReasonCode"],
+                               conn,
+                               cur)
+
+
+def insert_or_get_service(service_dict: dict,
+                          operator_id: int,
+                          conn: DBConnection,
+                          cur: DBCursor) -> int:
     '''Insert or get operator id from the database'''
     service_conditions = {
         'service_uid': service_dict["serviceUid"]
     }
 
-    service_id = get_id_if_exists(cur, "service", service_conditions)
-    if service_id is None:
-        query = '''
-        INSERT INTO service (operator_id, service_uid)
-        VALUES
-        (%s, %s)
-        RETURNING service_id
-        '''
+    insert_values = {
+        'operator_id': operator_id,
+        'service_uid': service_dict["serviceUid"]
+    }
 
-        try:
-            cur.execute(query, (
-                operator_id,
-                service_dict["serviceUid"]
-            ))
-            service_id = cur.fetchone()[0]
-            logging.info("Service %s added!", service_dict["serviceUid"])
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            logging.error(
-                "Load: Error occurred inserting Service: %s", e)
-            service_id = None
-    else:
-        logging.info("Service %s retrieved!", service_dict["serviceUid"])
-
-    return service_id
+    return insert_or_get_entry('service',
+                               insert_values,
+                               service_conditions,
+                               service_dict["serviceUid"],
+                               conn,
+                               cur)
 
 
 def insert_or_get_operator(service_dict: dict, conn: DBConnection, cur: DBCursor) -> int:
@@ -251,32 +211,17 @@ def insert_or_get_operator(service_dict: dict, conn: DBConnection, cur: DBCursor
         'operator_code': service_dict["atocCode"]
     }
 
-    operator_id = get_id_if_exists(cur, "operator", operator_conditions)
-    if operator_id is None:
-        query = '''
-        INSERT INTO operator (operator_code, operator_name)
-        VALUES
-        (%s, %s)
-        RETURNING operator_id
-        '''
+    insert_values = {
+        'operator_code': service_dict["atocCode"],
+        'operator_name': service_dict["atocName"]
+    }
 
-        try:
-            cur.execute(query, (
-                service_dict["atocCode"],
-                service_dict["atocName"]
-            ))
-            operator_id = cur.fetchone()[0]
-            logging.info("Operator %s added!", service_dict["crs"])
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            logging.error(
-                "Load: Error occurred inserting Operator: %s", e)
-            operator_id = None
-    else:
-        logging.info("Operator %s retrieved!", service_dict["atocCode"])
-
-    return operator_id
+    return insert_or_get_entry('operator',
+                               insert_values,
+                               operator_conditions,
+                               service_dict["atocCode"],
+                               conn,
+                               cur)
 
 
 def insert_or_get_station(location_dict: dict, conn: DBConnection, cur: DBCursor) -> int:
@@ -285,32 +230,56 @@ def insert_or_get_station(location_dict: dict, conn: DBConnection, cur: DBCursor
         'station_crs': location_dict["crs"]
     }
 
-    station_id = get_id_if_exists(cur, "station", station_conditions)
-    if station_id is None:
-        query = '''
-        INSERT INTO station (station_crs, station_name)
+    insert_values = {
+        'station_crs': location_dict["crs"],
+        'station_name': location_dict["name"]
+    }
+
+    return insert_or_get_entry('station',
+                               insert_values,
+                               station_conditions,
+                               location_dict["crs"],
+                               conn,
+                               cur)
+
+
+def insert_or_get_entry(table_name: str,
+                        insert_values: dict,
+                        unique_data_conditions: dict,
+                        entry_name: str,
+                        conn: DBConnection,
+                        cur: DBCursor) -> int:
+    '''Insert or get an entry's id from the database'''
+
+    table_id = get_id_if_exists(cur, table_name, unique_data_conditions)
+    columns = ', '.join(insert_values.keys())
+
+    if table_id is None:
+        columns = ', '.join(insert_values.keys())
+        num_of_values = ', '.join(['%s'] * len(insert_values))
+        query = f'''
+        INSERT INTO {table_name} ({columns})
         VALUES
-        (%s, %s)
-        RETURNING station_id
+        ({num_of_values})
+        RETURNING {table_name}_id
         '''
 
         try:
-            cur.execute(query, (
-                location_dict["crs"],
-                location_dict["name"]
-            ))
-            station_id = cur.fetchone()[0]
-            logging.info("Station %s added!", location_dict["crs"])
+            cur.execute(query, tuple(insert_values.values()))
+            table_id = cur.fetchone()[0]
+            logging.info("%s %s added: %s",
+                         table_name.capitalize(), entry_name, table_id)
             conn.commit()
         except Exception as e:
             conn.rollback()
-            logging.error(
-                "Load: Error occurred inserting station: %s", e)
-            station_id = None
+            logging.error("Load: Error occurred inserting %s %s: %s",
+                          table_name.capitalize(), entry_name, e)
+            table_id = None
     else:
-        logging.info("Station %s retrieved!", location_dict["crs"])
+        logging.info("%s %s retrieved: %s",
+                     table_name.capitalize(), entry_name, table_id)
 
-    return station_id
+    return table_id
 
 
 def import_to_database(stations: list[dict]) -> None:
@@ -328,19 +297,16 @@ def import_to_database(stations: list[dict]) -> None:
 
             for key in service["locationDetail"]:
                 if key in CANCELLATION_FIELDS:
-                    print("ENTERED!!!!!!")
                     cancel_code_id = insert_or_get_cancel_code(
                         service["locationDetail"], conn, cur)
                     insert_or_get_cancellation(
                         cancel_code_id, waypoint_id, conn, cur)
                     break
 
-            print("\n-----------------------------")
+            print("-----------------------------")
 
     cur.close()
     conn.close()
-
-    return
 
 
 if __name__ == "__main__":
@@ -348,6 +314,6 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
     data = [get_realtime_trains_data("LDS")]
-    data[0]["services"] = data[0]["services"][:200]
     modified_data = process_all_stations(data)
+    print("\n-------------------------")
     import_to_database(modified_data)
