@@ -75,7 +75,7 @@ CREATE TABLE cancel_code(
 
 CREATE TABLE cancellation(
     cancellation_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    cancel_id SMALLINT NOT NULL REFERENCES cancel_code(cancel_code_id),
+    cancel_code_id SMALLINT NOT NULL REFERENCES cancel_code(cancel_code_id),
     waypoint_id BIGINT NOT NULL REFERENCES waypoint(waypoint_id)
 );
 
