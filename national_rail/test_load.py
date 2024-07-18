@@ -20,10 +20,10 @@ from load import (
 @patch.dict(
     os.environ,
     {
-        "DB_HOST": "localhost",
+        "DB_IP": "localhost",
         "DB_NAME": "test_db",
-        "DB_USER": "test_username",
-        "DB_PASS": "test_password",
+        "DB_USERNAME": "test_username",
+        "DB_PASSWORD": "test_password",
         "DB_PORT": "test_port",
     },
 )
