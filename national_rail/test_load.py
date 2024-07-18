@@ -110,6 +110,10 @@ def test_check_if_exists(mock_get_cursor: cursor, mock_get_connection: connectio
                                   conditions=mock_conditions)
 
     assert operator_id == {'mock_table_id': 1}
+    mock_cursor.execute.assert_called_with(
+        f'''SELECT * FROM {mock_table_name} WHERE {
+            ' AND '.join([f'{key} = %s' for key in mock_conditions.keys()])}''',
+        (tuple(mock_conditions.values())),)
 
     mock_cursor.execute.assert_called_with(
         'SELECT * FROM mock_table WHERE mock_code = %s', ('XT',),)
