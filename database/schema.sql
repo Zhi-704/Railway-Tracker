@@ -31,7 +31,7 @@ CREATE TABLE operator(
 CREATE TABLE affected_operator(
     affected_operator_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     incident_id SMALLINT NOT NULL REFERENCES incident(incident_id) ON DELETE CASCADE,
-    operator_id SMALLINT NOT NULL REFERENCES operator(operator_id) ON DELETE CASCADE,
+    operator_id SMALLINT NOT NULL REFERENCES operator(operator_id) ON DELETE CASCADE
 );
 
 CREATE TABLE service(
@@ -69,7 +69,7 @@ CREATE TABLE performance_archive(
 CREATE TABLE cancel_code(
     cancel_code_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     cancel_code CHAR(2) NOT NULL UNIQUE,
-    cause TEXT NOT NULL,
+    cause TEXT NOT NULL
 );
 
 CREATE TABLE cancellation(

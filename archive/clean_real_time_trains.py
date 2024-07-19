@@ -5,10 +5,10 @@
 import logging
 
 from psycopg2.extensions import connection
-from db_connection import get_connection, execute, execute_without_result
+from db_connection import get_connection, execute
 
 
-def get_all_stations(conn: connection) -> list[dict]:
+def get_all_station_ids(conn: connection) -> list[dict]:
     """ Retrieves all waypoints that have a run_date of a month ago or more. """
 
     query = """
@@ -82,9 +82,9 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
         VALUES (%s, %s, %s, TIMEZONE('Europe/London', CURRENT_TIMESTAMP));
     """
 
-    execute_without_result(conn, query, (archive_data["station_id"],
-                                         archive_data["avg_delay"],
-                                         archive_data["cancellation_count"],))
+    execute(conn, query, (archive_data["station_id"],
+                          archive_data["avg_delay"],
+                          archive_data["cancellation_count"],))
 
 
 def delete_cancellation(conn: connection, waypoint_id: int) -> None:
@@ -94,7 +94,7 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         DELETE FROM cancellation 
         WHERE waypoint_id = %s;
     """
-    execute_without_result(conn, query, (waypoint_id,))
+    execute(conn, query, (waypoint_id,))
 
 
 def delete_waypoint(conn: connection, waypoint_id: int) -> None:
@@ -104,7 +104,7 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
-    execute_without_result(conn, query, (waypoint_id,))
+    execute(conn, query, (waypoint_id,))
 
 
 def get_table_size(conn: connection, table_name: str) -> int:
@@ -121,38 +121,36 @@ def clean_real_time_trains_data():
         occurred. Computes performance statistics for the archiving process and inserts
         into archive.  """
 
-    conn = get_connection()
+    with get_connection() as conn:
 
-    all_station_ids = get_all_stations(conn)
+        all_station_ids = get_all_station_ids(conn)
 
-    for station in all_station_ids:
-        station_id = station['station_id']
+        for station in all_station_ids:
+            station_id = station['station_id']
 
-        old_waypoints = get_month_old_waypoints(conn, station_id)
-        if old_waypoints:
+            old_waypoints = get_month_old_waypoints(conn, station_id)
+            if old_waypoints:
 
-            avg_delay = compute_avg_delay_for_station(conn, station_id)
-            cancellation_count = compute_cancellation_count_for_station(
-                conn, station_id)
+                avg_delay = compute_avg_delay_for_station(conn, station_id)
+                cancellation_count = compute_cancellation_count_for_station(
+                    conn, station_id)
 
-            data = {
-                'station_id': station_id,
-                'avg_delay': avg_delay.total_seconds() / 60,
-                'cancellation_count': cancellation_count
-            }
-            insert_performance_archive(conn, data)
+                data = {
+                    'station_id': station_id,
+                    'avg_delay': avg_delay.total_seconds() / 60,
+                    'cancellation_count': cancellation_count
+                }
+                insert_performance_archive(conn, data)
 
-            for waypoint in old_waypoints:
-                delete_cancellation(conn, waypoint['waypoint_id'])
-                delete_waypoint(conn, waypoint['waypoint_id'])
+                for waypoint in old_waypoints:
+                    delete_cancellation(conn, waypoint['waypoint_id'])
+                    delete_waypoint(conn, waypoint['waypoint_id'])
 
-            logging.info(
-                "Outdated data archived for station: %s", station_id)
-        else:
-            logging.info(
-                "No outdated data found for station: %s", station_id)
-
-    conn.close()
+                logging.info(
+                    "Outdated data archived for station: %s", station_id)
+            else:
+                logging.info(
+                    "No outdated data found for station: %s", station_id)
 
 
 if __name__ == "__main__":

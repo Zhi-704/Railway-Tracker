@@ -26,45 +26,53 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
-def execute(conn: connection, query: str, data: tuple) -> dict | None:
+def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
     """ Executes SQL queries on AWS RDS, and returns result.
         Uses fetchall(). """
 
     query_command = query.strip().split(" ")[0]
 
-    try:
-        cur = get_cursor(conn)
+    with get_cursor(conn) as cur:
+        try:
+            cur = get_cursor(conn)
+            cur.execute(query, (data))
+            conn.commit()
 
-        cur.execute(query, (data))
+            logging.info("Clean: successful for %s, for %s.",
+                         query_command, data)
 
-        conn.commit()
-        result = cur.fetchall()
-        cur.close()
+        except Exception as e:
+            conn.rollback()
+            logging.error("Clean: Error occurred for %s -  %s.",
+                          query_command, e)
 
-        logging.info("Clean: successful for %s, for %s.", query_command, data)
+        try:
+            result = cur.fetchall()
 
-    except Exception as e:
-        conn.rollback()
-        logging.info("Clean: Error occurred for %s -  %s.", query_command, e)
+        except Exception as e:
+            result = None
 
     return result
 
 
-def execute_without_result(conn: connection, query: str, data: tuple) -> None:
-    """ Executes SQL queries on AWS RDS. """
+# def execute_without_result(conn: connection, query: str, data: tuple) -> None:
+#     """ Executes SQL queries on AWS RDS. """
 
-    query_command = query.strip().split()[0]
+#     query_command = query.strip().split()[0]
 
-    try:
-        cur = get_cursor(conn)
+#     try:
+#         with conn:
 
-        cur.execute(query, (data))
+#             cur = get_cursor(conn)
 
-        conn.commit()
-        cur.close()
+#             cur.execute(query, (data))
 
-        logging.info("Clean: successful for %s, for %s.", query_command, data)
+#             conn.commit()
+#             cur.close()
 
-    except Exception as e:
-        conn.rollback()
-        logging.info("Clean: Error occurred for %s -  %s.", query_command, e)
+#             logging.info("Clean: successful for %s, for %s.",
+#                          query_command, data)
+
+#     except Exception as e:
+#         conn.rollback()
+#         logging.error("Clean: Error occurred for %s -  %s.", query_command, e)
