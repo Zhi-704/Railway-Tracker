@@ -53,7 +53,7 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
 def execute_without_result(conn: connection, query: str, data: tuple) -> None:
     """ Executes SQL queries on AWS RDS. """
 
-    query_command = query.strip().split(" ")[0]
+    query_command = query.strip().split()[0]
 
     try:
         cur = get_cursor(conn)
