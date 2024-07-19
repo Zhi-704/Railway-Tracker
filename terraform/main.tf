@@ -122,7 +122,6 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
   group_name = "default"
 
   schedule_expression = "cron(0 9 * * ? *)"
-#   "cron(*/2 * * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
   flexible_time_window {
