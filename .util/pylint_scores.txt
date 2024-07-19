@@ -48,8 +48,6 @@ Your code has been rated at 8.29/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-<<<<<<< HEAD
-=======
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -58,14 +56,11 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-<<<<<<< HEAD
+
 ************* Module clean_real_time_trains
 archive/clean_real_time_trains.py:108:11: W0718: Catching too general exception Exception (broad-exception-caught)
 archive/clean_real_time_trains.py:93:8: E1205: Too many arguments for logging format string (logging-too-many-args)
 
------------------------------------
-Your code has been rated at 9.06/10
+------------------------------------
+Your code has been rated at 10.00/10
 
-=======
->>>>>>> b96af3bfab2cb59dedf0ec40a31288d44ca50792
->>>>>>> archive
