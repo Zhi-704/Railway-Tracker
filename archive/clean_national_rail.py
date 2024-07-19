@@ -3,7 +3,7 @@
 
 import logging
 
-from db_connection import get_connection, execute_without_result
+from db_connection import get_connection, execute
 
 
 def clean_national_rail_incidents() -> None:
@@ -12,11 +12,11 @@ def clean_national_rail_incidents() -> None:
 
     with get_connection() as conn:
         query = """
-        DELETE FROM incident
-        WHERE incident_end < TIMEZONE('Europe/London', CURRENT_TIMESTAMP);
+            DELETE FROM incident
+            WHERE incident_end < TIMEZONE('Europe/London', CURRENT_TIMESTAMP);
         """
 
-        execute_without_result(conn, query, ())
+        execute(conn, query, ())
 
 
 if __name__ == "__main__":
