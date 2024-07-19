@@ -3,10 +3,17 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 import unittest
 
-from transform import (load_tree_root, reverse_tree, get_incidents, find_text_element,
-                       find_all_text_elements, convert_html_to_text, convert_to_datetime,
-                       check_creation_within_last_5_minutes, transform_xml_file,
-                       process_pt_incidents)
+from transform import (
+    load_tree_root,
+    reverse_tree,
+    get_incidents,
+    find_text_element,
+    find_all_text_elements,
+    convert_html_to_text,
+    convert_to_datetime,
+    check_creation_within_last_5_minutes,
+    transform_xml_file,
+    process_pt_incidents)
 
 
 class TransformationTests(unittest.TestCase):
