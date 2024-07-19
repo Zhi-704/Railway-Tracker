@@ -41,11 +41,11 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
         result = cur.fetchall()
         cur.close()
 
-        logging.info(f"Clean: successful for {query_command} - for {data}")
+        logging.info("Clean: successful for %s, for %s.", query_command, data)
 
     except Exception as e:
         conn.rollback()
-        logging.error(f"Clean: Error occurred for {query_command} - {e}")
+        logging.info("Clean: Error occurred for %s -  %s.", query_command, e)
 
     return result
 
@@ -63,8 +63,8 @@ def execute_without_result(conn: connection, query: str, data: tuple) -> None:
         conn.commit()
         cur.close()
 
-        logging.info(f"Clean: successful for {query_command} - for {data}")
+        logging.info("Clean: successful for %s, for %s.", query_command, data)
 
     except Exception as e:
         conn.rollback()
-        logging.error(f"Clean: Error occurred for {query_command} - {e}")
+        logging.info("Clean: Error occurred for %s -  %s.", query_command, e)
