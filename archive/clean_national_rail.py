@@ -16,17 +16,7 @@ def delete_old_incidents(conn: connection) -> None:
         WHERE incident_end < TIMEZONE('Europe/London', CURRENT_TIMESTAMP);
     """
 
-    try:
-        cur = db_connection.get_cursor(conn)
-        cur.execute(query)
-
-        conn.commit()
-        cur.close()
-        logging.info("Clean: Deleted old incidents. ")
-
-    except Exception as e:
-        conn.rollback()
-        logging.error("Clean: Error occurred when cleaning incidents %s", e)
+    db_connection.execute_without_result(conn, query, ())
 
 
 def clean_national_rail_incidents() -> None:

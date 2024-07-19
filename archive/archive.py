@@ -8,6 +8,8 @@ import clean_real_time_trains as rtt_cleaner
 
 
 def clean_rail_tracker():
+    """ Cleans rail Tracker of any out dated data, archives necessary 
+        information."""
 
     logging.info("Clean: Began cleaning process.")
 
@@ -19,6 +21,7 @@ def clean_rail_tracker():
 
 
 def handler(event, context):
+    # pylint: disable=unused-argument
     """ Main lambda function to execute cleaning the Railway tracker:
         1. cleans national rail incident data 
         2. cleans and archives the real time train data """
@@ -32,3 +35,4 @@ def handler(event, context):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
+    clean_rail_tracker()
