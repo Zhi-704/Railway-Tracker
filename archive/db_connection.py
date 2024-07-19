@@ -40,7 +40,7 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
 
     except Exception as e:
         conn.rollback()
-        logging.error("Clean: Error occurred when executing archive - %s", e)
+        logging.error("Clean: Error occurred when executing cleaning - %s", e)
 
     return result
 
@@ -59,4 +59,4 @@ def execute_without_result(conn: connection, query: str, data: tuple) -> None:
 
     except Exception as e:
         conn.rollback()
-        logging.error("Clean: Error occurred when executing archive - %s", e)
+        logging.error("Clean: Error occurred when executing cleaning - %s", e)
