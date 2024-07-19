@@ -33,16 +33,29 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
-************* Module load
-realtime_trains/load.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
-realtime_trains/load.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
-realtime_trains/load.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module db_connection
+archive/db_connection.py:46:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:44:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+archive/db_connection.py:48:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+archive/db_connection.py:68:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:66:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+archive/db_connection.py:70:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 
-------------------------------------------------------------------
-Your code has been rated at 9.68/10 (previous run: 9.63/10, +0.05)
+-----------------------------------
+Your code has been rated at 8.29/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
+<<<<<<< HEAD
+=======
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+>>>>>>> b96af3bfab2cb59dedf0ec40a31288d44ca50792
