@@ -48,14 +48,10 @@ Your code has been rated at 10.00/10
 
 ************* Module db_connection
 archive/db_connection.py:46:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:44:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-archive/db_connection.py:48:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 archive/db_connection.py:68:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:66:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-archive/db_connection.py:70:8: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 
 -----------------------------------
-Your code has been rated at 8.29/10
+Your code has been rated at 9.43/10
 
 
 ------------------------------------
