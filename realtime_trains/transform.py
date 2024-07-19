@@ -56,7 +56,7 @@ def process_station(station: dict) -> dict:
     '''Processes a single station by removing specified keys and 
     filtering services based on multiple criteria.'''
 
-    logging.info("Processing station: %s", station['location']['name'])
+    logging.info("Transforming station: %s", station['location']['name'])
 
     station = filter_keys(["filter"], station)
     station["location"] = filter_keys(
@@ -72,7 +72,7 @@ def process_station(station: dict) -> dict:
 
     station["services"] = processed_services
 
-    logging.info("Processing finished for station: %s",
+    logging.info("Transformation finished for station: %s",
                  station['location']['name'])
 
     return station

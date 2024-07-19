@@ -115,7 +115,6 @@ def insert_or_get_waypoint(station_id: int,
         }
         existing_id = get_id_if_exists(cur, "waypoint", conditions)
         if existing_id:
-            logging.info("Retrieved Waypoint with ID: %s", existing_id)
             return existing_id
 
         query = '''
@@ -136,7 +135,6 @@ def insert_or_get_waypoint(station_id: int,
         ))
         waypoint_id = cur.fetchone()[0]
         conn.commit()
-        logging.info("Inserted Waypoint with ID: %s", waypoint_id)
         return waypoint_id
 
     except Exception as e:
@@ -267,17 +265,12 @@ def insert_or_get_entry(table_name: str,
         try:
             cur.execute(query, tuple(insert_values.values()))
             table_id = cur.fetchone()[0]
-            logging.info("%s %s added: %s",
-                         table_name.capitalize(), entry_name, table_id)
             conn.commit()
         except Exception as e:
             conn.rollback()
             logging.error("Load: Error occurred inserting %s %s: %s",
                           table_name.capitalize(), entry_name, e)
             table_id = None
-    else:
-        logging.info("%s %s retrieved: %s",
-                     table_name.capitalize(), entry_name, table_id)
 
     return table_id
 
@@ -288,6 +281,7 @@ def import_to_database(stations: list[dict]) -> None:
     cur = get_cursor(conn)
 
     for station in stations:
+        logging.info("Processing station %s...", station["location"]["crs"])
         station_id = insert_or_get_station(station["location"], conn, cur)
         for service in station["services"]:
             operator_id = insert_or_get_operator(service, conn, cur)
@@ -302,9 +296,9 @@ def import_to_database(stations: list[dict]) -> None:
                     insert_or_get_cancellation(
                         cancel_code_id, waypoint_id, conn, cur)
                     break
-
-            print("-----------------------------")
-        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
+        logging.info("Station %s processed with %s waypoints.",
+                     station["location"]["crs"], len(station["services"]))
+        print("-----------------------------")
 
     cur.close()
     conn.close()
