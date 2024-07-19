@@ -42,9 +42,7 @@ realtime_trains/load.py:269:15: W0718: Catching too general exception Exception 
 ------------------------------------------------------------------
 Your code has been rated at 9.69/10 (previous run: 9.63/10, +0.06)
 
-************* Module realtime_trains
-realtime_trains/realtime_trains.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 
------------------------------------
-Your code has been rated at 9.17/10
+------------------------------------
+Your code has been rated at 10.00/10
 
