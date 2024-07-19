@@ -116,11 +116,10 @@ resource "aws_iam_role" "c11-railway-tracker-archive-schedule-role" {
   assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-schedule-policy-document.json
 }
 
+# schedule archive process 9 am everyday
 resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
-    # schedule archive process 9 am everyday
   name = "c11-railway-tracker-archive-schedule"
   group_name = "default"
-
   schedule_expression = "cron(0 9 * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
