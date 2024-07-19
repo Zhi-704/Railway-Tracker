@@ -1697,7 +1697,7 @@ VALUES
 --     ('KCK', 'Knockholt Rail Station'),
 --     ('KBW', 'Knebworth Rail Station'),
 --     ('KGE', 'Kingsknowe Rail Station'),
-    ('KGX', 'London Kings Cross Rail Station'),
+    -- ('KGX', 'London Kings Cross Rail Station'),
 --     ('KNI', 'Knighton Rail Station'),
 --     ('KLY', 'Kenley Rail Station'),
 --     ('KNN', 'Kings Norton Rail Station'),
