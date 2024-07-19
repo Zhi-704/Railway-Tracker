@@ -35,3 +35,4 @@ def handler(event, context):
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
+    clean_rail_tracker()

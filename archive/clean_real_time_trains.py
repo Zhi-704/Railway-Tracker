@@ -88,24 +88,9 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
         VALUES (%s, %s, %s, TIMEZONE('Europe/London', CURRENT_TIMESTAMP));
     """
 
-    try:
-        cur = db_connection.get_cursor(conn)
-
-        cur.execute(query, (
-            archive_data["station_id"],
-            archive_data["avg_delay"],
-            archive_data["cancellation_count"],
-        ))
-
-        conn.commit()
-        cur.close()
-
-        logging.info("Clean: Inserted archive for station: %s",
-                     archive_data["station_id"])
-
-    except Exception as e:
-        conn.rollback()
-        logging.error("Clean: Error occurred inserting archive %s", e)
+    db_connection.execute_without_result(conn, query, (archive_data["station_id"],
+                                                       archive_data["avg_delay"],
+                                                       archive_data["cancellation_count"],))
 
 
 def delete_cancellation(conn: connection, waypoint_id: int) -> None:
@@ -139,7 +124,8 @@ def get_table_size(conn: connection, table_name: str) -> int:
 
 def clean_real_time_trains_data():
     """ Cleans RealTimeTrains waypoints data from RDS based on how long ago the train journey
-        occurred. Computed Performance statistics for the archiving process. """
+        occurred. Computes performance statistics for the archiving process and inserts
+        into archive.  """
 
     conn = db_connection.get_connection()
 

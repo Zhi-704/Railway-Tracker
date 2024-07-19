@@ -30,6 +30,8 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
     """ Executes SQL queries on AWS RDS, and returns result.
         Uses fetchall(). """
 
+    query_command = query.strip().split(" ")[0]
+
     try:
         cur = get_cursor(conn)
 
@@ -39,18 +41,19 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
         result = cur.fetchall()
         cur.close()
 
-        logging.info("Clean: successful for: %s", (data))
+        logging.info(f"Clean: successful for {query_command} - for {data}")
 
     except Exception as e:
         conn.rollback()
-        logging.error(
-            "Clean: Error occurred when executing cleaning for: %s", (e))
+        logging.error(f"Clean: Error occurred for {query_command} - {e}")
 
     return result
 
 
 def execute_without_result(conn: connection, query: str, data: tuple) -> None:
     """ Executes SQL queries on AWS RDS. """
+
+    query_command = query.strip().split(" ")[0]
 
     try:
         cur = get_cursor(conn)
@@ -59,8 +62,9 @@ def execute_without_result(conn: connection, query: str, data: tuple) -> None:
 
         conn.commit()
         cur.close()
-        logging.info("Clean: successful: %s", data)
+
+        logging.info(f"Clean: successful for {query_command} - for {data}")
 
     except Exception as e:
         conn.rollback()
-        logging.error("Clean: Error occurred when executing cleaning - %s", e)
+        logging.error(f"Clean: Error occurred for {query_command} - {e}")
