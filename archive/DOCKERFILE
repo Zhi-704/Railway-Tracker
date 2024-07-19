@@ -9,5 +9,3 @@ COPY clean_real_time_trains.py .
 COPY archive.py .
 
 CMD [ "archive.handler" ]
-
-# docker build --platform "linux/amd64" -t c11-railway-tracker-archive-lambda-ecr .
