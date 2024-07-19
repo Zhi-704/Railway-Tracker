@@ -39,16 +39,14 @@ This will retrieve information about any incidents occurring in NationalRail.
 Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `national_rail` directory and add the following lines:
 
 ```text
-NATIONAL_RAIL_API_KEY=YOUR_API_KEY
+NATIONAL_RAIL_API_KEY=your_api_key
 
-DB_USERNAME=YOUR_DB_USERNAME
-DB_PASSWORD=YOUR_DB_PASSWORD
-DB_NAME=YOUR_DB_NAME
-DB_IP=YOUR_DB_HOST_IP_ADDRESS
-DB_PORT=YOUR_DB_PORT
+DB_PASSWORD=your_database_password
+DB_USERNAME=your_database_username
+DB_NAME=your_database_name
+DB_PORT=your_database_port
+DB_IP=your_database_ip_or_hostname
 
 ```
-
-Replace 'YOUR_X' with your details.
 
 The script will automatically load the API key from this file.
