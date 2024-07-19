@@ -25,7 +25,7 @@ def get_cursor(conn: connection) -> cursor:
 
 
 def execute(conn: connection, query: str, data: tuple) -> dict | None:
-    """ Executes SQL queries on AWS RDS, and returns result. 
+    """ Executes SQL queries on AWS RDS, and returns result.
         Uses fetchall(). """
 
     try:
@@ -36,11 +36,13 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
         conn.commit()
         result = cur.fetchall()
         cur.close()
-        logging.info("Clean: successful: %s", data)
+
+        logging.info("Clean: successful for: %s", (data))
 
     except Exception as e:
         conn.rollback()
-        logging.error("Clean: Error occurred when executing cleaning - %s", e)
+        logging.error(
+            "Clean: Error occurred when executing cleaning for: %s", (e))
 
     return result
 
