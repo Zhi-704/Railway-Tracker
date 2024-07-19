@@ -2,7 +2,7 @@
 
 import logging
 from dotenv import load_dotenv
-from extract import get_realtime_trains_data, save_data_to_file
+from extract import save_data_to_file, get_api_data_of_all_stations
 
 LOCATION_REMOVE_KEYS = [
     'tiploc',
@@ -35,7 +35,8 @@ def filter_keys(keys_to_remove: list, a_dict: dict) -> dict:
     '''Removes keys that can exist in a dictionary'''
 
     if not isinstance(a_dict, dict):
-        raise TypeError(f"Expected dictionary item but got {type(a_dict)}")
+        raise TypeError(
+            f"Transform: Expected dictionary item but got {type(a_dict)}")
 
     for key in keys_to_remove:
         a_dict.pop(key, None)
@@ -55,7 +56,7 @@ def process_station(station: dict) -> dict:
     '''Processes a single station by removing specified keys and 
     filtering services based on multiple criteria.'''
 
-    logging.info("Processing station: %s", station['location']['name'])
+    logging.info("Transforming station: %s", station['location']['name'])
 
     station = filter_keys(["filter"], station)
     station["location"] = filter_keys(
@@ -71,15 +72,20 @@ def process_station(station: dict) -> dict:
 
     station["services"] = processed_services
 
-    logging.info("Processing finished for station: %s",
+    logging.info("Transformation finished for station: %s",
                  station['location']['name'])
 
     return station
 
 
-def process_all_stations(stations_data: list[dict]):
+def process_all_stations(stations_data: list[dict]) -> list[dict]:
     '''Processes all station by filtering services and unnecessary keys'''
     logging.info("Transforming data...")
+
+    if not isinstance(stations_data, list):
+        raise TypeError(f"Transform: Expected list item but got {
+                        type(stations_data)}")
+
     for station in stations_data:
         station = process_station(station)
     logging.info("Transformation finished.")
@@ -90,6 +96,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
-    data = [get_realtime_trains_data("LDS")]
+    data = get_api_data_of_all_stations()
     modified_data = process_all_stations(data)
-    save_data_to_file(modified_data, "modified_data_v1.json")
+    save_data_to_file(modified_data, "modifiedv5.json")
