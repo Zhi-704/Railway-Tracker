@@ -5,7 +5,7 @@
 import logging
 
 from psycopg2.extensions import connection
-import db_connection
+from db_connection import get_connection, execute, execute_without_result
 
 
 def get_all_stations(conn: connection) -> list[dict]:
@@ -16,7 +16,7 @@ def get_all_stations(conn: connection) -> list[dict]:
         FROM station;
     """
 
-    station_ids = db_connection.execute(conn, query, ())
+    station_ids = execute(conn, query, ())
 
     return station_ids
 
@@ -31,7 +31,7 @@ def get_month_old_waypoints(conn: connection, station_id: str) -> list[dict]:
             AND station_id = %s;
     """
 
-    outdated_waypoints = db_connection.execute(conn, query, (station_id,))
+    outdated_waypoints = execute(conn, query, (station_id,))
 
     return outdated_waypoints
 
@@ -50,11 +50,9 @@ def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
         GROUP BY station_id;
     """
 
-    avg_delay = db_connection.execute(conn, query, (station_id,))
+    avg_delay = execute(conn, query, (station_id,))
 
-    if avg_delay:
-        avg_delay = avg_delay[0]['avg_overall_delay']
-    return avg_delay
+    return avg_delay[0]['avg_overall_delay'] if avg_delay else None
 
 
 def compute_cancellation_count_for_station(conn: connection, station_id: int) -> dict:
@@ -62,8 +60,7 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
         have arrived/ departed over a month ago. """
 
     query = """
-        SELECT 
-            COUNT(cancellation_id) AS cancellation_count
+        SELECT COUNT(cancellation_id) AS cancellation_count
         FROM waypoint w
         JOIN cancellation c 
         ON c.waypoint_id = w.waypoint_id
@@ -71,12 +68,9 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
             AND run_date <= CURRENT_DATE - INTERVAL '1 month';
     """
 
-    cancellation_count = db_connection.execute(conn, query, (station_id,))
+    cancellation_count = execute(conn, query, (station_id,))
 
-    if cancellation_count:
-        cancellation_count = cancellation_count[0]['cancellation_count']
-
-    return cancellation_count
+    return cancellation_count[0]['cancellation_count'] if cancellation_count else None
 
 
 def insert_performance_archive(conn: connection, archive_data: dict) -> None:
@@ -88,9 +82,9 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
         VALUES (%s, %s, %s, TIMEZONE('Europe/London', CURRENT_TIMESTAMP));
     """
 
-    db_connection.execute_without_result(conn, query, (archive_data["station_id"],
-                                                       archive_data["avg_delay"],
-                                                       archive_data["cancellation_count"],))
+    execute_without_result(conn, query, (archive_data["station_id"],
+                                         archive_data["avg_delay"],
+                                         archive_data["cancellation_count"],))
 
 
 def delete_cancellation(conn: connection, waypoint_id: int) -> None:
@@ -100,7 +94,7 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         DELETE FROM cancellation 
         WHERE waypoint_id = %s;
     """
-    db_connection.execute_without_result(conn, query, (waypoint_id,))
+    execute_without_result(conn, query, (waypoint_id,))
 
 
 def delete_waypoint(conn: connection, waypoint_id: int) -> None:
@@ -110,7 +104,7 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
-    db_connection.execute_without_result(conn, query, (waypoint_id,))
+    execute_without_result(conn, query, (waypoint_id,))
 
 
 def get_table_size(conn: connection, table_name: str) -> int:
@@ -119,7 +113,7 @@ def get_table_size(conn: connection, table_name: str) -> int:
     query = f"""
         SELECT COUNT(*) FROM {table_name};
     """
-    return db_connection.execute(conn, query, ())
+    return execute(conn, query, ())
 
 
 def clean_real_time_trains_data():
@@ -127,7 +121,7 @@ def clean_real_time_trains_data():
         occurred. Computes performance statistics for the archiving process and inserts
         into archive.  """
 
-    conn = db_connection.get_connection()
+    conn = get_connection()
 
     all_station_ids = get_all_stations(conn)
 
