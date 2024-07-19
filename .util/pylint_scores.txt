@@ -41,11 +41,9 @@ archive/db_connection.py:60:11: W0718: Catching too general exception Exception 
 -----------------------------------
 Your code has been rated at 9.09/10
 
-************* Module clean_national_rail
-archive/clean_national_rail.py:27:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
------------------------------------
-Your code has been rated at 9.52/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
