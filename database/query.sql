@@ -84,24 +84,83 @@
 -- );
 -- -- 99
 
-SELECT * FROM cancellation
-WHERE waypoint_id >= 3871;
+-- SELECT * FROM cancellation
+-- WHERE waypoint_id >= 3871;
 
-SELECT *
-FROM waypoint
-WHERE run_date <= CURRENT_DATE - INTERVAL '1 month' ;
--- AND station_id = 1;
--- -- 3868
--- -- 3869
--- -- 3870
+-- SELECT *
+-- FROM waypoint
+-- WHERE run_date <= CURRENT_DATE - INTERVAL '1 month' ;
+-- -- AND station_id = 1;
+-- -- -- 3868
+-- -- -- 3869
+-- -- -- 3870
 
--- -- DELETE FROM waypoint
--- -- WHERE waypoint_id = 3859;
+-- -- -- DELETE FROM waypoint
+-- -- -- WHERE waypoint_id = 3859;
 
--- -- DELETE FROM waypoint
--- -- WHERE waypoint_id = 3860;
+-- -- -- DELETE FROM waypoint
+-- -- -- WHERE waypoint_id = 3860;
 
--- -- DELETE FROM cancellation
--- -- WHERE cancellation_id = 100
+-- -- -- DELETE FROM cancellation
+-- -- -- WHERE cancellation_id = 100
 
-SELECT * FROM performance_archive;
+-- SELECT * FROM performance_archive;
+
+
+
+-- SELECT * FROM operator;
+--  1 | VT            | Avanti West Coast
+
+-- SELECT incident_id, creation_time, incident_start, incident_end  FROM incident
+-- WHERE incident_end < TIMEZONE('Europe/London', CURRENT_TIMESTAMP);
+
+
+
+-- INSERT INTO incident (
+--     incident_number,
+--     creation_time,
+--     incident_start,
+--     incident_end,
+--     is_planned,
+--     incident_summary,
+--     incident_description,
+--     incident_uri,
+--     affected_routes
+-- ) VALUES (
+--     'INC12345666666',
+--     '2024-04-18 14:30:00',
+--     '2024-10-10 10:00:00',
+--     '2024-10-10 12:00:00',
+--     True,
+--     'System upgrade',
+--     'Scheduled upgrade of the network infrastructure.',
+--     'http://example.com/incident/INC1234576666',
+--     'Route f, Route 5'
+-- );
+-- SELECT incident_id, creation_time, incident_start, incident_end  FROM incident
+-- WHERE incident_end = '2024-10-10 12:00:00';
+
+-- INSERT INTO affected_operator (
+--     incident_id, operator_id
+-- )VALUES (
+--     '4 ',
+--     '1'
+-- );
+
+-- INSERT INTO affected_operator (
+--     incident_id, operator_id
+-- )VALUES (
+--     '2',
+--     '1'
+-- );
+
+-- SELECT * FROM affected_operator;
+-- 1, 2
+
+
+-- SELECT constraint_name
+-- FROM information_schema.table_constraints
+-- WHERE table_name = 'affected_operator'
+-- AND constraint_type = 'FOREIGN KEY';
+
+
