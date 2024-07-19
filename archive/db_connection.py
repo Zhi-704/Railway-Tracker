@@ -53,26 +53,3 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
             result = None
 
     return result
-
-
-# def execute_without_result(conn: connection, query: str, data: tuple) -> None:
-#     """ Executes SQL queries on AWS RDS. """
-
-#     query_command = query.strip().split()[0]
-
-#     try:
-#         with conn:
-
-#             cur = get_cursor(conn)
-
-#             cur.execute(query, (data))
-
-#             conn.commit()
-#             cur.close()
-
-#             logging.info("Clean: successful for %s, for %s.",
-#                          query_command, data)
-
-#     except Exception as e:
-#         conn.rollback()
-#         logging.error("Clean: Error occurred for %s -  %s.", query_command, e)
