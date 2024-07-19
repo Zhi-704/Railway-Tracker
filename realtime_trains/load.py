@@ -9,7 +9,7 @@ import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import connection as DBConnection, cursor as DBCursor
 
-from extract import get_realtime_trains_data
+from extract import get_api_data_of_all_stations
 from transform import process_all_stations
 
 REQUIRED_FIELDS_SERVICE_LOCATION_DETAILS = ["displayAs", "tiploc", "crs"]
@@ -313,7 +313,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
-    data = [get_realtime_trains_data("LDS")]
+    data = get_api_data_of_all_stations()
     modified_data = process_all_stations(data)
     print("\n-------------------------")
     import_to_database(modified_data)

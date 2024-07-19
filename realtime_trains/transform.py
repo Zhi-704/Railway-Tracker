@@ -2,7 +2,7 @@
 
 import logging
 from dotenv import load_dotenv
-from extract import get_realtime_trains_data, save_data_to_file
+from extract import save_data_to_file, get_api_data_of_all_stations
 
 LOCATION_REMOVE_KEYS = [
     'tiploc',
@@ -96,5 +96,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
-    data = [get_realtime_trains_data("LDS"), get_realtime_trains_data("LST")]
+    data = get_api_data_of_all_stations()
     modified_data = process_all_stations(data)
+    save_data_to_file(modified_data, "modifiedv5.json")
