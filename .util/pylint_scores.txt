@@ -34,11 +34,12 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module db_connection
-archive/db_connection.py:44:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:64:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+archive/db_connection.py:41:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:60:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.39/10
+Your code has been rated at 9.09/10
 
 
 ------------------------------------
@@ -49,8 +50,9 @@ Your code has been rated at 10.00/10
 Your code has been rated at 10.00/10
 
 ************* Module clean_real_time_trains
-archive/clean_real_time_trains.py:106:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_real_time_trains.py:108:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/clean_real_time_trains.py:93:8: E1205: Too many arguments for logging format string (logging-too-many-args)
 
 -----------------------------------
-Your code has been rated at 9.84/10
+Your code has been rated at 9.06/10
 
