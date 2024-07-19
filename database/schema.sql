@@ -68,9 +68,8 @@ CREATE TABLE performance_archive(
 
 CREATE TABLE cancel_code(
     cancel_code_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    cancel_code CHAR(2) NOT NULL,
+    cancel_code CHAR(2) NOT NULL UNIQUE,
     cause TEXT NOT NULL,
-    UNIQUE (cancel_code, cause)
 );
 
 CREATE TABLE cancellation(

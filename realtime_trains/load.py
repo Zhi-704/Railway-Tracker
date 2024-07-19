@@ -304,6 +304,7 @@ def import_to_database(stations: list[dict]) -> None:
                     break
 
             print("-----------------------------")
+        print("\nXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n")
 
     cur.close()
     conn.close()
