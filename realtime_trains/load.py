@@ -12,10 +12,6 @@ from psycopg2.extensions import connection as DBConnection, cursor as DBCursor
 from extract import get_api_data_of_all_stations
 from transform import process_all_stations
 
-REQUIRED_FIELDS_SERVICE_LOCATION_DETAILS = ["displayAs", "tiploc", "crs"]
-REQUIRED_FIELDS_SERVICE = ["locationDetail",
-                           "serviceUid", "atocCode", "atocName"]
-REQUIRED_FIELDS_LOCATION = ["name", "crs"]
 CANCELLATION_FIELDS = ["cancelReasonCode",
                        "cancelReasonLongText"]
 
