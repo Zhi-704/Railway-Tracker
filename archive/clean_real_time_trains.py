@@ -90,8 +90,6 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
 
     try:
         cur = db_connection.get_cursor(conn)
-        logging.info("station id %s",
-                     archive_data["station_id"], archive_data["avg_delay"])
 
         cur.execute(query, (
             archive_data["station_id"],
