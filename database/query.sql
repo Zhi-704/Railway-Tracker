@@ -11,6 +11,6 @@ SELECT * FROM subscription;
 
 SELECT * FROM waypoint;
 SELECT * FROM operator;
-
+SELECT * FROM performance_archive;
 
 
