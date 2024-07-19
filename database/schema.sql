@@ -30,8 +30,8 @@ CREATE TABLE operator(
 
 CREATE TABLE affected_operator(
     affected_operator_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    incident_id SMALLINT NOT NULL REFERENCES incident(incident_id),
-    operator_id SMALLINT NOT NULL REFERENCES operator(operator_id)
+    incident_id SMALLINT NOT NULL REFERENCES incident(incident_id) ON DELETE CASCADE,
+    operator_id SMALLINT NOT NULL REFERENCES operator(operator_id) ON DELETE CASCADE,
 );
 
 CREATE TABLE service(

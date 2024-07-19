@@ -9,7 +9,7 @@ import db_connection
 
 def delete_old_incidents(conn: connection) -> None:
     """ Deletes incidents with end dates that have passed and are no longer required 
-        for storage."""
+        for storage. This also deletes affected operators (ON DELETE CASCADE)"""
 
     query = """
         DELETE FROM incident
