@@ -34,12 +34,11 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module db_connection
-archive/db_connection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-archive/db_connection.py:42:11: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:62:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:44:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:64:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.09/10
+Your code has been rated at 9.39/10
 
 
 ------------------------------------
