@@ -35,10 +35,11 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module db_connection
 archive/db_connection.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-archive/db_connection.py:42:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:41:11: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:60:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.13/10
+Your code has been rated at 9.09/10
 
 ************* Module clean_national_rail
 archive/clean_national_rail.py:27:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -57,13 +58,7 @@ Your code has been rated at 7.69/10
 ************* Module clean_real_time_trains
 archive/clean_real_time_trains.py:108:11: W0718: Catching too general exception Exception (broad-exception-caught)
 archive/clean_real_time_trains.py:93:8: E1205: Too many arguments for logging format string (logging-too-many-args)
-archive/clean_real_time_trains.py:113:42: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:123:38: W0613: Unused argument 'waypoint_id' (unused-argument)
-archive/clean_real_time_trains.py:176:22: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
-archive/clean_real_time_trains.py:177:22: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
-archive/clean_real_time_trains.py:182:22: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
-archive/clean_real_time_trains.py:183:22: E1120: No value for argument 'table_name' in function call (no-value-for-parameter)
 
 -----------------------------------
-Your code has been rated at 6.00/10
+Your code has been rated at 9.06/10
 
