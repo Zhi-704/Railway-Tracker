@@ -1,3 +1,6 @@
+'''ETL pipeline for extracting, cleaning, and loading data from RealTime Trains API to a database'''
+
+
 import logging
 from dotenv import load_dotenv
 

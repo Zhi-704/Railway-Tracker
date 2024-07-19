@@ -10,14 +10,14 @@ from requests.auth import HTTPBasicAuth
 from requests.exceptions import RequestException
 from requests import get
 
-import psycopg2
-import psycopg2.extras
+from psycopg2 import connect
+from psycopg2.extras import DictCursor
 from psycopg2.extensions import connection as DBConnection, cursor as DBCursor
 
 
 def get_connection() -> DBConnection:
     """Creates a database session and returns a connection object."""
-    return psycopg2.connect(
+    return connect(
         host=ENV["DB_IP"],
         port=ENV["DB_PORT"],
         user=ENV["DB_USERNAME"],
@@ -28,7 +28,7 @@ def get_connection() -> DBConnection:
 
 def get_cursor(conn: DBConnection) -> DBCursor:
     """Creates and returns a cursor to execute RDS commands (PostgreSQL)."""
-    return conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return conn.cursor(cursor_factory=DictCursor)
 
 
 def get_api_url(station_code: str, date: str) -> str:
@@ -84,17 +84,11 @@ def get_yesterday_data_of_station(station_code: str) -> dict | None:
 
 def get_all_stations_crs() -> list[str]:
     '''Grabs all stations crs from the database'''
-
     conn = get_connection()
-    cur = get_cursor(conn)
-
-    query = '''
-SELECT station_crs
-FROM station
-'''
-
-    cur.execute(query)
-    crs_data = cur.fetchall()
+    with get_cursor(conn) as cur:
+        cur.execute("SELECT station_crs FROM station")
+        crs_data = cur.fetchall()
+    conn.close()
     return [crs[0] for crs in crs_data]
 
 
@@ -119,4 +113,4 @@ if __name__ == "__main__":
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
     data = get_api_data_of_all_stations()
-    save_data_to_file(data, "data3.json")
+    save_data_to_file(data, "data.json")

@@ -5,8 +5,8 @@ import logging
 from datetime import datetime, timedelta
 
 from dotenv import load_dotenv
-import psycopg2
-import psycopg2.extras
+from psycopg2 import connect
+from psycopg2.extras import DictCursor
 from psycopg2.extensions import connection as DBConnection, cursor as DBCursor
 
 from extract import get_api_data_of_all_stations
@@ -22,7 +22,7 @@ CANCELLATION_FIELDS = ["cancelReasonCode",
 
 def get_connection() -> DBConnection:
     """Creates a database session and returns a connection object."""
-    return psycopg2.connect(
+    return connect(
         host=ENV["DB_IP"],
         port=ENV["DB_PORT"],
         user=ENV["DB_USERNAME"],
@@ -33,7 +33,7 @@ def get_connection() -> DBConnection:
 
 def get_cursor(conn: DBConnection) -> DBCursor:
     """Creates and returns a cursor to execute RDS commands (PostgreSQL)."""
-    return conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    return conn.cursor(cursor_factory=DictCursor)
 
 
 def get_id_if_exists(cur: DBCursor, table_name: str, conditions: dict[any]) -> int | None:
