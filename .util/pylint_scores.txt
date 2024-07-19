@@ -34,13 +34,13 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 
 ************* Module load
-realtime_trains/load.py:57:0: R0914: Too many local variables (24/15) (too-many-locals)
-realtime_trains/load.py:140:11: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load.py:244:0: R0913: Too many arguments (6/5) (too-many-arguments)
-realtime_trains/load.py:269:15: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
+realtime_trains/load.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
+realtime_trains/load.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
 
 ------------------------------------------------------------------
-Your code has been rated at 9.69/10 (previous run: 9.63/10, +0.06)
+Your code has been rated at 9.68/10 (previous run: 9.63/10, +0.05)
 
 
 ------------------------------------
