@@ -47,13 +47,9 @@ archive/clean_national_rail.py:27:11: W0718: Catching too general exception Exce
 -----------------------------------
 Your code has been rated at 9.52/10
 
-************* Module archive
-archive/archive.py:10:0: C0116: Missing function or method docstring (missing-function-docstring)
-archive/archive.py:21:12: W0613: Unused argument 'event' (unused-argument)
-archive/archive.py:21:19: W0613: Unused argument 'context' (unused-argument)
 
------------------------------------
-Your code has been rated at 7.69/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 ************* Module clean_real_time_trains
 archive/clean_real_time_trains.py:108:11: W0718: Catching too general exception Exception (broad-exception-caught)
