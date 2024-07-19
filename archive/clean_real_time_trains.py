@@ -117,7 +117,7 @@ def delete_cancellation(conn: connection, waypoint_id: int) -> None:
         DELETE FROM cancellation 
         WHERE waypoint_id = %s;
     """
-    db_connection.execute(conn, query, ())
+    db_connection.execute_without_result(conn, query, (waypoint_id,))
 
 
 def delete_waypoint(conn: connection, waypoint_id: int) -> None:
@@ -127,16 +127,16 @@ def delete_waypoint(conn: connection, waypoint_id: int) -> None:
         DELETE FROM waypoint 
         WHERE waypoint_id = %s;
     """
-    db_connection.execute(conn, query, ())
+    db_connection.execute_without_result(conn, query, (waypoint_id,))
 
 
 def get_table_size(conn: connection, table_name: str) -> int:
     """ Returns the size of the table given by the table_name argument. """
 
-    query = """
-        SELECT COUNT(*) FROM %s;
+    query = f"""
+        SELECT COUNT(*) FROM {table_name};
     """
-    return db_connection.execute(conn, query, (table_name))
+    return db_connection.execute(conn, query, ())
 
 
 def clean_real_time_trains_data():
@@ -150,37 +150,23 @@ def clean_real_time_trains_data():
     for station in all_station_ids:
         station_id = station['station_id']
 
-        # # 4) delete cancellations and services that they are connected to
         old_waypoints = get_month_old_waypoints(conn, station_id)
         if old_waypoints:
-            # 2) compute performance metrics
+
             avg_delay = compute_avg_delay_for_station(conn, station_id)
             cancellation_count = compute_cancellation_count_for_station(
                 conn, station_id)
 
-            print(station_id)
-            # print(old_waypoints)
-            # print(avg_delay)
-            # print(cancellation_count)
-            print("\n")
-
-            # 3) insert performance archive:
             data = {
                 'station_id': station_id,
-                'avg_delay': avg_delay,
+                'avg_delay': avg_delay.total_seconds() / 60,
                 'cancellation_count': cancellation_count
             }
             insert_performance_archive(conn, data)
 
             for waypoint in old_waypoints:
-                print(get_table_size("waypoint"))
-                print(get_table_size("cancellation"))
-
                 delete_cancellation(conn, waypoint['waypoint_id'])
                 delete_waypoint(conn, waypoint['waypoint_id'])
-
-                print(get_table_size("waypoint"))
-                print(get_table_size("cancellation"))
 
             logging.info(
                 "Outdated data archived for station: %s", station_id)

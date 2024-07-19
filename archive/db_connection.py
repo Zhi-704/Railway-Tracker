@@ -36,7 +36,6 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
         conn.commit()
         result = cur.fetchall()
         cur.close()
-
         logging.info("Clean: successful: %s", data)
 
     except Exception as e:
@@ -44,3 +43,20 @@ def execute(conn: connection, query: str, data: tuple) -> dict | None:
         logging.error("Clean: Error occurred when executing archive - %s", e)
 
     return result
+
+
+def execute_without_result(conn: connection, query: str, data: tuple) -> None:
+    """ Executes SQL queries on AWS RDS. """
+
+    try:
+        cur = get_cursor(conn)
+
+        cur.execute(query, (data))
+
+        conn.commit()
+        cur.close()
+        logging.info("Clean: successful: %s", data)
+
+    except Exception as e:
+        conn.rollback()
+        logging.error("Clean: Error occurred when executing archive - %s", e)

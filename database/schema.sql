@@ -43,18 +43,19 @@ CREATE TABLE service(
 CREATE TABLE station(
     station_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     station_crs CHAR(3) NOT NULL UNIQUE,
-    station_name TEXT NOT NULL UNIQUE
+    station_name TEXT NOT NULL
 );
 
 CREATE TABLE waypoint(
     waypoint_id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    run_date TIMESTAMP(0) NOT NULL,
-    booked_arrival TIMESTAMP(0) NOT NULL,
-    actual_arrival TIMESTAMP(0) NOT NULL,
-    booked_departure TIMESTAMP(0) NOT NULL,
-    actual_departure TIMESTAMP(0) NOT NULL,
+    run_date DATE NOT NULL,
+    booked_arrival TIMESTAMP(0),
+    actual_arrival TIMESTAMP(0),
+    booked_departure TIMESTAMP(0),
+    actual_departure TIMESTAMP(0),
     service_id SMALLINT NOT NULL REFERENCES service(service_id),
-    station_id SMALLINT NOT NULL REFERENCES station(station_id)
+    station_id SMALLINT NOT NULL REFERENCES station(station_id),
+    CHECK (actual_arrival IS NOT NULL OR actual_departure IS NOT NULL)
 );
 
 CREATE TABLE performance_archive(
@@ -68,12 +69,12 @@ CREATE TABLE performance_archive(
 CREATE TABLE cancel_code(
     cancel_code_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     cancel_code CHAR(2) NOT NULL UNIQUE,
-    cause TEXT NOT NULL UNIQUE
+    cause TEXT NOT NULL,
 );
 
 CREATE TABLE cancellation(
     cancellation_id SMALLINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    cancel_id SMALLINT NOT NULL REFERENCES cancel_code(cancel_code_id),
+    cancel_code_id SMALLINT NOT NULL REFERENCES cancel_code(cancel_code_id),
     waypoint_id BIGINT NOT NULL REFERENCES waypoint(waypoint_id)
 );
 
@@ -1695,7 +1696,7 @@ VALUES
 --     ('KCK', 'Knockholt Rail Station'),
 --     ('KBW', 'Knebworth Rail Station'),
 --     ('KGE', 'Kingsknowe Rail Station'),
-    ('KGX', 'London Kings Cross Rail Station'),
+    -- ('KGX', 'London Kings Cross Rail Station'),
 --     ('KNI', 'Knighton Rail Station'),
 --     ('KLY', 'Kenley Rail Station'),
 --     ('KNN', 'Kings Norton Rail Station'),
