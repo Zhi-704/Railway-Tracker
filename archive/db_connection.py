@@ -1,3 +1,5 @@
+""" Module for connecting to the database and executing queries on the database. """
+
 from os import environ
 import logging
 
