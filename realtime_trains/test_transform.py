@@ -1,3 +1,5 @@
+# pylint: disable=too-few-public-methods
+
 '''Test file for the python file transform'''
 
 from unittest.mock import patch
@@ -177,6 +179,7 @@ class TestProcessAllStations():
 
     @patch('transform.process_station')
     def test_process_all_stations(self, mock_process_station):
+        '''Tests for base case with the expected number of calls'''
         stations_data = [
             {'location': {'name': 'Station 1'}, 'services': []},
             {'location': {'name': 'Station 2'}, 'services': []}
@@ -195,15 +198,12 @@ class TestProcessAllStations():
 
     @patch('transform.process_station')
     def test_process_all_stations_wrong_type(self, mock_process_station):
+        '''Tests for if a wrong data type is given for an argument'''
         stations_data = {'location': {'name': 'Station 1'}, 'services': []}
-        processed_data = [
-            {'location': {'name': 'Station 1'}, 'services': []},
-            {'location': {'name': 'Station 2'}, 'services': []}
-        ]
 
         mock_process_station.side_effect = lambda station: station
 
         with pytest.raises(TypeError):
-            result = process_all_stations(stations_data)
+            process_all_stations(stations_data)
 
         assert mock_process_station.call_count == 0
