@@ -1,4 +1,4 @@
-"""Module for interacting with the National Rail API."""
+"""Retrieves information from the National Rail API."""
 
 from os import environ as ENV
 import logging
@@ -9,15 +9,7 @@ from dotenv import load_dotenv
 
 
 def get_data_from_api(apikey: str) -> str | None:
-    """
-    Retrieves data from the National Rail API and returns the response as a string.
-
-    Args:
-        apikey (str): The API key for authentication.
-
-    Returns:
-        str | None: The API response as a string, or None if an error occurred.
-    """
+    """Retrieves data from the National Rail API and returns the response as a string."""
     headers = {
         "x-apikey": apikey,
         "User-Agent": "",
@@ -35,27 +27,16 @@ def get_data_from_api(apikey: str) -> str | None:
 
 
 def save_data_to_file(data: str, filename: str) -> None:
-    """
-    Saves the provided data to a file.
-
-    Args:
-        data (str): The data to be saved.
-        filename (str): The name of the file to save the data to.
-    """
+    """Saves the provided data to a file."""
     with open(filename, "w", encoding="utf-8") as file:
         file.write(data)
 
 
 def get_national_rail_data(output_file: str) -> None:
-    """
-    Retrieves data from the National Rail API and saves it to a file.
-
-    Args:
-        output_file (str): The name of the output file to save the data.
-    """
+    """Retrieves data from the National Rail API and saves it to a file."""
     load_dotenv()
 
-    data = get_data_from_api(ENV["API_KEY"])
+    data = get_data_from_api(ENV["NATIONAL_RAIL_API_KEY"])
     if data:
         save_data_to_file(data, output_file)
     else:

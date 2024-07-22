@@ -1,6 +1,3 @@
-requests
 python-dotenv
 pytest
-beautifulsoup4
-lxml
 psycopg2-binary

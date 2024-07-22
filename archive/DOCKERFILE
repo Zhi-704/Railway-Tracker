@@ -1,0 +1,11 @@
+FROM public.ecr.aws/lambda/python:latest
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY db_connection.py .
+COPY clean_national_rail.py .
+COPY clean_real_time_trains.py .
+COPY archive.py .
+
+CMD [ "archive.handler" ]

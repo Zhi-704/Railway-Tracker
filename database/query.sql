@@ -1,11 +1,11 @@
 -- A file to query the database
-
-SELECT incident_number, operator_code, creation_time FROM incident;
+SELECT incident_number, creation_time FROM incident;
 SELECT * FROM cancellation;
-SELECT * FROM station_performance_archive;
-SELECT * FROM users;
+SELECT * FROM performance_archive;
+SELECT * FROM subscriber;
 SELECT * FROM cancel_code;
 SELECT * FROM station;
-SELECT * FROM subscription;
 SELECT * FROM waypoint;
 SELECT * FROM operator;
+SELECT * FROM affected_operator;
+SELECT * FROM service;
