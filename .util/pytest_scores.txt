@@ -4,7 +4,7 @@ rootdir: /home/runner/work/Railway-Tracker/Railway-Tracker
 collected 26 items
 
 national_rail/test_load_national.py ......                               [ 23%]
-national_rail/test_transform_national.py FFFFFFFFFFFFFFFFFFF             [ 96%]
+national_rail/test_transform_national.py ...................             [ 96%]
 test_file.py .                                                           [100%]
 
-========================= 19 failed, 7 passed in 0.17s =========================
+============================== 26 passed in 0.18s ==============================
