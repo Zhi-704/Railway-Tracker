@@ -6,13 +6,9 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module national_rail
-national_rail/national_rail.py:4:0: C0414: Import alias does not rename original package (useless-import-alias)
-national_rail/national_rail.py:5:0: C0414: Import alias does not rename original package (useless-import-alias)
-national_rail/national_rail.py:6:0: C0414: Import alias does not rename original package (useless-import-alias)
 
------------------------------------
-Your code has been rated at 7.00/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 ************* Module load_national
 national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)

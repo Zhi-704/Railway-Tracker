@@ -7,4 +7,4 @@ national_rail/test_load_national.py ......                               [ 23%]
 national_rail/test_transform_national.py ...................             [ 96%]
 test_file.py .                                                           [100%]
 
-============================== 26 passed in 0.18s ==============================
+============================== 26 passed in 0.17s ==============================
