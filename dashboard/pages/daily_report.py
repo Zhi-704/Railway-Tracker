@@ -11,8 +11,6 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
-SUBSCRIPTION_TABLE_NAME = "subscriber"
-
 def get_s3_client() -> client:
     """return an S3 client"""
     try:
