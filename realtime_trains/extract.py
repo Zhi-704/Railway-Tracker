@@ -69,7 +69,6 @@ def get_yesterday_data_of_station(station_code: str) -> dict | None:
         return None
 
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y/%m/%d")
-    logging.info("Retrieving data...")
     api_url = get_api_url(station_code, yesterday)
 
     station_data = get_data_from_api(api_url, username, password)

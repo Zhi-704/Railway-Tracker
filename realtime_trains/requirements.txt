@@ -1,4 +1,4 @@
 requests
 python-dotenv
-pytest
 psycopg2-binary
+pytest
