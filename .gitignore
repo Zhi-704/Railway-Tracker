@@ -4,6 +4,7 @@
 *.json
 *.xml
 !national_rail/test_data.xml
+*.pdf
 
 # venv
 .venv
