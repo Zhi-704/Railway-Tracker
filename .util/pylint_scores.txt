@@ -17,6 +17,12 @@ national_rail/load_national.py:105:11: W0718: Catching too general exception Exc
 -----------------------------------
 Your code has been rated at 9.63/10
 
+************* Module sns_reporting
+national_rail/sns_reporting.py:70:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.82/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
