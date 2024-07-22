@@ -9,3 +9,5 @@ realtime_trains/test_extract_real.py ......                              [ 53%]
 realtime_trains/test_load_real.py .........                              [ 68%]
 realtime_trains/test_transform_real.py .................                 [ 98%]
 test_file.py .                                                           [100%]
+
+============================== 58 passed in 0.32s ==============================
