@@ -46,3 +46,23 @@ Your code has been rated at 9.68/10 (previous run: 9.63/10, +0.05)
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module db_connection
+archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
+
+-----------------------------------
+Your code has been rated at 8.89/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
