@@ -294,7 +294,6 @@ def import_to_database(stations: list[dict]) -> None:
                     break
         logging.info("Station %s processed with %s waypoints.",
                      station["location"]["crs"], len(station["services"]))
-        print("-----------------------------")
 
     cur.close()
     conn.close()

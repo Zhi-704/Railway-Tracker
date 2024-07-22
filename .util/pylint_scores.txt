@@ -36,15 +36,17 @@ realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-ar
 realtime_trains/load_real.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.68/10
+Your code has been rated at 9.67/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module realtime_trains
+realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.47/10
 
 ************* Module db_connection
 archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
