@@ -9,8 +9,8 @@ from psycopg2 import connect
 from psycopg2.extras import DictCursor
 from psycopg2.extensions import connection as DBConnection, cursor as DBCursor
 
-from extract import get_api_data_of_all_stations
-from transform import process_all_stations
+from extract_real import get_api_data_of_all_stations
+from transform_real import process_all_stations
 
 CANCELLATION_FIELDS = ["cancelReasonCode",
                        "cancelReasonLongText"]
