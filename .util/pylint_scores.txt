@@ -10,6 +10,10 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+
+------------------------------------
+Your code has been rated at 10.00/10
+
 ************* Module load_national
 national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
 national_rail/load_national.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -61,5 +65,10 @@ Your code has been rated at 8.89/10
 Your code has been rated at 10.00/10
 
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
