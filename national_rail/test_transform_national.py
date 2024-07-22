@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 import unittest
 
-from transform import (
+from transform_national import (
     load_tree_root,
     reverse_tree,
     get_incidents,
@@ -21,7 +21,7 @@ class TransformationTests(unittest.TestCase):
 
     def setUp(self):
 
-        with open("national_rail/test_data.xml", "r", encoding="utf-8") as file:
+        with open("test_data.xml", "r", encoding="utf-8") as file:
             self.data = file.read()
 
         self.namespace = {
