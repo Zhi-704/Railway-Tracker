@@ -6,8 +6,7 @@ from io import BytesIO
 from datetime import datetime
 
 from boto3 import client
-from botocore.exceptions import NoCredentialsError, ClientError
-# from xhtml2pdf import pisa
+from botocore.exceptions import NoCredentialsError
 
 
 def get_s3_client() -> client:
