@@ -17,5 +17,5 @@ if __name__ == "__main__":
 
     if not incidents_data:
         logging.info("No incidents found.")
-
-    load_national.load_incidents(incidents_data)
+    else:
+        load_national.load_incidents(incidents_data)
