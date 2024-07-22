@@ -1,8 +1,6 @@
-************* Module daily_report
-dashboard/pages/daily_report.py:89:12: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 
------------------------------------
-Your code has been rated at 9.84/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
