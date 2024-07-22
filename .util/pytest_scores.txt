@@ -1,10 +1,13 @@
 ============================= test session starts ==============================
-platform linux -- Python 3.12.4, pytest-8.2.2, pluggy-1.5.0
+platform linux -- Python 3.12.4, pytest-8.3.1, pluggy-1.5.0
 rootdir: /home/runner/work/Railway-Tracker/Railway-Tracker
-collected 26 items
+collected 58 items
 
-national_rail/test_load.py ......                                        [ 23%]
-national_rail/test_transform.py ...................                      [ 96%]
+national_rail/test_load.py ......                                        [ 10%]
+national_rail/test_transform.py ...................                      [ 43%]
+realtime_trains/test_extract_real.py ......                              [ 53%]
+realtime_trains/test_load_real.py .........                              [ 68%]
+realtime_trains/test_transform_real.py .................                 [ 98%]
 test_file.py .                                                           [100%]
 
-============================== 26 passed in 0.17s ==============================
+============================== 58 passed in 0.32s ==============================
