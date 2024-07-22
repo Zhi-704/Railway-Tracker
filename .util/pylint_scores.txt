@@ -1,27 +1,3 @@
-************* Module daily_report
-dashboard/pages/daily_report.py:105:0: C0301: Line too long (103/100) (line-too-long)
-dashboard/pages/daily_report.py:21:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/pages/daily_report.py:33:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/pages/daily_report.py:48:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/pages/daily_report.py:57:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/pages/daily_report.py:72:4: C0103: Variable name "emaiL_regex" doesn't conform to snake_case naming style (invalid-name)
-dashboard/pages/daily_report.py:90:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/daily_report.py:97:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/pages/daily_report.py:101:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/daily_report.py:106:4: W0622: Redefining built-in 'input' (redefined-builtin)
-dashboard/pages/daily_report.py:9:0: C0411: standard import "os.environ" should be placed before third party imports "boto3.client", "dotenv.load_dotenv", "streamlit" (wrong-import-order)
-
------------------------------------
-Your code has been rated at 8.55/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -33,4 +9,26 @@ Your code has been rated at 10.00/10
 
 --------------------------------------------------------------------
 Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+************* Module incident_alerts
+dashboard/pages/incident_alerts.py:35:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:40:71: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:43:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:47:0: C0304: Final newline missing (missing-final-newline)
+dashboard/pages/incident_alerts.py:5:0: W0611: Unused import re (unused-import)
+
+-----------------------------------
+Your code has been rated at 7.83/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
