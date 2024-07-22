@@ -21,7 +21,7 @@ class TransformationTests(unittest.TestCase):
 
     def setUp(self):
 
-        with open("test_data.xml", "r", encoding="utf-8") as file:
+        with open("national_rail/test_data.xml", "r", encoding="utf-8") as file:
             self.data = file.read()
 
         self.namespace = {
