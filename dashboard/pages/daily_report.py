@@ -86,9 +86,10 @@ def deploy_subscription_page():
     elif subscriber_email:
         if upload_new_subscriber(conn, subscriber_email) is not None:
             st.success(f"{subscriber_email} is now subscribed to the summary report.")
-            logging.info(f"New email added: {subscriber_email}")
+            logging.info("New email added: %s", subscriber_email)
         else:
-            st.error(f"An error ocurred when trying to add {subscriber_email} to the database.")
+            st.error(f"An error occurred when trying to add {subscriber_email} to the database.")
+            logging.error("Error occurred when trying to enter a user email")
 
 
 if __name__ == "__main__":
