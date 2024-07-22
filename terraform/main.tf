@@ -133,7 +133,6 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
 
 
 # S3 BUCKET FOR REPORTS
-
 resource "aws_s3_bucket" "c11-railway-tracker-s3" {
   bucket = "c11-railway-tracker-s3"
 }
