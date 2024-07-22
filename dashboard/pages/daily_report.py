@@ -3,37 +3,12 @@ creates a page in the dashboard that allows users to subscribe to a summary repo
 is emailed to them every day. These reports are also stored in an S3 bucket
 """
 import re
-from boto3 import client
+from os import environ
 from dotenv import load_dotenv
 import streamlit as st
-from os import environ
 from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
-
-def get_s3_client() -> client:
-    """return an S3 client"""
-    try:
-        s3_client = client('s3',
-                           aws_access_key_id=environ['AWS_ACCESS_KEY'],
-                           aws_secret_access_key=environ['AWS_SECRET_KEY'])
-        return s3_client
-    except Exception as e:
-        print(e)
-        return None
-
-
-def get_ses_client() -> client:
-    """return an SES client"""
-    try:
-        s3_client = client('ses',
-                           aws_access_key_id=environ['AWS_ACCESS_KEY'],
-                           aws_secret_access_key=environ['AWS_SECRET_KEY'])
-        return s3_client
-    except Exception as e:
-        print(e)
-        return None
-
 
 def get_db_connection() -> connection:
     """return a database connection"""
@@ -45,7 +20,7 @@ def get_db_connection() -> connection:
             password=environ['DB_PASSWORD'],
             port=environ['DB_PORT']
         )
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         print(e)
         return None
 
@@ -54,7 +29,7 @@ def get_db_cursor(conn: connection) -> cursor:
     """return a cursor object based on a given connection"""
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         st.write(e)
         return None
 
@@ -69,8 +44,8 @@ def is_email_already_subscribed(email: str, conn: connection) -> bool:
 
 def is_email_valid(email: str) -> bool:
     """return a bool based on whether this is a valid email"""
-    emaiL_regex = re.compile(r"^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$")
-    return re.match(pattern=emaiL_regex, string=email) is not None
+    email_pattern = re.compile(r"^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$")
+    return re.match(pattern=email_pattern, string=email) is not None
 
 
 def get_from_subscription_form() -> dict:
@@ -88,24 +63,24 @@ def get_from_subscription_form() -> dict:
     return {}
 
 def upload_new_subscriber(conn: connection, email: str):
-    """"""
+    """Take the email given and attempt to upload it to the database. """
     try:
         with get_db_cursor(conn) as curs:
             curs.execute("INSERT INTO subscriber (email) VALUES (%s)", (email, ))
             conn.commit()
         return 1
-    except Exception as e:
+    except Exception as e: # pylint: disable=broad-exception-caught
         st.write(e)
         return None
 
-def deploy_page():
-    """"""
+def deploy_subscription_page():
+    """This contains the main code for the subscription page."""
     st.title("Summary Report")
     st.subheader(
-        "If you wish to subscribe to a daily report on our tracking results, submit your email below.")
-    input = get_from_subscription_form()
+        "Subscribe to a daily report on our tracking results by adding your email below.")
+    subscriber_input = get_from_subscription_form()
     conn = get_db_connection()
-    email = input.get("email", None)
+    email = subscriber_input.get("email", None)
     if email and is_email_already_subscribed(email, conn):
         st.error("This email is already subscribed to the summary report.")
     elif email:
@@ -117,4 +92,4 @@ def deploy_page():
 
 if __name__ == "__main__":
     load_dotenv()
-    deploy_page()
+    deploy_subscription_page()
