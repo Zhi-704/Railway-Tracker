@@ -4,9 +4,9 @@
 import logging
 from dotenv import load_dotenv
 
-from extract import get_api_data_of_all_stations
-from transform import process_all_stations
-from load import import_to_database
+from extract_real import get_api_data_of_all_stations
+from transform_real import process_all_stations
+from load_real import import_to_database
 
 
 def main(event, context):  # pylint: disable=unused-argument

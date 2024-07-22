@@ -2,7 +2,9 @@
 
 import logging
 from dotenv import load_dotenv
-from extract import save_data_to_file, get_api_data_of_all_stations
+
+from extract_real import (save_data_to_file,
+                          get_api_data_of_all_stations)
 
 LOCATION_REMOVE_KEYS = [
     'tiploc',

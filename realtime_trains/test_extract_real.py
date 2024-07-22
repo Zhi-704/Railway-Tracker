@@ -7,7 +7,7 @@ from requests.exceptions import RequestException
 from requests.auth import HTTPBasicAuth
 from requests import Response
 
-from extract import (
+from extract_real import (
     get_data_from_api,
     get_yesterday_data_of_station,
     get_all_stations_crs,
@@ -18,7 +18,7 @@ from extract import (
 class TestAPIFunctions(unittest.TestCase):
     '''Class for testing all api functions in the extract file'''
 
-    @patch('extract.get')
+    @patch('extract_real.get')
     def test_get_data_from_api_success(self, mock_get):
         '''Test if api is called with the correct parameters'''
         mock_response = MagicMock(spec=Response)
@@ -37,7 +37,7 @@ class TestAPIFunctions(unittest.TestCase):
             url, auth=HTTPBasicAuth(username, password), timeout=10)
         mock_response.raise_for_status.assert_called_once()
 
-    @patch('extract.get')
+    @patch('extract_real.get')
     def test_get_data_from_api_failure(self, mock_get):
         '''Test if scenario where the api request gives an exception'''
 
@@ -53,11 +53,11 @@ class TestAPIFunctions(unittest.TestCase):
             url, auth=HTTPBasicAuth(username, password), timeout=10)
         self.assertIsNone(result)
 
-    @patch.dict('extract.ENV',
+    @patch.dict('extract_real.ENV',
                 {'REALTIME_USERNAME': 'user',
                  'REALTIME_PASSWORD': 'pass'})
-    @patch('extract.get_api_url')
-    @patch('extract.get_data_from_api')
+    @patch('extract_real.get_api_url')
+    @patch('extract_real.get_data_from_api')
     def test_get_yesterday_data_of_station_success(self,
                                                    mock_get_data_from_api,
                                                    mock_get_api_url):
@@ -72,11 +72,11 @@ class TestAPIFunctions(unittest.TestCase):
         mock_get_data_from_api.assert_called_once()
         self.assertEqual(result, {'data': 'station_data'})
 
-    @patch.dict('extract.ENV',
+    @patch.dict('extract_real.ENV',
                 {'REALTIME_USERNAME': 'user',
                  'REALTIME_PASSWORD': 'pass'})
-    @patch('extract.get_api_url')
-    @patch('extract.get_data_from_api')
+    @patch('extract_real.get_api_url')
+    @patch('extract_real.get_data_from_api')
     def test_get_yesterday_data_of_station_failure(self, mock_get_data_from_api, mock_get_api_url):
         '''Test case for retrieving API data of station where there is an error'''
         mock_get_data_from_api.return_value = None
@@ -89,8 +89,8 @@ class TestAPIFunctions(unittest.TestCase):
         mock_get_data_from_api.assert_called_once()
         self.assertIsNone(result)
 
-    @patch('extract.get_connection')
-    @patch('extract.get_cursor')
+    @patch('extract_real.get_connection')
+    @patch('extract_real.get_cursor')
     def test_get_all_stations_crs(self, mock_get_cursor, mock_get_connection):
         '''Tests if the query matches the expected query'''
         mock_conn = MagicMock()
@@ -107,8 +107,8 @@ class TestAPIFunctions(unittest.TestCase):
             "SELECT station_crs FROM station")
         self.assertEqual(result, ['STN1', 'STN2'])
 
-    @patch('extract.get_all_stations_crs')
-    @patch('extract.get_yesterday_data_of_station')
+    @patch('extract_real.get_all_stations_crs')
+    @patch('extract_real.get_yesterday_data_of_station')
     def test_get_api_data_of_all_stations(self,
                                           mock_get_yesterday_data_of_station,
                                           mock_get_all_stations_crs):
