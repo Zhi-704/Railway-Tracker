@@ -40,11 +40,10 @@ def upload_pdf_to_s3():
 
     try:
         s3.upload_file(local_file, bucket, s3_file_name)
-        print(f"Upload Successful: {s3_file_name} to bucket {bucket}")
-        return True
+        logging.info("Upload Successful: %s, to bucket: %s",
+                     s3_file_name, bucket)
     except FileNotFoundError:
         logging.error("The file was not found.")
-        return False
     except Exception as e:
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
