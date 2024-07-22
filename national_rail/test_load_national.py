@@ -7,7 +7,7 @@ from datetime import datetime
 import psycopg2
 from psycopg2.extensions import connection, cursor
 
-from load import (
+from load_national import (
     get_connection,
     get_cursor,
     upload_incident,
@@ -27,7 +27,7 @@ from load import (
         "DB_PORT": "test_port",
     },
 )
-@patch("load.connect")
+@patch("load_national.connect")
 def test_get_connection(mock_connect: connection):
     """ Tests get_connection returns connection. """
 
@@ -38,7 +38,7 @@ def test_get_connection(mock_connect: connection):
     mock_connect.assert_called_once()
 
 
-@patch("load.get_connection")
+@patch("load_national.get_connection")
 def test_get_cursor(mock_get_connection: connection):
     """ Tests get_cursor returns cursor. """
 
@@ -51,8 +51,8 @@ def test_get_cursor(mock_get_connection: connection):
     assert db_cursor == mock_connection.cursor()
 
 
-@patch("load.get_connection")
-@patch("load.get_cursor")
+@patch("load_national.get_connection")
+@patch("load_national.get_cursor")
 def test_upload_incident(mock_get_cursor: cursor, mock_get_connection: connection):
     """ Tests uploading incidents and returning incident id."""
 
@@ -94,8 +94,8 @@ def test_upload_incident(mock_get_cursor: cursor, mock_get_connection: connectio
          incident_mock["routes_affected"]),)
 
 
-@patch("load.get_connection")
-@patch("load.get_cursor")
+@patch("load_national.get_connection")
+@patch("load_national.get_cursor")
 def test_check_if_exists(mock_get_cursor: cursor, mock_get_connection: connection):
     """ Tests that checking if an entry in the database exists works as expected. """
 
@@ -119,8 +119,8 @@ def test_check_if_exists(mock_get_cursor: cursor, mock_get_connection: connectio
         'SELECT * FROM mock_table WHERE mock_code = %s', ('XT',),)
 
 
-@patch("load.get_connection")
-@patch("load.get_cursor")
+@patch("load_national.get_connection")
+@patch("load_national.get_cursor")
 def test_get_operator_code_id(mock_get_cursor: cursor, mock_get_connection: connection):
     """ Tests that getting an operator code id returns the id. """
 
@@ -135,8 +135,8 @@ def test_get_operator_code_id(mock_get_cursor: cursor, mock_get_connection: conn
     assert operator_id == 1
 
 
-@patch("load.get_connection")
-@patch("load.get_cursor")
+@patch("load_national.get_connection")
+@patch("load_national.get_cursor")
 def test_upload_affected_operator(mock_get_cursor: cursor, mock_get_connection: connection):
     """ Tests that uploading an affected operator for incidents inserts as expected. """
 
