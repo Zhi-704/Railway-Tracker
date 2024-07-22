@@ -11,6 +11,7 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
+SUBSCRIPTION_TABLE_NAME = "subscriber"
 
 def get_s3_client() -> client:
     """return an S3 client"""
@@ -56,17 +57,16 @@ def get_db_cursor(conn: connection) -> cursor:
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
     except Exception as e:
-        print(e)
+        st.write(e)
         return None
 
 
 def is_email_already_subscribed(email: str, conn: connection) -> bool:
     """check if the email given has already subscribed to the database"""
     with get_db_cursor(conn) as curs:
-        curs.execute(f"""SELECT COUNT(*) FROM users WHERE email='{email}'""")
+        curs.execute("SELECT COUNT(*) FROM subscriber WHERE email=%s", (email, ))
         res = curs.fetchone()
-
-    return res == 1
+    return res["count"] == 1
 
 
 def is_email_valid(email: str) -> bool:
@@ -86,11 +86,19 @@ def get_from_subscription_form() -> dict:
         if not is_email_valid(email):
             st.error("This is not a valid email.")
         else:
-            st.success(f"Email entered: {email}")
             return {'email': email}
-
     return {}
 
+def upload_new_subscriber(conn: connection, email: str):
+    """"""
+    try:
+        with get_db_cursor(conn) as curs:
+            curs.execute("INSERT INTO subscriber (email) VALUES (%s)", (email, ))
+            conn.commit()
+        return 1
+    except Exception as e:
+        st.write(e)
+        return None
 
 def deploy_page():
     """"""
@@ -98,11 +106,15 @@ def deploy_page():
     st.subheader(
         "If you wish to subscribe to a daily report on our tracking results, submit your email below.")
     input = get_from_subscription_form()
-    ses = get_ses_client()
     conn = get_db_connection()
-
-    if input.get("email", None) and is_email_already_subscribed(input["email"], conn):
+    email = input.get("email", None)
+    if email and is_email_already_subscribed(email, conn):
         st.error("This email is already subscribed to the summary report.")
+    elif email:
+        if upload_new_subscriber(conn, email) is not None:
+            st.success(f"{email} is now subscribed to the summary report.")
+        else:
+            st.error(f"An error ocurred when trying to add {email} to the database.")
 
 
 if __name__ == "__main__":
