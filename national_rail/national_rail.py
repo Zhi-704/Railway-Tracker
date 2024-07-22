@@ -1,9 +1,9 @@
 """ Module for running the pipeline for extracting incident data from the NationalRail API."""
 import logging
 
-import extract_national as extract_national
-import transform_national as transform_national
-import load_national as load_national
+import extract_national
+import transform_national
+import load_national
 
 FILENAME = "data.xml"
 
