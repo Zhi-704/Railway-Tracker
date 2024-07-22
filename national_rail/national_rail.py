@@ -15,4 +15,7 @@ if __name__ == "__main__":
 
     incidents_data = transform_national.transform_national_rail_data(FILENAME)
 
+    if not incidents_data:
+        logging.info("No incidents found.")
+
     load_national.load_incidents(incidents_data)
