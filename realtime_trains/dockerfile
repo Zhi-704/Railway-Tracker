@@ -3,9 +3,9 @@ FROM public.ecr.aws/lambda/python:latest
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY extract.py .
-COPY transform.py .
-COPY load.py .
+COPY extract_real.py .
+COPY transform_real.py .
+COPY load_real.py .
 COPY realtime_trains.py .
 
 CMD [ "realtime_trains.main" ]

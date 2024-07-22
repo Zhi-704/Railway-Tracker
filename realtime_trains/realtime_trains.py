@@ -20,9 +20,7 @@ def main(event, context):  # pylint: disable=unused-argument
     - Loads the transformed data into a database using import_to_database().
     """
 
-    logging.basicConfig(
-        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+    logging.getLogger().setLevel(logging.INFO)
 
     try:
         load_dotenv()
