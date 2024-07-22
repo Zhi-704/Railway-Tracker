@@ -5,7 +5,7 @@
 from unittest.mock import patch
 
 import pytest
-from transform import (
+from transform_real import (
     filter_keys,
     service_matches_criteria,
     process_station,
@@ -177,7 +177,7 @@ class TestProcessStation():
 class TestProcessAllStations():
     '''Class for testing the function process_all_stations'''
 
-    @patch('transform.process_station')
+    @patch('transform_real.process_station')
     def test_process_all_stations(self, mock_process_station):
         '''Tests for base case with the expected number of calls'''
         stations_data = [
@@ -196,7 +196,7 @@ class TestProcessAllStations():
         assert result == processed_data
         assert mock_process_station.call_count == 2
 
-    @patch('transform.process_station')
+    @patch('transform_real.process_station')
     def test_process_all_stations_wrong_type(self, mock_process_station):
         '''Tests for if a wrong data type is given for an argument'''
         stations_data = {'location': {'name': 'Station 1'}, 'services': []}

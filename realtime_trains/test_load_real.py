@@ -3,7 +3,7 @@
 from unittest.mock import MagicMock, patch
 import unittest
 
-from load import (
+from load_real import (
     get_id_if_exists,
     insert_or_get_waypoint,
     insert_or_get_entry,
@@ -50,7 +50,7 @@ class TestInsertOrGetEntry(unittest.TestCase):
         self.conn = MagicMock()
         self.cur = MagicMock()
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_entry_existing(self, mock_get_id_if_exists):
         '''Test for case if there exists an entry in the database'''
         mock_get_id_if_exists.return_value = 1
@@ -69,7 +69,7 @@ class TestInsertOrGetEntry(unittest.TestCase):
         assert self.conn.commit.call_count == 0
         assert self.conn.rollback.call_count == 0
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_entry_insert(self, mock_get_id_if_exists):
         '''Test for case if there exists no entry in the database'''
         mock_get_id_if_exists.return_value = None
@@ -101,7 +101,7 @@ class TestInsertOrGetEntry(unittest.TestCase):
         assert self.conn.commit.call_count == 1
         assert self.conn.rollback.call_count == 0
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_entry_error(self, mock_get_id_if_exists):
         '''Test for case where the query is incorrect'''
         mock_get_id_if_exists.return_value = None
@@ -152,14 +152,14 @@ class TestImportToDatabase(unittest.TestCase):
             }
         ]
 
-    @patch('load.get_connection')
-    @patch('load.get_cursor')
-    @patch('load.insert_or_get_station')
-    @patch('load.insert_or_get_operator')
-    @patch('load.insert_or_get_service')
-    @patch('load.insert_or_get_waypoint')
-    @patch('load.insert_or_get_cancel_code')
-    @patch('load.insert_or_get_cancellation')
+    @patch('load_real.get_connection')
+    @patch('load_real.get_cursor')
+    @patch('load_real.insert_or_get_station')
+    @patch('load_real.insert_or_get_operator')
+    @patch('load_real.insert_or_get_service')
+    @patch('load_real.insert_or_get_waypoint')
+    @patch('load_real.insert_or_get_cancel_code')
+    @patch('load_real.insert_or_get_cancellation')
     def test_import_to_database(self,
                                 mock_insert_or_get_cancellation,
                                 mock_insert_or_get_cancel_code,
@@ -227,7 +227,7 @@ class TestInsertOrGetWaypoint(unittest.TestCase):
         self.conn = MagicMock()
         self.cur = MagicMock()
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_waypoint_existing(self, mock_get_id_if_exists):
         '''Test for case if there exists a waypoint entry in the database'''
 
@@ -246,7 +246,7 @@ class TestInsertOrGetWaypoint(unittest.TestCase):
         self.conn.commit.assert_not_called()
         self.conn.rollback.assert_not_called()
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_waypoint_insert(self, mock_get_id_if_exists):
         '''Test for case if there is no same existing waypoint entry in the database'''
 
@@ -266,7 +266,7 @@ class TestInsertOrGetWaypoint(unittest.TestCase):
         self.conn.commit.assert_called_once()
         self.conn.rollback.assert_not_called()
 
-    @patch('load.get_id_if_exists')
+    @patch('load_real.get_id_if_exists')
     def test_insert_or_get_waypoint_error(self, mock_get_id_if_exists):
         '''Test for case if there is an exception when executing the query'''
         mock_get_id_if_exists.return_value = None
