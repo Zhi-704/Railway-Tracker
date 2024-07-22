@@ -46,13 +46,25 @@ def get_sns_client():
     except Exception as e: # pylint: disable=broad-exception-caught
         st.write(e)
         return None
+    
+def get_list_of_operators() -> list[str]:
+    """"""
+    conn = get_db_connection()
+
+    with get_db_cursor(conn) as curs:
+        curs.execute("""SELECT operator_code, operator_name FROM operator ORDER BY operator_name""")
+        res = curs.fetchall()
+    
+    return [f"{row["operator_code"]} - {row["operator_name"]}" for row in res]
+    
+
 
 def get_user_contacts_from_form() -> dict | None:
     """create a subscription form for users to submit their contact information."""
     with st.form("alert_subscription", clear_on_submit=True, border=True):
 
 
-        operator = st.selectbox("Select an Operator", ("One", "Two", "Three"))
+        operator = st.selectbox("Select an Operator", get_list_of_operators())
 
         email = st.text_input("Enter your email")
         phone_no = st.text_input("Enter your phone number")
