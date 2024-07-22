@@ -35,7 +35,7 @@ def upload_pdf_to_s3():
     s3 = get_s3_client()
     bucket = environ['S3_BUCKET_NAME']
     prefix = datetime.now()
-    local_file = 'railway_tracker.pdf'
+    local_file = 'report.pdf'
     s3_file_name = f"{prefix}_{local_file}"
 
     try:
