@@ -4,16 +4,20 @@ Your code has been rated at 10.00/10
 
 ************* Module incident_alerts
 dashboard/pages/incident_alerts.py:37:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/pages/incident_alerts.py:68:71: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/pages/incident_alerts.py:71:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/pages/incident_alerts.py:73:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/pages/incident_alerts.py:78:0: C0304: Final newline missing (missing-final-newline)
-dashboard/pages/incident_alerts.py:72:4: E1111: Assigning result of a function call, where the function has no return (assignment-from-no-return)
-dashboard/pages/incident_alerts.py:72:4: W0612: Unused variable 'subscriber_inputs' (unused-variable)
+dashboard/pages/incident_alerts.py:49:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:57:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:59:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:80:71: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:83:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:85:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/pages/incident_alerts.py:90:0: C0304: Final newline missing (missing-final-newline)
+dashboard/pages/incident_alerts.py:50:0: C0112: Empty function docstring (empty-docstring)
+dashboard/pages/incident_alerts.py:84:4: E1111: Assigning result of a function call, where the function has no return (assignment-from-no-return)
+dashboard/pages/incident_alerts.py:84:4: W0612: Unused variable 'subscriber_inputs' (unused-variable)
 dashboard/pages/incident_alerts.py:5:0: W0611: Unused import re (unused-import)
 
 -----------------------------------
-Your code has been rated at 7.07/10
+Your code has been rated at 6.60/10
 
 
 ------------------------------------
