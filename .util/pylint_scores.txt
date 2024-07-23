@@ -76,11 +76,3 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module stations
-database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
-database/stations.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-database/stations.py:15723:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-
------------------------------------
-Your code has been rated at 6.25/10
-
