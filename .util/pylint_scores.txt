@@ -6,15 +6,17 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module main_page_functions
-dashboard/main_page_functions.py:51:0: C0301: Line too long (142/100) (line-too-long)
-dashboard/main_page_functions.py:54:0: C0304: Final newline missing (missing-final-newline)
-dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
-dashboard/main_page_functions.py:39:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+************* Module db_connection
+archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 8.48/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
@@ -47,6 +49,12 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module realtime_trains
+realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.47/10
+
 ************* Module load_real
 realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
 realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -60,27 +68,20 @@ Your code has been rated at 9.67/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module realtime_trains
-realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.47/10
-
-************* Module db_connection
-archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
-
------------------------------------
-Your code has been rated at 8.89/10
-
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module main_page_functions
+dashboard/main_page_functions.py:38:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page_functions.py:51:0: C0301: Line too long (142/100) (line-too-long)
+dashboard/main_page_functions.py:54:0: C0304: Final newline missing (missing-final-newline)
+dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
+dashboard/main_page_functions.py:39:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 8.18/10
 
 
 ------------------------------------
