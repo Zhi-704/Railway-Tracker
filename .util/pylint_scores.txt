@@ -6,6 +6,16 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module main_page_functions
+dashboard/main_page_functions.py:51:0: C0301: Line too long (142/100) (line-too-long)
+dashboard/main_page_functions.py:54:0: C0304: Final newline missing (missing-final-newline)
+dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
+dashboard/main_page_functions.py:39:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
+
+-----------------------------------
+Your code has been rated at 8.48/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
