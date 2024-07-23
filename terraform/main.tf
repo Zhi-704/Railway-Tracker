@@ -328,8 +328,8 @@ resource "aws_security_group" "c11-railway-tracker-dashboard-sg-tf" {
 
 }
 
-resource "aws_ecs_service" "c11-Fariha-stack-exchange-ECS-dashboard-service-terraform" {
-    name = "c11-Fariha-dashboard-service-terraform"
+resource "aws_ecs_service" "c11-railway-tracker-dashboard-service-tf" {
+    name = "c11-railway-tracker-dashboard-service-tf"
     cluster = data.aws_ecs_cluster.c11-cluster.id
     task_definition = aws_ecs_task_definition.c11-railway-tracker-dashboard-ECS-task-def-tf.arn
     desired_count = 1
