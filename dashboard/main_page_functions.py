@@ -35,7 +35,7 @@ def get_db_cursor(conn: connection) -> cursor | None:
     except Exception as e: # pylint: disable=broad-exception-caught
         st.write(e)
         return None
-
+    
 def convert_datetime_to_string(input_date: dt.datetime) -> str:
     """"""
     try:
