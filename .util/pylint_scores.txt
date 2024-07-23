@@ -18,10 +18,16 @@ national_rail/load_national.py:105:11: W0718: Catching too general exception Exc
 Your code has been rated at 9.63/10
 
 ************* Module sns_reporting
-national_rail/sns_reporting.py:70:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/sns_reporting.py:19:0: C0116: Missing function or method docstring (missing-function-docstring)
+national_rail/sns_reporting.py:20:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+national_rail/sns_reporting.py:53:4: W0621: Redefining name 'response' from outer scope (line 178) (redefined-outer-name)
+national_rail/sns_reporting.py:100:4: W0702: No exception type(s) specified (bare-except)
+national_rail/sns_reporting.py:134:8: W0621: Redefining name 'response' from outer scope (line 178) (redefined-outer-name)
+national_rail/sns_reporting.py:144:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/sns_reporting.py:104:0: R1710: Either all return statements in a function should return an expression, or none of them should. (inconsistent-return-statements)
 
 -----------------------------------
-Your code has been rated at 9.82/10
+Your code has been rated at 9.26/10
 
 
 ------------------------------------
