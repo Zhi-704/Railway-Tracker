@@ -237,6 +237,17 @@ resource "aws_s3_bucket" "c11-railway-tracker-s3" {
 
 
 # ECS FOR DASHBOARD:
+  # ECS task definition
+  # security group
+  # ECS fargate service
+data "aws_ecs_cluster" "c11-cluster" {
+    cluster_name = "c11-ecs-cluster"
+}
+
+data "aws_iam_role" "execution-role" {
+    name = "ecsTaskExecutionRole"
+}
+
 resource "aws_ecs_task_definition" "c11-railway-tracker-dashboard-ECS-task-def-tf" {
   family = "c11-railway-tracker-dashboard-ECS-task-def-tf"
   requires_compatibilities = ["FARGATE"]
@@ -303,9 +314,6 @@ resource "aws_ecs_task_definition" "c11-railway-tracker-dashboard-ECS-task-def-t
     },
   ])
 }
-
-
-# SERVICE TO START DASHBOARD:
 
 resource "aws_security_group" "c11-railway-tracker-dashboard-sg-tf" {
     name = "c11-railway-tracker-dashboard-sg-tf"
