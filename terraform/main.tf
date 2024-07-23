@@ -7,42 +7,42 @@ provider "aws" {
     secret_key = var.AWS_SECRET_KEY
 }
 
-# RDS: 
-resource "aws_db_instance" "c11-railway-tracker-db" {
-    allocated_storage            = 10
-    db_name                      = "railwaytrackerdb"
-    identifier                   = "c11-railway-tracker-db"
-    engine                       = "postgres"
-    engine_version               = "16.1"
-    instance_class               = "db.t3.micro"
-    publicly_accessible          = true
-    performance_insights_enabled = false
-    skip_final_snapshot          = true
-    db_subnet_group_name         = "c11-public-subnet-group"
-    vpc_security_group_ids       = [aws_security_group.c11-railway-tracker-RDS-sg-terrafrom.id]
-    username                     = var.DB_USERNAME
-    password                     = var.DB_PASSWORD
-}
+# # RDS: 
+# resource "aws_db_instance" "c11-railway-tracker-db" {
+#     allocated_storage            = 10
+#     db_name                      = "railwaytrackerdb"
+#     identifier                   = "c11-railway-tracker-db"
+#     engine                       = "postgres"
+#     engine_version               = "16.1"
+#     instance_class               = "db.t3.micro"
+#     publicly_accessible          = true
+#     performance_insights_enabled = false
+#     skip_final_snapshot          = true
+#     db_subnet_group_name         = "c11-public-subnet-group"
+#     vpc_security_group_ids       = [aws_security_group.c11-railway-tracker-RDS-sg-terrafrom.id]
+#     username                     = var.DB_USERNAME
+#     password                     = var.DB_PASSWORD
+# }
 
-resource "aws_security_group" "c11-railway-tracker-RDS-sg-terrafrom" {
-    name = "c11-railway-tracker-RDS-sg-terrafrom"
-    description = "Security group for connecting to RDS database"
-    vpc_id = data.aws_vpc.c11-vpc.id
+# resource "aws_security_group" "c11-railway-tracker-RDS-sg-terrafrom" {
+#     name = "c11-railway-tracker-RDS-sg-terrafrom"
+#     description = "Security group for connecting to RDS database"
+#     vpc_id = data.aws_vpc.c11-vpc.id
 
-    egress {
-        from_port        = 0
-        to_port          = 0
-        protocol         = "-1"
-        cidr_blocks      = ["0.0.0.0/0"]
-    }
+#     egress {
+#         from_port        = 0
+#         to_port          = 0
+#         protocol         = "-1"
+#         cidr_blocks      = ["0.0.0.0/0"]
+#     }
 
-    ingress {
-        from_port = 5432
-        to_port = 5432
-        protocol = "tcp"
-        cidr_blocks      = ["0.0.0.0/0"]
-    }
-}
+#     ingress {
+#         from_port = 5432
+#         to_port = 5432
+#         protocol = "tcp"
+#         cidr_blocks      = ["0.0.0.0/0"]
+#     }
+# }
 
 data "aws_vpc" "c11-vpc" {
     id = var.C11_VPC
@@ -128,6 +128,93 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
   target {
     arn = aws_lambda_function.c11-railway-tracker-archive-lambda-function.arn
     role_arn = aws_iam_role.c11-railway-tracker-archive-schedule-role.arn
+  }
+}
+
+
+
+# REAL TIME PERFORMANCE ETL: LAMBDA 
+    # policy document
+    # iam role
+    # lambda
+
+# data "aws_iam_policy_document" "c11-railway-tracker-archive-lambda-policy-document" {
+#     statement {
+#         actions    = ["sts:AssumeRole"]
+#         effect     = "Allow"
+#         principals {
+#             type        = "Service"
+#             identifiers = ["lambda.amazonaws.com"]
+#         }
+#   }
+# }
+
+resource "aws_iam_role" "c11-railway-tracker-realtime-etl-lambda-role-tf" {
+  name               = "c11-railway-tracker-realtime-etl-lambda-role-tf"
+  assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-lambda-policy-document.json
+}
+
+
+resource "aws_lambda_function" "c11-railway-tracker-realtime-etl-lambda-function-tf" {
+  role          = aws_iam_role.c11-railway-tracker-archive-lambda-role.arn
+  function_name = "c11-railway-tracker-realtime-etl-lambda-function-tf"
+  package_type  = "Image"
+  architectures = ["x86_64"]
+  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-trainwreck-realtime:latest"
+
+  timeout = 720
+
+  environment {
+    variables = {
+      ACCESS_KEY_ID     = var.AWS_ACCESS_KEY,
+      SECRET_ACCESS_KEY = var.AWS_SECRET_KEY,
+      DB_IP             = var.DB_IP,
+      DB_NAME           = var.DB_NAME,
+      DB_USERNAME       = var.DB_USERNAME,
+      DB_PASSWORD       = var.DB_PASSWORD,
+      DB_PORT           = var.DB_PORT,
+      REALTIME_USERNAME = var.REALTIME_USERNAME,
+      REALTIME_PASSWORD = var.REALTIME_PASSWORD
+    }
+  }
+}
+
+# ARCHIVE EVENT BRIDGE SCHEDULE:
+    # policy document
+    # iam role
+    # event bridge schedule lambda at 12 am 
+
+# data "aws_iam_policy_document" "c11-railway-tracker-archive-schedule-policy-document" {
+#     statement {
+#             actions    = ["sts:AssumeRole"]
+#             effect     = "Allow"
+#             principals {
+#                 type        = "Service"
+#                 identifiers = ["scheduler.amazonaws.com"]
+#             }
+#     }
+# }
+# policy is generic so can be reused.
+
+resource "aws_iam_role" "c11-railway-tracker-realtime-etl-schedule-role-tf" {
+  name               = "c11-railway-tracker-realtime-etl-schedule-role-tf"
+  assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-schedule-policy-document.json
+}
+
+# schedule realtime process 5pm everyday
+resource "aws_scheduler_schedule" "c11-railway-tracker-realtime-etl-schedule-tf" {
+  name = "c11-railway-tracker-realtime-etl-schedule-tf"
+  group_name = "default"
+  schedule_expression = "cron(0 0 * * ? *)"
+  schedule_expression_timezone = "Europe/London"
+
+  flexible_time_window {
+    mode = "OFF"
+  }
+
+  target {
+    arn = aws_lambda_function.c11-railway-tracker-realtime-etl-lambda-function-tf.arn
+    role_arn = aws_iam_role.c11-railway-tracker-realtime-etl-schedule-role-tf.arn
   }
 }
 
