@@ -36,8 +36,9 @@ streamlit run main_page.py
 2. View if docker image has been created locally:```docker image ls```
 3. Run docker image with environment variables: ```docker run -it -p 8501:8501 --env-file .env railway-tracker-dashboard-local```
 
-## Creating a docker image to run on AWS:
+## Running the dashboard on an AWS ECS Service:
 
 1. Create an ECR repository on AWS.
 2. Follow steps from the push commands to upload the docker image.
 3. Connect the docker image to an ECS Fargate service (`Terraform/main.tf`).
+4. Run: ```http://[External_URL]:8501```, replace [External_URL] with the address found on AWS ECS.

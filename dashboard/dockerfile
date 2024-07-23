@@ -17,7 +17,6 @@ COPY ./.streamlit ./.streamlit
 COPY main_page.py .
 
 
-# Instructions for running streamlit dashboard
 CMD streamlit run main_page.py --server.port 8501
 
 
@@ -29,5 +28,5 @@ CMD streamlit run main_page.py --server.port 8501
     # docker tag c11-railway-tracker-dashboard-erc:latest 129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-dashboard-erc:latest
     # docker push 129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-dashboard-erc:latest
 
-# external link: 
+# external link: http://18.132.245.150:8501
 
