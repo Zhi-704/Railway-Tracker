@@ -30,13 +30,12 @@ Your code has been rated at 10.00/10
 Your code has been rated at 10.00/10
 
 ************* Module transform_pdf
-pdf_report/transform_pdf.py:7:0: C0301: Line too long (408/100) (line-too-long)
-pdf_report/transform_pdf.py:38:0: C0301: Line too long (122/100) (line-too-long)
-pdf_report/transform_pdf.py:39:0: C0301: Line too long (127/100) (line-too-long)
-pdf_report/transform_pdf.py:67:0: C0116: Missing function or method docstring (missing-function-docstring)
+pdf_report/transform_pdf.py:40:0: C0301: Line too long (122/100) (line-too-long)
+pdf_report/transform_pdf.py:41:0: C0301: Line too long (127/100) (line-too-long)
+pdf_report/transform_pdf.py:76:0: C0116: Missing function or method docstring (missing-function-docstring)
 
 -----------------------------------
-Your code has been rated at 7.78/10
+Your code has been rated at 8.93/10
 
 
 ------------------------------------
