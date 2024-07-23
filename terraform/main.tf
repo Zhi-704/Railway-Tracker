@@ -79,8 +79,6 @@ resource "aws_lambda_function" "c11-railway-tracker-archive-lambda-function" {
   package_type  = "Image"
   architectures = ["x86_64"]
   image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-archive-lambda-ecr:latest"
-  
-    #   data.aws_ecr_image.archive-lambda-image.image_uri
 
   environment {
     variables = {
@@ -133,3 +131,8 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-archive-schedule" {
   }
 }
 
+
+# S3 BUCKET FOR REPORTS
+resource "aws_s3_bucket" "c11-railway-tracker-s3" {
+  bucket = "c11-railway-tracker-s3"
+}
