@@ -7,6 +7,20 @@ provider "aws" {
     secret_key = var.AWS_SECRET_KEY
 }
 
+data "aws_subnet" "c11-subnet-1" {
+  id = "subnet-0e6c6a8f959dae31a"
+}
+data "aws_subnet" "c11-subnet-2" {
+  id = "subnet-08781450402b81aa2"
+}
+data "aws_subnet" "c11-subnet-3" {
+  id = "subnet-07de213eeae1f6307"
+}
+
+data "aws_vpc" "c11-vpc" {
+    id = var.C11_VPC
+}
+
 # # RDS: 
 # resource "aws_db_instance" "c11-railway-tracker-db" {
 #     allocated_storage            = 10
@@ -43,10 +57,6 @@ provider "aws" {
 #         cidr_blocks      = ["0.0.0.0/0"]
 #     }
 # }
-
-data "aws_vpc" "c11-vpc" {
-    id = var.C11_VPC
-}
 
 
 
@@ -222,4 +232,112 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-realtime-etl-schedule-tf"
 # S3 BUCKET FOR REPORTS
 resource "aws_s3_bucket" "c11-railway-tracker-s3" {
   bucket = "c11-railway-tracker-s3"
+}
+
+
+
+# ECS FOR DASHBOARD:
+resource "aws_ecs_task_definition" "c11-railway-tracker-dashboard-ECS-task-def-tf" {
+  family = "c11-railway-tracker-dashboard-ECS-task-def-tf"
+  requires_compatibilities = ["FARGATE"]
+  network_mode = "awsvpc"
+  execution_role_arn = data.aws_iam_role.execution-role.arn
+  cpu = 1024
+  memory = 2048
+  container_definitions = jsonencode([
+    {
+      name = "c11-railway-tracker-dashboard-ECS-task-def-tf"
+      image = ""
+      cpu = 10
+      memory = 512
+      essential = true
+      portMappings = [
+        {
+            containerPort = 80
+            hostPort = 80
+        },
+        {
+            containerPort = 8501
+            hostPort = 8501       
+        }
+      ]
+      environment= [
+                {
+                    "name": "ACCESS_KEY",
+                    "value": var.AWS_ACCESS_KEY
+                },
+                {
+                    "name": "SECRET_ACCESS_KEY",
+                    "value": var.AWS_SECRET_KEY
+                },
+                {
+                    "name": "DB_NAME",
+                    "value": var.DB_NAME
+                },
+                {
+                    "name": "DB_USERNAME",
+                    "value": var.DB_USERNAME
+                },
+                {
+                    "name": "DB_PASSWORD",
+                    "value": var.DB_PASSWORD
+                },
+                {
+                    "name": "DB_IP",
+                    "value": var.DB_IP
+                },
+                {
+                    "name": "DB_PORT",
+                    "value": var.DB_PORT
+                }
+            ]
+            logConfiguration = {
+                logDriver = "awslogs"
+                options = {
+                    "awslogs-create-group" = "true"
+                    "awslogs-group" = "/ecs/c11-railway-tracker-dashboard-ECS-task-def-tf"
+                    "awslogs-region" = "eu-west-2"
+                    "awslogs-stream-prefix" = "ecs"
+                }
+            }
+    },
+  ])
+}
+
+
+# SERVICE TO START DASHBOARD:
+
+resource "aws_security_group" "c11-railway-tracker-dashboard-sg-tf" {
+    name = "c11-railway-tracker-dashboard-sg-tf"
+    description = "Security group for connecting to dashboard"
+    vpc_id = data.aws_vpc.c11-vpc.id
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port   = 8501
+        to_port     = 8501
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+
+}
+
+resource "aws_ecs_service" "c11-Fariha-stack-exchange-ECS-dashboard-service-terraform" {
+    name = "c11-Fariha-dashboard-service-terraform"
+    cluster = data.aws_ecs_cluster.c11-cluster.id
+    task_definition = aws_ecs_task_definition.c11-railway-tracker-dashboard-ECS-task-def-tf.arn
+    desired_count = 1
+    launch_type = "FARGATE" 
+    
+    network_configuration {
+        subnets = [data.aws_subnet.c11-subnet-1.id, data.aws_subnet.c11-subnet-2.id, data.aws_subnet.c11-subnet-3.id] 
+        security_groups = [aws_security_group.c11-railway-tracker-dashboard-sg-tf.id] 
+        assign_public_ip = true
+    }
 }
