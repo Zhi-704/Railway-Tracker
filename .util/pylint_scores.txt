@@ -2,20 +2,26 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module main_page
+dashboard/main_page.py:4:0: C0301: Line too long (175/100) (line-too-long)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.44/10
 
 ************* Module main_page_functions
-dashboard/main_page_functions.py:38:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page_functions.py:51:0: C0301: Line too long (142/100) (line-too-long)
-dashboard/main_page_functions.py:54:0: C0304: Final newline missing (missing-final-newline)
+dashboard/main_page_functions.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page_functions.py:158:0: C0304: Final newline missing (missing-final-newline)
 dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
-dashboard/main_page_functions.py:39:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:40:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:53:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:72:11: W0718: Catching too general exception Exception (broad-exception-caught)
+dashboard/main_page_functions.py:77:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:97:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:128:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.18/10
+Your code has been rated at 8.53/10
 
 
 ------------------------------------
