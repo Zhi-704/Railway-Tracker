@@ -28,16 +28,21 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
+def query_db(conn: connection, query: str) -> list[tuple]:
+    """Queries the database and returns the data."""
+    with get_cursor(conn) as cur:
+        cur.execute(query)
+        data = cur.fetchall()
+    logging.info("Database query successful: %s", query)
+    return data
+
+
 def extract_pdf() -> list[tuple]:
     """Extracts data from the RDS database."""
     conn = get_connection()
-    with get_cursor(conn) as cur:
-        cur.execute("""SELECT * FROM waypoint
+    return query_db(conn,
+                    """SELECT * FROM waypoint
                     JOIN station USING (station_id)""")
-        data = cur.fetchall()
-
-    logging.info("Extract: successful")
-    return data
 
 
 if __name__ == "__main__":
