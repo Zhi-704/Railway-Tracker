@@ -247,7 +247,7 @@ resource "aws_ecs_task_definition" "c11-railway-tracker-dashboard-ECS-task-def-t
   container_definitions = jsonencode([
     {
       name = "c11-railway-tracker-dashboard-ECS-task-def-tf"
-      image = ""
+      image = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-dashboard-erc:latest"
       cpu = 10
       memory = 512
       essential = true
