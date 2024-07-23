@@ -12,6 +12,7 @@ from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
 load_dotenv()
+FETCH_TYPES = ["all", "one", "many"]
 
 def get_db_connection() -> connection | None:
     """return a database connection"""
@@ -35,6 +36,43 @@ def get_db_cursor(conn: connection) -> cursor | None:
     except Exception as e: # pylint: disable=broad-exception-caught
         st.write(e)
         return None
+
+def run_fetch_command(curs: cursor, fetch_amount):
+    """"""
+    match(fetch_amount):
+        case "all":
+            return curs.fetchall()
+        case "many":
+            return curs.fetchmany()
+        case "one":
+            return curs.fetchone()
+        case _:
+            return None
+
+
+def fetch_from_query(fetch_amount: str, query: str):
+    """"""
+    try:
+        if fetch_amount not in FETCH_TYPES:
+            raise ValueError
+        conn = get_db_connection()
+        with get_db_cursor(conn) as curs:
+            curs.execute(query)
+            match(fetch_amount):
+                case "all":
+                    res = curs.fetchall()
+                case "many":
+                    res = curs.fetchmany()
+                case "one":
+                    res = curs.fetchone()
+                case _:
+                    raise ValueError
+            conn.close()
+        return res
+    except Exception as e:
+        st.error(e)
+        return None
+
     
 def convert_datetime_to_string(input_date: dt.datetime) -> str:
     """"""
@@ -43,12 +81,78 @@ def convert_datetime_to_string(input_date: dt.datetime) -> str:
     except ValueError:
         return ""
 
-def get_closest_scheduled_incident() -> str:
+def get_closest_scheduled_incident() -> str | None:
     """return the information on the closest incident scheduled
     after the current time."""
-    conn = get_db_connection()
-    with get_db_cursor(conn) as curs:
-        curs.execute("""SELECT incident_summary, incident_start FROM incident WHERE incident_start >= CURRENT_DATE ORDER BY incident_start""")
-        res = curs.fetchone()
-    conn.close()
-    return f"[ {convert_datetime_to_string(res["incident_start"])} ] {res["incident_summary"]}"
+    query = """
+    SELECT incident_summary, incident_start
+    FROM incident WHERE incident_start >= CURRENT_DATE
+    ORDER BY incident_start
+    """
+    res = fetch_from_query("one", query)
+    if res:
+        return f"[ {convert_datetime_to_string(res["incident_start"])} ] {res["incident_summary"]}"
+    return None
+
+def get_total_delays_for_every_station():
+    """"""
+    query = """
+    SELECT
+    s.station_name,
+    ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
+    EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
+    FROM waypoint w
+    JOIN station s ON w.station_id = s.station_id
+    GROUP BY s.station_id, s.station_name
+    ORDER BY total_delay_minutes DESC;
+    """
+    res = fetch_from_query("all", query)
+    return res
+
+def get_station_with_highest_delay():
+    """get station with highest delay in seconds"""
+    query = """
+    SELECT
+    s.station_name,
+    ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
+    EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
+    FROM waypoint w
+    JOIN station s ON w.station_id = s.station_id
+    GROUP BY s.station_id, s.station_name
+    ORDER BY total_delay_minutes DESC;
+    """
+
+    res = fetch_from_query("one", query)
+    return f"{res["station_name"]}: "
+
+def get_trains_cancelled_per_station_percentage():
+    """"""
+    query = """
+    WITH total_trains AS (
+        SELECT w.station_id, COUNT(*) AS total_count
+        FROM waypoint w
+        GROUP BY w.station_id
+    ),
+    cancelled_trains AS (
+        SELECT w.station_id, COUNT(*) AS cancelled_count
+        FROM waypoint w
+        JOIN cancellation c ON w.waypoint_id = c.waypoint_id 
+        GROUP BY w.station_id
+    )
+    SELECT
+        t.station_id,
+        s.station_crs,
+        s.station_name,
+        c.cancelled_count,
+        t.total_count,
+        CASE
+            WHEN t.total_count = 0 THEN 0
+            ELSE ROUND((c.cancelled_count * 100.0 / t.total_count), 2)
+        END AS cancellation_percentage
+    FROM total_trains t
+    JOIN cancelled_trains c ON t.station_id = c.station_id
+    JOIN  station s ON t.station_id = s.station_id;
+    """
+    res = fetch_from_query("all", query)
+
+    return res
