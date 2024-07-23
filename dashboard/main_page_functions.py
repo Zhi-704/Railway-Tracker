@@ -39,7 +39,7 @@ def get_db_cursor(conn: connection) -> cursor | None:
 def convert_datetime_to_string(input_date: dt.datetime) -> str:
     """"""
     try:
-        return dt.datetime.strftime(input_date, "%d-%m-%Y")
+        return dt.datetime.strftime(input_date, "%d/%m/%Y")
     except ValueError:
         return ""
 
@@ -51,4 +51,4 @@ def get_closest_scheduled_incident() -> str:
         curs.execute("""SELECT incident_summary, incident_start FROM incident WHERE incident_start >= CURRENT_DATE ORDER BY incident_start""")
         res = curs.fetchone()
     conn.close()
-    return f"{convert_datetime_to_string(res["incident_start"])}: {res["incident_summary"]}"
+    return f"[ {convert_datetime_to_string(res["incident_start"])} ] {res["incident_summary"]}"
