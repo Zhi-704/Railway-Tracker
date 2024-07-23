@@ -8,7 +8,7 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 from boto3 import client
-from botocore.exceptions import NoCredentialsError, PartialCredentialsError
+from botocore.exceptions import NoCredentialsError, PartialCredentialsError, ClientError
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 from psycopg2 import connect
@@ -61,7 +61,7 @@ def filter_topics(filter_word: str, topic_list: list[dict]) -> list[dict]:
     return [topic for topic in topic_list if filter_word in topic['TopicArn']]
 
 
-def extract_oeprator_code(topic_arn: str) -> str:
+def extract_operator_code(topic_arn: str) -> str:
     '''Extracts the operator code from the topic arn'''
     if topic_arn is None or not isinstance(topic_arn, str):
         return None
@@ -74,7 +74,7 @@ def extract_operator_to_dictionary(ops_list: list[dict]) -> list[dict]:
     '''Grabs the operator from list of arns'''
     for op_arn in ops_list:
         topic_arn = op_arn['TopicArn']
-        op_code = extract_oeprator_code(topic_arn)
+        op_code = extract_operator_code(topic_arn)
         op_arn['shortcode'] = op_code
     return ops_list
 
@@ -97,22 +97,59 @@ def transform_datetime_string(input_string: str) -> str | None:
         dt = datetime.strptime(input_string, "%Y-%m-%dT%H:%M:%S.%f%z")
         output_string = dt.strftime("%Y-%m-%d %H:%M")
         return output_string
-    except:
+    except Exception:
         return None
+
+
+def publish_multi_message(sns_client,
+                          topic_arn,
+                          subject: str,
+                          default_message: str,
+                          sms_message: str,
+                          email_message: str) -> int:
+    """Publishes a multi-format message to a topic."""
+    try:
+        message = {
+            "default": default_message,
+            "sms": sms_message,
+            "email": email_message,
+        }
+        response = sns_client.publish(
+            TopicArn=topic_arn,
+            Message=json.dumps(message),
+            Subject=subject,
+            MessageStructure="json"
+        )
+        message_id = response["MessageId"]
+        logging.info("Published multi-format message to topic %s.", topic_arn)
+    except ClientError:
+        logging.exception("Couldn't publish message to topic %s.", topic_arn)
+    else:
+        return message_id
 
 
 def publish_list_to_topic(sns_client: client,
                           topic_arn: str,
                           operator_code: str,
                           incidents_list: list[dict]) -> dict | None:
-    '''Publishes incidents for an operator, which sends a message to all subscribers'''
-
+    """
+    Publishes incidents for an operator, sending a message to all subscribers.
+    """
     subject = f"New incident for {operator_code}"
-    message = f'''The following incident has been reported for {
+
+    default_message = f'''The following incident/s has been reported for {
         operator_code}:\n\n'''
+
+    sms_message = ""
+
+    email_message = f"""The following incident/s has been reported for {
+        operator_code}:\n\n"""
+
     for incident in incidents_list:
-        if not all(key in incident for key in ['summary', 'start_time',
-                                               'end_time', 'uri',
+        if not all(key in incident for key in ['summary',
+                                               'start_time',
+                                               'end_time',
+                                               'uri',
                                                'routes_affected']):
             continue
 
@@ -122,19 +159,28 @@ def publish_list_to_topic(sns_client: client,
         incident_routes = incident['routes_affected']
         incident_uri = incident['uri']
 
-        message += f'''
-Routes Affected: {incident_routes}\n
+        incident_detail = f"""
+Summary: {incident_summary}\n
 Start Date: {incident_start}\n
 End Date: {incident_end}\n
-Summary: {incident_summary}\n
-'''
-        message += f"Link to the above incident: {incident_uri}\n\n"
+"""
+        routes = f"Routes Affected: {incident_routes}\n"
+        detail_with_link = f"Link to the above incident: {incident_uri}\n\n"
+
+        default_message += incident_detail + detail_with_link
+        sms_message += f"{incident_detail} | "
+        email_message += incident_detail + routes + detail_with_link
+
+    sms_message = sms_message.rstrip(" | ")
 
     try:
-        response = sns_client.publish(
-            TopicArn=topic_arn,
-            Subject=subject,
-            Message=message,
+        response = publish_multi_message(
+            sns_client,
+            topic_arn,
+            subject,
+            default_message,
+            sms_message,
+            email_message
         )
         return response
     except NoCredentialsError:
@@ -152,6 +198,16 @@ def get_affected_incidents(op_code: str, incidents_list: list[dict]) -> list[dic
         if op_code in incident['operator_codes']:
             affected_incidents.append(incident)
     return [incident for incident in incidents_list if op_code in incident['operator_codes']]
+
+
+def test_publish(client):
+
+    response = client.publish(
+
+        PhoneNumber="+447506995277",
+        Message="Testingagain"
+    )
+    return response
 
 
 if __name__ == "__main__":
@@ -178,3 +234,5 @@ if __name__ == "__main__":
         response = publish_list_to_topic(
             sns, operator['TopicArn'], operator['shortcode'], operator['incidents'])
         print(response)
+    # response = test_publish(sns)
+    # print(response)
