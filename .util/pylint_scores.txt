@@ -26,13 +26,6 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module load_national
-national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
-national_rail/load_national.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.63/10
-
 ************* Module sns_reporting
 national_rail/sns_reporting.py:19:0: C0116: Missing function or method docstring (missing-function-docstring)
 national_rail/sns_reporting.py:20:9: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
@@ -51,6 +44,13 @@ national_rail/sns_reporting.py:205:4: W0621: Redefining name 'response' from out
 
 -----------------------------------
 Your code has been rated at 8.77/10
+
+************* Module load_national
+national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/load_national.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.63/10
 
 
 ------------------------------------
