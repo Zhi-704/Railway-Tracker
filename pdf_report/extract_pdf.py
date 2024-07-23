@@ -12,6 +12,7 @@ from psycopg2.extras import RealDictCursor
 def get_connection() -> connection:
     """Retrieves connection and returns it."""
     load_dotenv()
+    logging.info("Retrieving database connection")
     return connect(
         user=environ['DB_USERNAME'],
         password=environ['DB_PASSWORD'],
@@ -23,6 +24,7 @@ def get_connection() -> connection:
 
 def get_cursor(conn: connection) -> cursor:
     """Retrieves cursor and returns it."""
+    logging.info("Retrieving database cursor")
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
@@ -34,6 +36,7 @@ def extract_pdf() -> list[tuple]:
                     JOIN station USING (station_id)""")
         data = cur.fetchall()
 
+    logging.info("Extract: successful")
     return data
 
 
