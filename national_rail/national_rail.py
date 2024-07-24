@@ -4,6 +4,7 @@ import logging
 from extract_national import get_national_rail_data
 from transform_national import transform_national_rail_data
 from load_national import load_incidents
+from sns_reporting import send_message
 
 FILENAME = "data.xml"
 
@@ -19,3 +20,4 @@ if __name__ == "__main__":
         logging.info("No incidents found.")
     else:
         load_incidents(incidents_data)
+        send_message(incidents_data)
