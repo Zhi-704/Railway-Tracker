@@ -15,7 +15,7 @@ pdf_report/load_pdf.py:9:0: C0411: standard import "email.mime.multipart.MIMEMul
 pdf_report/load_pdf.py:10:0: C0411: standard import "email.mime.text.MIMEText" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 
 -----------------------------------
-Your code has been rated at 8.86/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
