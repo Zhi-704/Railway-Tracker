@@ -16,13 +16,6 @@ from psycopg2 import connect
 FILTER_TOPICS_BY = "c11-trainwreck-"
 
 
-def get_data_from_json() -> list[dict]:  # testing purposes
-    with open('incidents.json', 'r') as file:
-        data = json.load(file)
-
-    return data
-
-
 def get_connection() -> connection:
     """ Retrieves connection and returns it. """
     load_dotenv()
@@ -80,19 +73,19 @@ def extract_operator_to_dictionary(ops_list: list[dict]) -> list[dict]:
 
 
 def find_common_elements(list1: list, list2: list) -> list:
-    """
+    '''
     Finds common elements between two lists and 
     returns a list of elements that are present in both lists.
-    """
+    '''
     set_list2 = set(list2)
     return [element for element in list1 if element in set_list2]
 
 
 def transform_datetime_string(input_string: str) -> str | None:
-    """
+    '''
     Transforms a datetime string from 'YYYY-MM-DDTHH:MM:SS.SSS+HH:MM' format
     to 'YYYY-MM-DD HH:MM' format.
-    """
+    '''
     try:
         dt = datetime.strptime(input_string, "%Y-%m-%dT%H:%M:%S.%f%z")
         output_string = dt.strftime("%Y-%m-%d %H:%M")
@@ -107,7 +100,7 @@ def publish_multi_message(sns_client,
                           default_message: str,
                           sms_message: str,
                           email_message: str) -> int:
-    """Publishes a multi-format message to a topic."""
+    '''Publishes a multi-format message to a topic.'''
     try:
         message = {
             "default": default_message,
@@ -126,15 +119,14 @@ def publish_multi_message(sns_client,
         logging.exception("Couldn't publish message to topic %s.", topic_arn)
     else:
         return message_id
+    return None
 
 
 def publish_list_to_topic(sns_client: client,
                           topic_arn: str,
                           operator_code: str,
                           incidents_list: list[dict]) -> dict | None:
-    """
-    Publishes incidents for an operator, sending a message to all subscribers.
-    """
+    '''Publishes incidents for an operator, sending a message to all subscribers.'''
     subject = f"New incident for {operator_code}"
 
     default_message = f'''The following incident/s has been reported for {
@@ -187,6 +179,7 @@ End Date: {incident_end}\n
         logging.error("Error: Incomplete AWS credentials.")
     except Exception as e:
         logging.error("An error occurred: %s", e)
+    return None
 
 
 def get_affected_incidents(op_code: str, incidents_list: list[dict]) -> list[dict]:
@@ -199,6 +192,7 @@ def get_affected_incidents(op_code: str, incidents_list: list[dict]) -> list[dic
 
 
 def send_message(incidents: list[dict]) -> None:
+    '''Send a message to all subscribers to any topic if an operator is affected by an incident'''
     sns = get_sns_client()
     topics = get_topics_arns_from_aws(sns)
     subscribed_topics = filter_topics(FILTER_TOPICS_BY, topics)
@@ -216,10 +210,3 @@ def send_message(incidents: list[dict]) -> None:
         response = publish_list_to_topic(
             sns, operator['TopicArn'], operator['shortcode'], operator['incidents'])
         logging.info("Response: %s", response)
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
-
-    load_dotenv()
