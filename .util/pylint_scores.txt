@@ -1,14 +1,18 @@
 ************* Module load_pdf
-pdf_report/load_pdf.py:34:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-pdf_report/load_pdf.py:51:11: W0718: Catching too general exception Exception (broad-exception-caught)
-pdf_report/load_pdf.py:51:4: W0612: Unused variable 'e' (unused-variable)
-pdf_report/load_pdf.py:78:33: W0621: Redefining name 'cursor' from outer scope (line 11) (redefined-outer-name)
+pdf_report/load_pdf.py:35:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+pdf_report/load_pdf.py:52:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:52:4: W0612: Unused variable 'e' (unused-variable)
+pdf_report/load_pdf.py:57:0: W0105: String statement has no effect (pointless-string-statement)
+pdf_report/load_pdf.py:82:33: W0621: Redefining name 'cursor' from outer scope (line 11) (redefined-outer-name)
+pdf_report/load_pdf.py:113:0: C0116: Missing function or method docstring (missing-function-docstring)
+pdf_report/load_pdf.py:115:4: W0612: Unused variable 'subscribers' (unused-variable)
+pdf_report/load_pdf.py:116:4: W0612: Unused variable 'ses_client' (unused-variable)
 pdf_report/load_pdf.py:5:0: C0411: standard import "io.BytesIO" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 pdf_report/load_pdf.py:6:0: C0411: standard import "datetime.datetime" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 pdf_report/load_pdf.py:2:0: W0611: Unused path imported from os (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.73/10
+Your code has been rated at 8.31/10
 
 ************* Module stations
 database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
@@ -38,53 +42,6 @@ Your code has been rated at 8.89/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-<<<<<<< HEAD
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-************* Module load_national
-national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
-national_rail/load_national.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.63/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-************* Module realtime_trains
-realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.47/10
-
-************* Module load_real
-realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
-realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
-realtime_trains/load_real.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.67/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-=======
 ************* Module db_connection
 archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
 archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -92,7 +49,6 @@ archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
 
 -----------------------------------
 Your code has been rated at 8.89/10
->>>>>>> origin
 
 
 ------------------------------------
@@ -102,8 +58,6 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-<<<<<<< HEAD
-=======
 ************* Module sns_reporting
 national_rail/sns_reporting.py:93:11: W0718: Catching too general exception Exception (broad-exception-caught)
 national_rail/sns_reporting.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
@@ -167,4 +121,3 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
->>>>>>> origin
