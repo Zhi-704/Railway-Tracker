@@ -9,7 +9,7 @@ from transform_real import process_all_stations
 from load_real import import_to_database
 
 
-def main(event, context):  # pylint: disable=unused-argument
+def main(_event, _context):
     """
     Main function to execute the ETL (Extract, Transform, Load) pipeline.
 
@@ -35,3 +35,7 @@ def main(event, context):  # pylint: disable=unused-argument
 
     except Exception as e:
         logging.error("An error occurred during ETL pipeline execution: %s", e)
+
+
+if __name__ == "__main__":
+    main(None, None)

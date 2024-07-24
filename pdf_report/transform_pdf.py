@@ -13,30 +13,29 @@ def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
     """Calculates the percentage of cancelled trains for each station"""
     data = query_db(conn,
                     """WITH total_trains AS (
-                        SELECT station_id, COUNT(*) AS total_count
-                        FROM waypoint
-                        WHERE run_date = CURRENT_DATE - 1
-                        GROUP BY station_id
-                    ),
-                    cancelled_trains AS (
-                        SELECT station_id, COUNT(*) AS cancelled_count
-                        FROM waypoint
-                        JOIN cancellation USING (waypoint_id)
-                        WHERE run_date = CURRENT_DATE - 1
-                        GROUP BY station_id
-                    )
-                    SELECT station_id, station_crs, station_name, cancelled_count, total_count,
-                        CASE
-                            WHEN total_count = 0 THEN 0
-                            ELSE ROUND((cancelled_count * 100.0 / total_count), 2)
-                        END AS cancellation_percentage
-                    FROM total_trains
-                    JOIN cancelled_trains USING (station_id)
-                    JOIN station USING (station_id)""")
+            SELECT station_id, COUNT(*) AS total_count
+            FROM waypoint
+            WHERE run_date = CURRENT_DATE - 1
+            GROUP BY station_id
+        ),
+        cancelled_trains AS (
+            SELECT station_id, COUNT(*) AS cancelled_count
+            FROM waypoint
+            JOIN cancellation USING (waypoint_id)
+            WHERE run_date = CURRENT_DATE - 1
+            GROUP BY station_id
+        )
+        SELECT station_id, station_crs, station_name, cancelled_count, total_count,
+            CASE
+                WHEN total_count = 0 THEN 0
+                ELSE ROUND((cancelled_count * 100.0 / total_count), 2)::FLOAT
+            END AS cancellation_percentage
+        FROM total_trains
+        JOIN cancelled_trains USING (station_id)
+        JOIN station USING (station_id)""")
     logging.info("percentage of cancelled trains for each station: %s", data)
     df = pd.DataFrame(data, columns=['station_id', 'station_crs', 'station_name',
                       'cancelled_count', 'total_count', 'cancellation_percentage'])
-    df['cancellation_percentage'] = df['cancellation_percentage'].astype(float)
     return df
 
 
@@ -44,22 +43,18 @@ def get_delayed_percentage(conn: connection) -> pd.DataFrame:
     """Calculates the average delay for arrivals and departures for each station"""
     data = query_db(conn,
                     """SELECT station_name,
-                    ROUND(AVG(EXTRACT(EPOCH FROM(actual_arrival - booked_arrival)) / 60), 2)
-                    AS avg_arrival_delay_minutes,
-                    ROUND(AVG(EXTRACT(EPOCH FROM(actual_departure - booked_departure)) / 60), 2)
-                    AS avg_departure_delay_minutes
-                    FROM waypoint
-                    JOIN station USING (station_id)
-                    WHERE run_date = CURRENT_DATE - 1
-                    GROUP BY station_name""")
+            ROUND(AVG(EXTRACT(EPOCH FROM(actual_arrival - booked_arrival)) / 60), 2)::FLOAT
+                AS avg_arrival_delay_minutes,
+            ROUND(AVG(EXTRACT(EPOCH FROM(actual_departure - booked_departure)) / 60), 2)::FLOAT
+                AS avg_departure_delay_minutes
+        FROM waypoint
+        JOIN station USING (station_id)
+        WHERE run_date = CURRENT_DATE - 1
+        GROUP BY station_name""")
     logging.info(
         "average delay for arrivals and departures for each station: %s", data)
     df = pd.DataFrame(data, columns=[
                       'station_name', 'avg_arrival_delay_minutes', 'avg_departure_delay_minutes'])
-    df['avg_arrival_delay_minutes'] = df['avg_arrival_delay_minutes'].astype(
-        float)
-    df['avg_departure_delay_minutes'] = df['avg_departure_delay_minutes'].astype(
-        float)
     return df
 
 
@@ -67,19 +62,17 @@ def get_avg_delay(conn: connection) -> pd.DataFrame:
     """Calculates the average overall delay for each station"""
     data = query_db(conn,
                     """SELECT station_name,
-                        ROUND(AVG(
-                            EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 +
-                            EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60
-                        ), 2) AS avg_overall_delay_minutes
-                    FROM waypoint
-                    JOIN station USING (station_id)
-                    WHERE run_date = CURRENT_DATE - 1
-                    GROUP BY station_name;""")
-    logging.info("average overall delay for each station: %s", data)
-    df = pd.DataFrame(
-        data, columns=['station_name', 'avg_overall_delay_minutes'])
-    df['avg_overall_delay_minutes'] = df['avg_overall_delay_minutes'].astype(
-        float)
+            ROUND(AVG(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2)::FLOAT
+                AS avg_arrive_delay_minutes,
+            ROUND(AVG(EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60), 2)::FLOAT
+                AS avg_departure_delay_minutes
+        FROM waypoint
+        JOIN station USING (station_id)
+        WHERE run_date = CURRENT_DATE - 1
+        GROUP BY station_name;""")
+    logging.info("average delay for each station: %s", data)
+    df = pd.DataFrame(data, columns=[
+                      'station_name', 'avg_arrive_delay_minutes', 'avg_departure_delay_minutes'])
     return df
 
 
@@ -87,40 +80,50 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
     """Calculates the average delay more than 1 min for each station"""
     data = query_db(conn,
                     """SELECT station_name,
-                        ROUND(AVG( EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2) 
-                        AS avg_arrive_delay_long_minutes
-                    FROM waypoint
-                    JOIN station USING (station_id)
-                    WHERE EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 > 1 AND run_date = CURRENT_DATE - 1
-                    GROUP BY station_name;""")
+            ROUND(AVG( EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2)::FLOAT
+                AS avg_arrive_delay_long_minutes,
+            ROUND(AVG( EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60), 2)::FLOAT
+                AS avg_departure_delay_long_minutes
+        FROM waypoint
+        JOIN station USING (station_id)
+        WHERE EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 > 1 AND
+            EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 > 1 AND
+            run_date = CURRENT_DATE - 1
+        GROUP BY station_name;""")
     logging.info("average delay more than 1 min for each station: %s", data)
-    df = pd.DataFrame(
-        data, columns=['station_name', 'avg_arrive_delay_long_minutes'])
-    df['avg_arrive_delay_long_minutes'] = df['avg_arrive_delay_long_minutes'].astype(
-        float)
+    df = pd.DataFrame(data, columns=[
+        'station_name', 'avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'])
     return df
 
 
-def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_col_1: str, y_col_2: str, title: str) -> alt.Chart:
-    """Generates a grouped bar chart using Altair for two variables."""
+def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_cols: list[str], title: str) -> alt.Chart:
+    """Generates a grouped bar chart with separate bars for each category."""
+    # Rename the columns to 'Arrival' and 'Departure' for proper labeling
+    df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
+    delay_types = ['Arrival', 'Departure']
+
     # Melting the DataFrame to get a single column for delay type
-    melted_df = df.melt(id_vars=x_col, value_vars=[y_col_1, y_col_2],
+    melted_df = df.melt(id_vars=x_col, value_vars=delay_types,
                         var_name='Delay Type', value_name='Minutes')
 
     # Creating the grouped bar chart
     chart = alt.Chart(melted_df).mark_bar().encode(
-        x=alt.X(f'{x_col}:N', axis=alt.Axis(title='Station Name'),
-                scale=alt.Scale(paddingInner=0.3)),
+        x=alt.X('Delay Type:N'),
         y=alt.Y('Minutes:Q', axis=alt.Axis(title='Delay (minutes)')),
-        color=alt.Color('Delay Type:N', title='Type of Delay'),
-        column=alt.Column('Delay Type:N', header=alt.Header(title='')),
-        tooltip=[x_col, 'Minutes', 'Delay Type']
+        color=alt.Color('Delay Type:N'),
+        column=alt.Column(f'{x_col}:N', title='Station', header=alt.Header(
+            labelAngle=0, labelAlign='center')),
+        tooltip=[alt.Tooltip(x_col, title='Station'), alt.Tooltip(
+            'Minutes:Q', title='Delay (minutes)'), 'Delay Type:N']
     ).properties(
         title=title,
-        width=alt.Step(40)  # controls the width of each group of bars
+        width=alt.Step(80)  # width of each bar
     ).configure_axis(
         labelFontSize=12,
         titleFontSize=14
+    ).configure_header(
+        titleFontSize=14,
+        labelFontSize=12
     )
 
     return chart
@@ -169,11 +172,11 @@ def transform_pdf() -> None:
     cancellation_chart = generate_bar_chart(
         cancelled_df, 'station_name', 'cancellation_percentage', 'Cancellation Percentage by Station')
     delay_chart = generate_grouped_bar_chart(
-        delayed_df, 'station_name', 'avg_arrival_delay_minutes', 'avg_departure_delay_minutes', 'Average Delay by Station')
-    avg_delay_chart = generate_bar_chart(
-        avg_delay_df, 'station_name', 'avg_overall_delay_minutes', 'Average Overall Delay by Station')
-    avg_delay_long_chart = generate_bar_chart(
-        avg_delay_long_df, 'station_name', 'avg_arrive_delay_long_minutes', 'Average Long Delay by Station')
+        delayed_df, 'station_name', ['avg_arrival_delay_minutes', 'avg_departure_delay_minutes'], 'Average Delay by Station')
+    avg_delay_chart = generate_grouped_bar_chart(
+        avg_delay_df, 'station_name', ['avg_arrive_delay_minutes', 'avg_departure_delay_minutes'], 'Average Delay by Station')
+    avg_delay_long_chart = generate_grouped_bar_chart(
+        avg_delay_long_df, 'station_name', ['avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'], 'Average Long Delay by Station')
 
     # Convert charts to HTML embeddable format
     cancellation_chart_embed = convert_altair_chart_to_html_embed(
