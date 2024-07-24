@@ -34,7 +34,6 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
 
     with get_cursor(conn) as cur:
         try:
-            cur = get_cursor(conn)
             cur.execute(query, (data))
             conn.commit()
 

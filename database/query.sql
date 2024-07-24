@@ -1,4 +1,5 @@
 -- A file to query the database
+
 SELECT incident_number, creation_time FROM incident;
 SELECT * FROM cancellation;
 SELECT * FROM performance_archive;
@@ -9,3 +10,4 @@ SELECT * FROM waypoint;
 SELECT * FROM operator;
 SELECT * FROM affected_operator;
 SELECT * FROM service;
+SELECT COUNT(*) FROM waypoint as waypoint_count;
