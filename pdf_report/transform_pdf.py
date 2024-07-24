@@ -11,6 +11,7 @@ from psycopg2.extensions import connection
 from extract_pdf import get_connection, query_db
 
 REPORT_NAME = "performance_report.pdf"
+CSS_PATH = "./styles.css"
 
 
 def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
@@ -97,8 +98,8 @@ def get_avg_delay(conn: connection) -> pd.DataFrame:
         WHERE run_date = CURRENT_DATE - 1
         GROUP BY station_name, station_crs;""")
     logging.info("average delay for each station: %s", data)
-    return pd.DataFrame(data, columns=['station_name',
-                                       'station_crs', 'avg_arrive_delay_minutes', 'avg_departure_delay_minutes'])
+    return pd.DataFrame(data, columns=['station_name', 'station_crs',
+                                       'avg_arrive_delay_minutes', 'avg_departure_delay_minutes'])
 
 
 def get_avg_delay_long(conn: connection) -> pd.DataFrame:
@@ -117,10 +118,12 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
         GROUP BY station_name, station_crs;""")
     logging.info("average delay more than 1 min for each station: %s", data)
     return pd.DataFrame(data, columns=['station_name', 'station_crs',
-                                       'avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'])
+                                       'avg_arrive_delay_long_minutes',
+                                       'avg_departure_delay_long_minutes'])
 
 
-def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_cols: list[str], title: str) -> alt.Chart:
+def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
+                               y_cols: list[str], title: str) -> alt.Chart:
     """Generates a grouped bar chart with separate bars for each category, without a legend or x-axis title."""
     df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
     delay_types = ['Arrival', 'Departure']
@@ -207,8 +210,6 @@ def transform_pdf() -> None:
     avg_delay_long_chart_embed = convert_altair_chart_to_html_embed(
         avg_delay_long_chart)
 
-    css_path = "./styles.css"
-
     station_info = delayed_df[['station_name',
                                'station_crs']].drop_duplicates()
 
@@ -224,7 +225,7 @@ def transform_pdf() -> None:
         <head>
             <meta charset="utf-8"/>
             <title>Train Delay and Cancellation Report</title>
-            <link rel="stylesheet" type="text/css" href="{css_path}"/>
+            <link rel="stylesheet" type="text/css" href="{CSS_PATH}"/>
         </head>
         <body>
             <h1>Train Delay and Cancellation Report</h1>
