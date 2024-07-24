@@ -28,7 +28,7 @@ This will prompt you to enter a station name or code. After providing the input,
 
 ## Configuration
 
-Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `realtime_trains` directory and add the following lines, replacing `YOUR_USERNAME` and `YOUR_PASSWORD` with your actual username and password:
+Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `realtime_trains` directory and add the following lines, replacing `your_username` and `your_password` with your actual username and password:
 
 ```text
 REALTIME_USERNAME=your_username
