@@ -5,14 +5,19 @@ from dotenv import load_dotenv
 from io import BytesIO
 from datetime import datetime
 
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from boto3 import client
 from botocore.exceptions import NoCredentialsError
-from psycopg2 import connect
+import botocore.exceptions
+from botocore.exceptions import ClientError
+from psycopg2 import connect, Error as psycopg2_error
 from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
-import psycopg2
-import psycopg2.extras
-import botocore.exceptions
+
+
+LOCAL_FILE_PATH = 'report.pdf'
 
 
 def get_s3_client() -> client:
@@ -40,11 +45,10 @@ def upload_pdf_to_s3():
     s3 = get_s3_client()
     bucket = environ['S3_BUCKET_NAME']
     prefix = datetime.now()
-    local_file = 'report.pdf'
-    s3_file_name = f"{prefix}_{local_file}"
+    s3_file_name = f"{prefix}_{LOCAL_FILE_PATH}"
 
     try:
-        s3.upload_file(local_file, bucket, s3_file_name)
+        s3.upload_file(LOCAL_FILE_PATH, bucket, s3_file_name)
         logging.info("Upload Successful: %s, to bucket: %s",
                      s3_file_name, bucket)
     except FileNotFoundError:
@@ -54,11 +58,9 @@ def upload_pdf_to_s3():
             "Error occurred when connecting and uploading to S3 bucket.")
 
 
-"""" EMAIL REPORTS """
-
-
 def get_connection() -> connection:
     """ Retrieves connection and returns it. """
+
     load_dotenv()
     return connect(
         user=environ['DB_USERNAME'],
@@ -71,6 +73,7 @@ def get_connection() -> connection:
 
 def get_cursor(conn: connection) -> cursor:
     """ Retrieves cursor and returns it. """
+
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
@@ -84,7 +87,7 @@ def get_subscribers(conn: connection) -> list:
             subscribers = cursor.fetchall()
             recipients = [subscriber['email'] for subscriber in subscribers]
 
-    except psycopg2.Error as e:
+    except psycopg2_error as e:
         logging.error("Error fetching subscribers: %s", e)
 
     finally:
@@ -107,17 +110,62 @@ def create_ses_client() -> client:
         raise RuntimeError(f"Error creating SES client: {e}") from e
 
 
-# def send_email_ses(ses_client: client, )
+def format_email() -> None:
+    """ Formats email with subject, body and attachment of PDF, and returns it. """
+
+    body = "See the PDF document attached for insight into the performance of stations around the UK."
+    sender = f"Railway Tracker <{environ['SOURCE_EMAIL']}>"
+
+    msg = MIMEMultipart()
+    msg["Subject"] = "Performance Report"
+    msg["From"] = sender
+    msg.attach(MIMEText(body, "html"))
+
+    with open(LOCAL_FILE_PATH, "rb") as attachment:
+        part = MIMEApplication(attachment.read(), _subtype="pdf")
+        part.add_header(
+            "Content-Disposition", "attachment", filename=path.basename(LOCAL_FILE_PATH)
+        )
+        msg.attach(part)
+
+    return sender, msg
 
 
-def email_subscribers_report():
+def send_email(ses_client: client, sender: str, subscribers: list[str], msg: MIMEMultipart) -> None:
+    """ Sends PDF report as attachment in email to the email addresses in the subscribers list"""
+
+    subscribers = ['farihac2002@gmail.com', 'fariha.choudhury@sigmalabs.co.uk']
+    try:
+        response = ses_client.send_raw_email(
+            Source=sender,
+            Destinations=subscribers,
+            RawMessage={"Data": msg.as_string()},
+        )
+        logging.info(
+            "Email sent to %s! Message ID: %s", subscribers, response["MessageId"]
+        )
+    except ClientError as e:
+        logging.error(
+            "Error sending email to %s: %s", subscribers, e.response["Error"]["Message"],
+        )
+
+
+def email_performance_report():
+    """ Main function to perform sending emails to subscribers:
+        - Retrieves subscribers list from database.
+        - Creates SES client to send email with.
+        - Creates email and sends email. """
 
     subscribers = get_subscribers(get_connection())
     ses_client = create_ses_client()
+    sender, message = format_email()
+    send_email(ses_client, sender, subscribers, message)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     # upload_pdf_to_s3()
-    get_subscribers(get_connection())
+    # subscribers = get_subscribers(get_connection())
+    email_performance_report()
+    upload_pdf_to_s3()
