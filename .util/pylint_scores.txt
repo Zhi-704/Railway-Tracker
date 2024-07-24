@@ -2,34 +2,21 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module main_page
-dashboard/main_page.py:6:0: C0301: Line too long (233/100) (line-too-long)
-dashboard/main_page.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page.py:20:0: C0301: Line too long (103/100) (line-too-long)
-dashboard/main_page.py:21:0: C0301: Line too long (141/100) (line-too-long)
-dashboard/main_page.py:50:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page.py:8:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:18:0: C0112: Empty function docstring (empty-docstring)
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+************* Module db_connection
+archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 7.67/10
-
-************* Module main_page_functions
-dashboard/main_page_functions.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page_functions.py:184:0: C0304: Final newline missing (missing-final-newline)
-dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
-dashboard/main_page_functions.py:40:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:53:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:72:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/main_page_functions.py:77:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:97:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:128:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:159:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:173:0: C0116: Missing function or method docstring (missing-function-docstring)
-dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
-
------------------------------------
-Your code has been rated at 8.42/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
@@ -62,6 +49,12 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module realtime_trains
+realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.47/10
+
 ************* Module load_real
 realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
 realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -75,27 +68,40 @@ Your code has been rated at 9.67/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module realtime_trains
-realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module main_page
+dashboard/main_page.py:6:0: C0301: Line too long (233/100) (line-too-long)
+dashboard/main_page.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page.py:20:0: C0301: Line too long (103/100) (line-too-long)
+dashboard/main_page.py:21:0: C0301: Line too long (141/100) (line-too-long)
+dashboard/main_page.py:33:0: C0301: Line too long (111/100) (line-too-long)
+dashboard/main_page.py:34:0: C0301: Line too long (115/100) (line-too-long)
+dashboard/main_page.py:48:0: C0301: Line too long (113/100) (line-too-long)
+dashboard/main_page.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page.py:82:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page.py:8:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:18:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:30:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:45:0: C0112: Empty function docstring (empty-docstring)
 
 -----------------------------------
-Your code has been rated at 9.47/10
+Your code has been rated at 6.98/10
 
-************* Module db_connection
-archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
+************* Module main_page_functions
+dashboard/main_page_functions.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
+dashboard/main_page_functions.py:186:0: C0304: Final newline missing (missing-final-newline)
+dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
+dashboard/main_page_functions.py:40:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:53:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:72:11: W0718: Catching too general exception Exception (broad-exception-caught)
+dashboard/main_page_functions.py:77:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:97:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:128:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:159:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:174:0: C0116: Missing function or method docstring (missing-function-docstring)
+dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.89/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
+Your code has been rated at 8.42/10
 
 
 ------------------------------------
