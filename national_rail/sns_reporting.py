@@ -1,7 +1,7 @@
 '''Script used for notifying all subscribed users of incidents for their operators.'''
 
 
-import json  # testing purposes
+import json
 from os import environ as ENV
 import logging
 from datetime import datetime
@@ -168,10 +168,8 @@ End Date: {incident_end}\n
         detail_with_link = f"Link to the above incident: {incident_uri}\n\n"
 
         default_message += incident_detail + detail_with_link
-        sms_message += f"{incident_detail} | "
+        sms_message += incident_detail + detail_with_link
         email_message += incident_detail + routes + detail_with_link
-
-    sms_message = sms_message.rstrip(" | ")
 
     try:
         response = publish_multi_message(
@@ -200,21 +198,7 @@ def get_affected_incidents(op_code: str, incidents_list: list[dict]) -> list[dic
     return [incident for incident in incidents_list if op_code in incident['operator_codes']]
 
 
-def test_publish(client):
-
-    response = client.publish(
-
-        PhoneNumber="+447506995277",
-        Message="Testingagain"
-    )
-    return response
-
-
-if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
-
-    load_dotenv()
+def send_message(incidents: list[dict]) -> None:
     sns = get_sns_client()
     topics = get_topics_arns_from_aws(sns)
     subscribed_topics = filter_topics(FILTER_TOPICS_BY, topics)
@@ -222,8 +206,6 @@ if __name__ == "__main__":
     operator_list = [
         topic['shortcode'] for topic in operator_arn_list]
     logging.info("\nTrain operators in AWS: %s\n", operator_list)
-
-    incidents = get_data_from_json()
 
     for operator in operator_arn_list:
         operator['incidents'] = get_affected_incidents(
@@ -233,6 +215,11 @@ if __name__ == "__main__":
             continue
         response = publish_list_to_topic(
             sns, operator['TopicArn'], operator['shortcode'], operator['incidents'])
-        print(response)
-    # response = test_publish(sns)
-    # print(response)
+        logging.info("Response: %s", response)
+
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO,
+                        format="%(asctime)s - %(levelname)s - %(message)s")
+
+    load_dotenv()
