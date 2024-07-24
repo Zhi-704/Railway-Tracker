@@ -12,6 +12,7 @@ from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
 import psycopg2
 import psycopg2.extras
+import botocore.exceptions
 
 
 def get_s3_client() -> client:
@@ -53,6 +54,9 @@ def upload_pdf_to_s3():
             "Error occurred when connecting and uploading to S3 bucket.")
 
 
+"""" EMAIL REPORTS """
+
+
 def get_connection() -> connection:
     """ Retrieves connection and returns it. """
     load_dotenv()
@@ -87,6 +91,29 @@ def get_subscribers(conn: connection) -> list:
         cursor.close()
 
     return recipients
+
+
+def create_ses_client() -> client:
+    """ Creates and returns an SES client using AWS access keys."""
+
+    try:
+        return client(
+            "ses",
+            region_name="eu-west-2",
+            aws_access_key_id=environ['AWS_ACCESS_KEY'],
+            aws_secret_access_key=environ['AWS_SECRET_KEY']
+        )
+    except botocore.exceptions.ClientError as e:
+        raise RuntimeError(f"Error creating SES client: {e}") from e
+
+
+# def send_email_ses(ses_client: client, )
+
+
+def email_subscribers_report():
+
+    subscribers = get_subscribers(get_connection())
+    ses_client = create_ses_client()
 
 
 if __name__ == "__main__":
