@@ -42,9 +42,11 @@ national_rail/load_national.py:105:11: W0718: Catching too general exception Exc
 -----------------------------------
 Your code has been rated at 9.63/10
 
+************* Module national_rail
+national_rail/national_rail.py:38:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.47/10
 
 
 ------------------------------------
