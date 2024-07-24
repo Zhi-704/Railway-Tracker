@@ -1,0 +1,4 @@
+xhtml2pdf
+altair
+pandas
+vl-convert-python
