@@ -1,6 +1,5 @@
 FROM python:latest
 
-
 WORKDIR /dashboard
 
 COPY requirements.txt .
@@ -15,7 +14,6 @@ RUN mkdir ./streamlit
 COPY ./.streamlit ./.streamlit
 
 COPY main_page.py .
-
 
 CMD streamlit run main_page.py --server.port 8501
 
