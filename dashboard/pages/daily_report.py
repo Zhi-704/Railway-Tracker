@@ -10,6 +10,7 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
+
 def get_db_connection() -> connection:
     """return a database connection"""
     try:
@@ -20,7 +21,7 @@ def get_db_connection() -> connection:
             password=environ['DB_PASSWORD'],
             port=environ['DB_PORT']
         )
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(e)
         return None
 
@@ -29,7 +30,7 @@ def get_db_cursor(conn: connection) -> cursor:
     """return a cursor object based on a given connection"""
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
 
@@ -37,7 +38,8 @@ def get_db_cursor(conn: connection) -> cursor:
 def is_email_already_subscribed(email: str, conn: connection) -> bool:
     """check if the email given has already subscribed to the database"""
     with get_db_cursor(conn) as curs:
-        curs.execute("SELECT COUNT(*) FROM subscriber WHERE email=%s", (email, ))
+        curs.execute(
+            "SELECT COUNT(*) FROM subscriber WHERE email=%s", (email, ))
         res = curs.fetchone()
     return res["count"] == 1
 
@@ -62,16 +64,19 @@ def get_from_subscription_form() -> dict:
             return {'email': email}
     return {}
 
+
 def upload_new_subscriber(conn: connection, email: str):
     """Take the email given and attempt to upload it to the database. """
     try:
         with get_db_cursor(conn) as curs:
-            curs.execute("INSERT INTO subscriber (email) VALUES (%s)", (email, ))
+            curs.execute(
+                "INSERT INTO subscriber (email) VALUES (%s)", (email, ))
             conn.commit()
         return 1
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
+
 
 def deploy_subscription_page():
     """This contains the main code for the subscription page."""
@@ -87,7 +92,8 @@ def deploy_subscription_page():
         if upload_new_subscriber(conn, email) is not None:
             st.success(f"{email} is now subscribed to the summary report.")
         else:
-            st.error(f"An error ocurred when trying to add {email} to the database.")
+            st.error(f"An error ocurred when trying to add {
+                     email} to the database.")
 
 
 if __name__ == "__main__":
