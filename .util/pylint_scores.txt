@@ -1,3 +1,23 @@
+************* Module load_pdf
+pdf_report/load_pdf.py:34:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+pdf_report/load_pdf.py:51:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:51:4: W0612: Unused variable 'e' (unused-variable)
+pdf_report/load_pdf.py:78:33: W0621: Redefining name 'cursor' from outer scope (line 11) (redefined-outer-name)
+pdf_report/load_pdf.py:5:0: C0411: standard import "io.BytesIO" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+pdf_report/load_pdf.py:6:0: C0411: standard import "datetime.datetime" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+pdf_report/load_pdf.py:2:0: W0611: Unused path imported from os (unused-import)
+
+-----------------------------------
+Your code has been rated at 8.73/10
+
+************* Module stations
+database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
+database/stations.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+database/stations.py:15723:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
+
+-----------------------------------
+Your code has been rated at 6.25/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -5,6 +25,14 @@ Your code has been rated at 10.00/10
 
 ------------------------------------
 Your code has been rated at 10.00/10
+
+************* Module db_connection
+archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
+
+-----------------------------------
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
@@ -29,20 +57,19 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module load_pdf
-pdf_report/load_pdf.py:29:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-pdf_report/load_pdf.py:46:11: W0718: Catching too general exception Exception (broad-exception-caught)
-pdf_report/load_pdf.py:46:4: W0612: Unused variable 'e' (unused-variable)
-pdf_report/load_pdf.py:5:0: C0411: standard import "io.BytesIO" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:6:0: C0411: standard import "datetime.datetime" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:2:0: W0611: Unused path imported from os (unused-import)
 
------------------------------------
-Your code has been rated at 8.24/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
+
+************* Module realtime_trains
+realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.47/10
 
 ************* Module load_real
 realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
@@ -57,20 +84,6 @@ Your code has been rated at 9.67/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module realtime_trains
-realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
-
------------------------------------
-Your code has been rated at 9.47/10
-
-************* Module db_connection
-archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
-
------------------------------------
-Your code has been rated at 8.89/10
-
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -78,16 +91,4 @@ Your code has been rated at 10.00/10
 
 ------------------------------------
 Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-************* Module stations
-database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
-database/stations.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-database/stations.py:15723:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-
------------------------------------
-Your code has been rated at 6.25/10
 
