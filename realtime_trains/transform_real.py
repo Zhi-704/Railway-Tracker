@@ -22,8 +22,6 @@ SERVICE_LOC_DETAILS_REMOVE_KEYS = [
     'destination',
     'isCall',
     'isPublicCall',
-    'realtimeArrivalNextDay',
-    'realtimeDepartureNextDay',
     'platform',
     'platformConfirmed',
     'platformChanged'

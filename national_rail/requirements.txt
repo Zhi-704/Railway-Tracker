@@ -4,3 +4,4 @@ pytest
 beautifulsoup4
 lxml
 psycopg2-binary
+boto3
