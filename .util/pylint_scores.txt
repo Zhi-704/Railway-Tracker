@@ -3,19 +3,10 @@
 Your code has been rated at 10.00/10
 
 ************* Module load_pdf
-pdf_report/load_pdf.py:116:0: C0301: Line too long (102/100) (line-too-long)
-pdf_report/load_pdf.py:40:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-pdf_report/load_pdf.py:56:11: W0718: Catching too general exception Exception (broad-exception-caught)
-pdf_report/load_pdf.py:56:4: W0612: Unused variable 'e' (unused-variable)
-pdf_report/load_pdf.py:85:33: W0621: Redefining name 'cursor' from outer scope (line 16) (redefined-outer-name)
-pdf_report/load_pdf.py:5:0: C0411: standard import "io.BytesIO" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:6:0: C0411: standard import "datetime.datetime" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:8:0: C0411: standard import "email.mime.application.MIMEApplication" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:9:0: C0411: standard import "email.mime.multipart.MIMEMultipart" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
-pdf_report/load_pdf.py:10:0: C0411: standard import "email.mime.text.MIMEText" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
+pdf_report/load_pdf.py:57:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 8.89/10
+Your code has been rated at 9.89/10
 
 
 ------------------------------------
