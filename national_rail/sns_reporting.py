@@ -73,19 +73,19 @@ def extract_operator_to_dictionary(ops_list: list[dict]) -> list[dict]:
 
 
 def find_common_elements(list1: list, list2: list) -> list:
-    """
+    '''
     Finds common elements between two lists and 
     returns a list of elements that are present in both lists.
-    """
+    '''
     set_list2 = set(list2)
     return [element for element in list1 if element in set_list2]
 
 
 def transform_datetime_string(input_string: str) -> str | None:
-    """
+    '''
     Transforms a datetime string from 'YYYY-MM-DDTHH:MM:SS.SSS+HH:MM' format
     to 'YYYY-MM-DD HH:MM' format.
-    """
+    '''
     try:
         dt = datetime.strptime(input_string, "%Y-%m-%dT%H:%M:%S.%f%z")
         output_string = dt.strftime("%Y-%m-%d %H:%M")
@@ -100,7 +100,7 @@ def publish_multi_message(sns_client,
                           default_message: str,
                           sms_message: str,
                           email_message: str) -> int:
-    """Publishes a multi-format message to a topic."""
+    '''Publishes a multi-format message to a topic.'''
     try:
         message = {
             "default": default_message,
