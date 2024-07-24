@@ -7,7 +7,24 @@ provider "aws" {
     secret_key = var.AWS_SECRET_KEY
 }
 
+data "aws_vpc" "c11-vpc" {
+    id = "vpc-04b15cce2398e57f7"
+}
+
+data "aws_subnet" "c11-subnet-1" {
+  id = "subnet-0e6c6a8f959dae31a"
+}
+
+data "aws_subnet" "c11-subnet-2" {
+  id = "subnet-08781450402b81aa2"
+}
+
+data "aws_subnet" "c11-subnet-3" {
+  id = "subnet-07de213eeae1f6307"
+}
+
 # --------------- RDS: 
+
 resource "aws_db_instance" "c11-railway-tracker-db" {
     allocated_storage            = 10
     db_name                      = "railwaytrackerdb"
