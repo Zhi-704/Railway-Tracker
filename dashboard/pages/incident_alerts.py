@@ -12,6 +12,10 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
+
+ARN_PREFIX = "arn:aws:sns:eu-west-2:129033205317:c11-trainwreck"
+
+
 def get_db_connection() -> connection | None:
     """return a database connection"""
     try:
@@ -22,7 +26,7 @@ def get_db_connection() -> connection | None:
             password=environ['DB_PASSWORD'],
             port=environ['DB_PORT']
         )
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(e)
         return None
 
@@ -31,10 +35,11 @@ def get_db_cursor(conn: connection) -> cursor | None:
     """return a cursor object based on a given connection"""
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
-    
+
+
 def get_sns_client():
     """return an AWS SNS client using access credentials, which are environment variables."""
     try:
@@ -42,37 +47,87 @@ def get_sns_client():
             'sns',
             aws_access_key_id=environ['AWS_ACCESS_KEY'],
             aws_secret_access_key=environ['AWS_SECRET_KEY'],
-            )
-    except Exception as e: # pylint: disable=broad-exception-caught
+        )
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
-    
+
+
+def does_topic_arn_exist(client, topic_arn: str) -> bool:
+    """"""
+    try:
+        response = client.get_topic_attributes(
+            TopicArn=topic_arn
+        )
+        return response is not None
+    except:
+        return False
+
+
+def create_topic(client, operator_code: str) -> None:
+    """"""
+    client.create_topic(
+        Name=f"c11-trainwreck-{operator_code}"
+    )
+
+
+def subscribe_to_topic(client, topic_arn: str, protocol: str, endpoint: str) -> None:
+    """"""
+    try:
+        return client.subscribe(TopicArn=topic_arn, Protocol=protocol, Endpoint=endpoint)
+    except:
+        return None
+
+
 def get_list_of_operators() -> list[str]:
     """"""
     conn = get_db_connection()
 
     with get_db_cursor(conn) as curs:
-        curs.execute("""SELECT operator_code, operator_name FROM operator ORDER BY operator_name""")
+        curs.execute(
+            """SELECT operator_code, operator_name FROM operator ORDER BY operator_name""")
         res = curs.fetchall()
-    
+
     return [f"{row["operator_code"]} - {row["operator_name"]}" for row in res]
-    
+
+
+def is_email_valid(email: str) -> bool:
+    """return a bool based on whether this is a valid email"""
+    email_pattern = re.compile(r"[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}")
+    return email and re.fullmatch(pattern=email_pattern, string=email) is not None
+
+
+def is_phone_no_valid(phone_no: str) -> bool:
+    """"""
+    number_pattern = re.compile(r"0[0-9]{4} [0-9]{6}")
+    return phone_no and re.fullmatch(pattern=number_pattern, string=phone_no) is not None
 
 
 def get_user_contacts_from_form() -> dict | None:
     """create a subscription form for users to submit their contact information."""
-    with st.form("alert_subscription", clear_on_submit=True, border=True):
-
-
+    with st.form("alert_subscription", clear_on_submit=False, border=True):
         operator = st.selectbox("Select an Operator", get_list_of_operators())
-
         email = st.text_input("Enter your email")
-        phone_no = st.text_input("Enter your phone number")
+        phone_no = st.text_input(
+            "Enter your phone number (in the format 0#### ######)")
 
         submit = st.form_submit_button()
 
         if operator and submit and (email or phone_no):
-            pass
+            valid_email = is_email_valid(email)
+            valid_phone = is_phone_no_valid(phone_no)
+            if (valid_email and not phone_no) or (valid_phone and not email):
+                st.success(f"Form submitted! email: {email}, \
+                           phone: {phone_no}, operator: {operator}")
+                operator = operator.split(" ")[0]
+                return {"email": email, "phone": phone_no, "operator": operator}
+            if not valid_email:
+                st.error("Invalid email")
+            if not valid_phone:
+                st.error("Invalid phone number")
+
+        return None
+
 
 def deploy_alerts_page():
     """This serves as the main code for the alerts page"""
@@ -80,9 +135,22 @@ def deploy_alerts_page():
     st.write("""Subscribe to an Operator Alert using your phone number, 
              and you will receive a notification when this operator
              is affected by an incident.""")
-    
+
     subscriber_inputs = get_user_contacts_from_form()
-    
+
+    if subscriber_inputs is not None:
+        email, phone_no, operator_code = subscriber_inputs.values()
+        sns_client = get_sns_client()
+        subscriber_arn = f"{ARN_PREFIX}-{operator_code}"
+        if not does_topic_arn_exist(sns_client, subscriber_arn):
+            st.write(f"{subscriber_arn} IS NEW")
+            create_topic(sns_client, operator_code)
+        if email:
+            subscribe_to_topic(
+                client=sns_client, topic_arn=subscriber_arn, protocol="email", endpoint=email)
+        if phone_no:
+            subscribe_to_topic(
+                client=sns_client, topic_arn=subscriber_arn, protocol="sms", endpoint=phone_no)
 
 
 if __name__ == "__main__":
