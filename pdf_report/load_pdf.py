@@ -18,7 +18,7 @@ from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
 
 
-LOCAL_FILE_PATH = 'report.pdf'
+LOCAL_FILE_PATH = 'performance_report.pdf'
 
 
 def get_s3_client() -> client:
