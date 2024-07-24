@@ -37,15 +37,6 @@ def query_db(conn: connection, query: str) -> list[tuple]:
     return data
 
 
-def extract_pdf() -> list[tuple]:
-    """Extracts data from the RDS database."""
-    conn = get_connection()
-    return query_db(conn,
-                    """SELECT * FROM waypoint
-                    JOIN station USING (station_id)""")
-
-
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    extract_pdf()
