@@ -1,13 +1,14 @@
 """ Loads the PDF summary report of RealTimeTrains data into an S3 bucket. """
 from os import environ, path
 import logging
-from dotenv import load_dotenv
-from io import BytesIO
-from datetime import datetime
 
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from io import BytesIO
+from datetime import datetime
+
+from dotenv import load_dotenv
 from boto3 import client
 from botocore.exceptions import NoCredentialsError
 import botocore.exceptions
@@ -37,7 +38,7 @@ def upload_pdf_data_to_s3(s3: client, bucket_name: str, s3_filename: str, pdf: B
     """ Uploads pdf of summary report to S3 bucket. """
 
     s3.upload_fileobj(pdf, bucket_name, s3_filename)
-    logging.info(f"pdf file uploaded: {s3_filename}")
+    logging.info("pdf file uploaded %s", s3_filename)
 
 
 def upload_pdf_to_s3():
@@ -53,7 +54,7 @@ def upload_pdf_to_s3():
                      s3_file_name, bucket)
     except FileNotFoundError:
         logging.error("The file was not found.")
-    except Exception as e:
+    except Exception:
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
 
@@ -82,16 +83,13 @@ def get_subscribers(conn: connection) -> list:
 
     recipients = []
     try:
-        with get_cursor(conn) as cursor:
-            cursor.execute("SELECT email FROM subscriber;")
-            subscribers = cursor.fetchall()
+        with get_cursor(conn) as cur:
+            cur.execute("SELECT email FROM subscriber;")
+            subscribers = cur.fetchall()
             recipients = [subscriber['email'] for subscriber in subscribers]
 
     except psycopg2_error as e:
         logging.error("Error fetching subscribers: %s", e)
-
-    finally:
-        cursor.close()
 
     return recipients
 
@@ -113,7 +111,7 @@ def create_ses_client() -> client:
 def format_email() -> None:
     """ Formats email with subject, body and attachment of PDF, and returns it. """
 
-    body = "See the PDF document attached for insight into the performance of stations around the UK."
+    body = "See the PDF document attached for insights into the performance of stations in the UK."
     sender = f"Railway Tracker <{environ['SOURCE_EMAIL']}>"
 
     msg = MIMEMultipart()
@@ -132,22 +130,23 @@ def format_email() -> None:
 
 
 def send_email(ses_client: client, sender: str, subscribers: list[str], msg: MIMEMultipart) -> None:
-    """ Sends PDF report as attachment in email to the email addresses in the subscribers list"""
+    """ Sends PDF report as attachment in email to the verified email addresses in
+        the subscribers list"""
 
-    subscribers = ['farihac2002@gmail.com', 'fariha.choudhury@sigmalabs.co.uk']
-    try:
-        response = ses_client.send_raw_email(
-            Source=sender,
-            Destinations=subscribers,
-            RawMessage={"Data": msg.as_string()},
-        )
-        logging.info(
-            "Email sent to %s! Message ID: %s", subscribers, response["MessageId"]
-        )
-    except ClientError as e:
-        logging.error(
-            "Error sending email to %s: %s", subscribers, e.response["Error"]["Message"],
-        )
+    for subscriber in subscribers:
+        try:
+            response = ses_client.send_raw_email(
+                Source=sender,
+                Destinations=[subscriber],
+                RawMessage={"Data": msg.as_string()},
+            )
+            logging.info(
+                "Email sent to %s! Message ID: %s", subscribers, response["MessageId"]
+            )
+        except ClientError as e:
+            logging.error(
+                "Error sending email to %s: %s", subscribers, e.response["Error"]["Message"],
+            )
 
 
 def email_performance_report():
