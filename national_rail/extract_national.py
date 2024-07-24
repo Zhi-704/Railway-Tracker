@@ -34,7 +34,6 @@ def save_data_to_file(data: str, filename: str) -> None:
 
 def get_national_rail_data(output_file: str) -> None:
     """Retrieves data from the National Rail API and saves it to a file."""
-    load_dotenv()
 
     data = get_data_from_api(ENV["NATIONAL_RAIL_API_KEY"])
     if data:
