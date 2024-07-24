@@ -1,14 +1,18 @@
 ************* Module load_pdf
-pdf_report/load_pdf.py:34:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
-pdf_report/load_pdf.py:51:11: W0718: Catching too general exception Exception (broad-exception-caught)
-pdf_report/load_pdf.py:51:4: W0612: Unused variable 'e' (unused-variable)
-pdf_report/load_pdf.py:78:33: W0621: Redefining name 'cursor' from outer scope (line 11) (redefined-outer-name)
+pdf_report/load_pdf.py:35:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
+pdf_report/load_pdf.py:52:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:52:4: W0612: Unused variable 'e' (unused-variable)
+pdf_report/load_pdf.py:57:0: W0105: String statement has no effect (pointless-string-statement)
+pdf_report/load_pdf.py:82:33: W0621: Redefining name 'cursor' from outer scope (line 11) (redefined-outer-name)
+pdf_report/load_pdf.py:113:0: C0116: Missing function or method docstring (missing-function-docstring)
+pdf_report/load_pdf.py:115:4: W0612: Unused variable 'subscribers' (unused-variable)
+pdf_report/load_pdf.py:116:4: W0612: Unused variable 'ses_client' (unused-variable)
 pdf_report/load_pdf.py:5:0: C0411: standard import "io.BytesIO" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 pdf_report/load_pdf.py:6:0: C0411: standard import "datetime.datetime" should be placed before third party import "dotenv.load_dotenv" (wrong-import-order)
 pdf_report/load_pdf.py:2:0: W0611: Unused path imported from os (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.73/10
+Your code has been rated at 8.31/10
 
 ************* Module stations
 database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
