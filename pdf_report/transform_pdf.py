@@ -121,7 +121,7 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
 
 
 def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_cols: list[str], title: str) -> alt.Chart:
-    """Generates a grouped bar chart with separate bars for each category."""
+    """Generates a grouped bar chart with separate bars for each category, without a legend or x-axis title."""
     df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
     delay_types = ['Arrival', 'Departure']
 
@@ -129,15 +129,17 @@ def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_cols: list[str], 
                         var_name='Delay Type', value_name='Minutes')
 
     chart = alt.Chart(melted_df).mark_bar().encode(
-        x=alt.X('Delay Type:N'),
+        x=alt.X('Delay Type:N', title=None),
         y=alt.Y('Minutes:Q', axis=alt.Axis(title='Delay (minutes)')),
-        color=alt.Color('Delay Type:N'),
+        color=alt.Color('Delay Type:N', legend=None),
         column=alt.Column(f'{x_col}:N', title='Station CRS', header=alt.Header(
             labelAngle=0, labelAlign='center')),
-        tooltip=[alt.Tooltip(x_col), alt.Tooltip(
+        tooltip=[alt.Tooltip(x_col, title='Station CRS'), alt.Tooltip(
             'Minutes:Q', title='Delay (minutes)'), 'Delay Type:N']
     ).properties(
-        title=title
+        title=title,
+        width=600/len(df[x_col].unique()),
+        spacing=0
     ).configure_axis(
         labelFontSize=12,
         titleFontSize=14
@@ -152,13 +154,15 @@ def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str, y_cols: list[str], 
 def generate_bar_chart(df: pd.DataFrame, x_col: str, y_col: str, title: str) -> alt.Chart:
     """Generates a bar chart using Altair"""
     return alt.Chart(df).mark_bar().encode(
-        x=alt.X(x_col, title=x_col),
-        y=alt.Y(y_col, title=y_col),
+        x=alt.X(x_col, title="Station CRS"),
+        y=alt.Y(y_col, title="Cancellation Percentage"),
         tooltip=[x_col, y_col]
     ).properties(
         title=title,
         width=600,
         height=400
+    ).configure_axis(
+        labelAngle=0
     )
 
 
@@ -224,16 +228,9 @@ def transform_pdf() -> None:
         </head>
         <body>
             <h1>Train Delay and Cancellation Report</h1>
-            <h2>Cancellation Percentage by Station</h2>
             <img src="{cancellation_chart_embed}" alt="Cancellation Chart">
-
-            <h2>Average Arrival Delay by Station</h2>
             <img src="{delay_chart_embed}" alt="Arrival Delay Chart">
-
-            <h2>Average Overall Delay by Station</h2>
             <img src="{avg_delay_chart_embed}" alt="Overall Delay Chart">
-
-            <h2>Average Long Delay by Station</h2>
             <img src="{avg_delay_long_chart_embed}" alt="Long Delay Chart">
 
             <h2>Station Common Reporting Standard (CRS)<h2>
