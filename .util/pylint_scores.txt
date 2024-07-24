@@ -39,6 +39,15 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module sns_reporting
+national_rail/sns_reporting.py:93:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/sns_reporting.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
+national_rail/sns_reporting.py:125:0: R0914: Too many local variables (19/15) (too-many-locals)
+national_rail/sns_reporting.py:180:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.62/10
+
 ************* Module load_national
 national_rail/load_national.py:58:11: W0718: Catching too general exception Exception (broad-exception-caught)
 national_rail/load_national.py:105:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -46,13 +55,17 @@ national_rail/load_national.py:105:11: W0718: Catching too general exception Exc
 -----------------------------------
 Your code has been rated at 9.63/10
 
+************* Module national_rail
+national_rail/national_rail.py:42:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.60/10
 
+************* Module extract_national
+national_rail/extract_national.py:8:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.62/10
 
 
 ------------------------------------
