@@ -160,11 +160,12 @@ def get_average_delays_all():
     """"""
     query = """
     SELECT
-    station_id,
-    ROUND(AVG(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2) AS avg_arrival_delay_minutes,
-    ROUND(AVG(EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60), 2) AS avg_departure_delay_minutes
-    FROM waypoint
-    GROUP BY station_id;
+    s.station_name,
+    ROUND(AVG(EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60), 2) AS avg_arrival_delay_minutes,
+    ROUND(AVG(EXTRACT(EPOCH FROM (w.actual_departure - w.booked_departure)) / 60), 2) AS avg_departure_delay_minutes
+    FROM waypoint w
+    JOIN station s ON s.station_id=w.station_id
+    GROUP BY s.station_id;
     """
 
     res = fetch_from_query("all", query)
@@ -173,12 +174,13 @@ def get_average_delays_all():
 def get_average_delays_over_a_minute():
     query = """
     SELECT 
-        station_id,
-        ROUND(AVG( EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2) 
-        AS avg_overall_delay_minutes
-    FROM waypoint
-    WHERE EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 > 1
-    GROUP BY station_id;
+    s.station_name,
+    ROUND(AVG( EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60), 2) 
+    AS avg_overall_delay_minutes
+    FROM waypoint w
+    JOIN station s ON s.station_id=w.station_id
+    WHERE EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60 > 1
+    GROUP BY s.station_name;
     """
     res = fetch_from_query("all", query)
     return res
