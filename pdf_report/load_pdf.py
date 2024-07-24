@@ -7,6 +7,11 @@ from datetime import datetime
 
 from boto3 import client
 from botocore.exceptions import NoCredentialsError
+from psycopg2 import connect
+from psycopg2.extensions import connection, cursor
+from psycopg2.extras import RealDictCursor
+import psycopg2
+import psycopg2.extras
 
 
 def get_s3_client() -> client:
@@ -48,7 +53,44 @@ def upload_pdf_to_s3():
             "Error occurred when connecting and uploading to S3 bucket.")
 
 
+def get_connection() -> connection:
+    """ Retrieves connection and returns it. """
+    load_dotenv()
+    return connect(
+        user=environ['DB_USERNAME'],
+        password=environ['DB_PASSWORD'],
+        host=environ['DB_IP'],
+        port=environ['DB_PORT'],
+        dbname=environ['DB_NAME']
+    )
+
+
+def get_cursor(conn: connection) -> cursor:
+    """ Retrieves cursor and returns it. """
+    return conn.cursor(cursor_factory=RealDictCursor)
+
+
+def get_subscribers(conn: connection) -> list:
+    """ Queries the subscriber table, returning a list of all subscriber emails."""
+
+    recipients = []
+    try:
+        with get_cursor(conn) as cursor:
+            cursor.execute("SELECT email FROM subscriber;")
+            subscribers = cursor.fetchall()
+            recipients = [subscriber['email'] for subscriber in subscribers]
+
+    except psycopg2.Error as e:
+        logging.error("Error fetching subscribers: %s", e)
+
+    finally:
+        cursor.close()
+
+    return recipients
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    upload_pdf_to_s3()
+    # upload_pdf_to_s3()
+    get_subscribers(get_connection())
