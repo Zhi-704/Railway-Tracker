@@ -42,13 +42,17 @@ national_rail/load_national.py:105:11: W0718: Catching too general exception Exc
 -----------------------------------
 Your code has been rated at 9.63/10
 
+************* Module national_rail
+national_rail/national_rail.py:42:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.60/10
 
+************* Module extract_national
+national_rail/extract_national.py:8:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.62/10
 
 
 ------------------------------------
