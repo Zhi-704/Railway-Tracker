@@ -162,10 +162,15 @@ def email_performance_report():
     send_email(ses_client, sender, subscribers, message)
 
 
+def send_pdf_to_email_and_s3():
+    """ Sends the PDF of the performance report via email to subscribers
+        Loads the PDF report to the s3 bucket with timestamp."""
+    email_performance_report()
+    upload_pdf_to_s3()
+
+
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    # upload_pdf_to_s3()
-    # subscribers = get_subscribers(get_connection())
-    email_performance_report()
-    upload_pdf_to_s3()
+
+    send_pdf_to_email_and_s3()
