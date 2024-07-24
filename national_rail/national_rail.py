@@ -10,7 +10,7 @@ from sns_reporting import send_message
 FILENAME = "/tmp/data.xml"
 
 
-def main(event, context):  # pylint: disable=unused-argument
+def main(_event, _context):
     """
     Main function to execute the ETL (Extract, Transform, Load) pipeline.
 
