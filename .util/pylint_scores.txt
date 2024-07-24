@@ -10,18 +10,6 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module db_connection
-archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
-
------------------------------------
-Your code has been rated at 8.89/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -42,16 +30,34 @@ Your code has been rated at 10.00/10
 Your code has been rated at 10.00/10
 
 ************* Module transform_pdf
-pdf_report/transform_pdf.py:40:0: C0301: Line too long (122/100) (line-too-long)
-pdf_report/transform_pdf.py:41:0: C0301: Line too long (127/100) (line-too-long)
-pdf_report/transform_pdf.py:76:0: C0116: Missing function or method docstring (missing-function-docstring)
+pdf_report/transform_pdf.py:94:0: C0301: Line too long (120/100) (line-too-long)
+pdf_report/transform_pdf.py:104:0: C0301: Line too long (114/100) (line-too-long)
+pdf_report/transform_pdf.py:170:0: C0301: Line too long (102/100) (line-too-long)
+pdf_report/transform_pdf.py:172:0: C0301: Line too long (123/100) (line-too-long)
+pdf_report/transform_pdf.py:174:0: C0301: Line too long (102/100) (line-too-long)
+pdf_report/transform_pdf.py:176:0: C0301: Line too long (108/100) (line-too-long)
+pdf_report/transform_pdf.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+pdf_report/transform_pdf.py:158:0: R0914: Too many local variables (16/15) (too-many-locals)
 
 -----------------------------------
-Your code has been rated at 8.93/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+************* Module load_real
+realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
+realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
+realtime_trains/load_real.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.67/10
 
 
 ------------------------------------
@@ -63,14 +69,13 @@ realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception 
 -----------------------------------
 Your code has been rated at 9.47/10
 
-************* Module load_real
-realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
-realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
-realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
-realtime_trains/load_real.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
+************* Module db_connection
+archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
+archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
 
 -----------------------------------
-Your code has been rated at 9.67/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
