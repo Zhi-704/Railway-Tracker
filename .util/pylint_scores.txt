@@ -2,14 +2,15 @@
 pdf_report/transform_pdf.py:101:0: C0301: Line too long (113/100) (line-too-long)
 pdf_report/transform_pdf.py:120:0: C0301: Line too long (108/100) (line-too-long)
 pdf_report/transform_pdf.py:123:0: C0301: Line too long (105/100) (line-too-long)
-pdf_report/transform_pdf.py:191:0: C0301: Line too long (101/100) (line-too-long)
-pdf_report/transform_pdf.py:193:0: C0301: Line too long (126/100) (line-too-long)
-pdf_report/transform_pdf.py:195:0: C0301: Line too long (125/100) (line-too-long)
-pdf_report/transform_pdf.py:197:0: C0301: Line too long (145/100) (line-too-long)
-pdf_report/transform_pdf.py:181:0: R0914: Too many local variables (19/15) (too-many-locals)
+pdf_report/transform_pdf.py:124:0: C0301: Line too long (111/100) (line-too-long)
+pdf_report/transform_pdf.py:195:0: C0301: Line too long (101/100) (line-too-long)
+pdf_report/transform_pdf.py:197:0: C0301: Line too long (126/100) (line-too-long)
+pdf_report/transform_pdf.py:199:0: C0301: Line too long (125/100) (line-too-long)
+pdf_report/transform_pdf.py:201:0: C0301: Line too long (145/100) (line-too-long)
+pdf_report/transform_pdf.py:185:0: R0914: Too many local variables (19/15) (too-many-locals)
 
 -----------------------------------
-Your code has been rated at 8.89/10
+Your code has been rated at 8.75/10
 
 
 ------------------------------------
