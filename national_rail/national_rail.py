@@ -7,7 +7,7 @@ from transform_national import transform_national_rail_data
 from load_national import load_incidents
 from sns_reporting import send_message
 
-FILENAME = "data.xml"
+FILENAME = "/tmp/data.xml"
 
 
 def main(event, context):  # pylint: disable=unused-argument
@@ -25,15 +25,21 @@ def main(event, context):  # pylint: disable=unused-argument
     logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
     try:
+        logging.info("Pipeline has started.")
         get_national_rail_data(FILENAME)
+        logging.info("Extract has finished.")
 
         incidents_data = transform_national_rail_data(FILENAME)
-
+        logging.info("Transformation has finished.")
         if not incidents_data:
             logging.info("No incidents found.")
         else:
             load_incidents(incidents_data)
+            logging.info("Load has finished.")
             send_message(incidents_data)
+            logging.info("Messaging has finished.")
 
     except Exception as e:
         logging.error("An error occurred during ETL pipeline execution: %s", e)
+
+    logging.info("Pipeline has ended.")
