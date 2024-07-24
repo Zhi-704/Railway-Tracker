@@ -1,0 +1,12 @@
+FROM public.ecr.aws/lambda/python:latest
+
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY extract_national.py .
+COPY transform_national.py .
+COPY load_national.py .
+COPY sns_reporting.py .
+COPY national_rail.py .
+
+CMD [ "national_rail.main" ]
