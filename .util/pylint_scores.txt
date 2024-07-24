@@ -1,14 +1,15 @@
 ************* Module transform_pdf
-pdf_report/transform_pdf.py:99:0: C0301: Line too long (105/100) (line-too-long)
-pdf_report/transform_pdf.py:173:0: C0301: Line too long (102/100) (line-too-long)
-pdf_report/transform_pdf.py:175:0: C0301: Line too long (125/100) (line-too-long)
-pdf_report/transform_pdf.py:177:0: C0301: Line too long (126/100) (line-too-long)
-pdf_report/transform_pdf.py:179:0: C0301: Line too long (146/100) (line-too-long)
-pdf_report/transform_pdf.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-pdf_report/transform_pdf.py:161:0: R0914: Too many local variables (16/15) (too-many-locals)
+pdf_report/transform_pdf.py:101:0: C0301: Line too long (113/100) (line-too-long)
+pdf_report/transform_pdf.py:120:0: C0301: Line too long (108/100) (line-too-long)
+pdf_report/transform_pdf.py:123:0: C0301: Line too long (105/100) (line-too-long)
+pdf_report/transform_pdf.py:191:0: C0301: Line too long (101/100) (line-too-long)
+pdf_report/transform_pdf.py:193:0: C0301: Line too long (126/100) (line-too-long)
+pdf_report/transform_pdf.py:195:0: C0301: Line too long (125/100) (line-too-long)
+pdf_report/transform_pdf.py:197:0: C0301: Line too long (145/100) (line-too-long)
+pdf_report/transform_pdf.py:181:0: R0914: Too many local variables (19/15) (too-many-locals)
 
 -----------------------------------
-Your code has been rated at 8.99/10
+Your code has been rated at 8.89/10
 
 
 ------------------------------------
