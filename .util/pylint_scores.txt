@@ -1,3 +1,7 @@
+
+------------------------------------
+Your code has been rated at 10.00/10
+
 ************* Module load_pdf
 pdf_report/load_pdf.py:35:4: W1203: Use lazy % formatting in logging functions (logging-fstring-interpolation)
 pdf_report/load_pdf.py:52:11: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -14,29 +18,9 @@ pdf_report/load_pdf.py:2:0: W0611: Unused path imported from os (unused-import)
 -----------------------------------
 Your code has been rated at 8.31/10
 
-************* Module stations
-database/stations.py:1:0: C0302: Too many lines in module (15725/1000) (too-many-lines)
-database/stations.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-database/stations.py:15723:5: W1514: Using open without explicitly specifying an encoding (unspecified-encoding)
-
------------------------------------
-Your code has been rated at 6.25/10
-
 
 ------------------------------------
 Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-************* Module db_connection
-archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
-archive/db_connection.py:52:8: W0612: Unused variable 'e' (unused-variable)
-
------------------------------------
-Your code has been rated at 8.89/10
 
 
 ------------------------------------
