@@ -20,6 +20,18 @@ from load_pdf import (
 )
 
 
+@patch.dict(
+    os.environ,
+    {
+        "DB_IP": "localhost",
+        "DB_NAME": "test_db",
+        "DB_USERNAME": "test_username",
+        "DB_PASSWORD": "test_password",
+        "DB_PORT": "test_port",
+        "AWS_ACCESS_KEY": 'fake_access_key',
+        'AWS_SECRET_KEY': 'fake_secret_key'
+    },
+)
 class TestLoadPdf(unittest.TestCase):
     """ Tests for loading PDF into email attachment and to S3 bucket. """
 
