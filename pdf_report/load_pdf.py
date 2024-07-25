@@ -10,7 +10,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from boto3 import client
 from botocore.exceptions import NoCredentialsError, ClientError
-from psycopg2 import connect, Error as psycopg2_error
+from psycopg2 import Error as psycopg2_error
 from psycopg2.extensions import connection
 
 from extract_pdf import get_connection, get_cursor

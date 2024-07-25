@@ -35,7 +35,7 @@ def query_db(conn: connection, query: str) -> list[tuple] | None:
             data = cur.fetchall()
         return data
 
-    except Exception as e:  # pylint: skip broad exception
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error("Error occurred when executing query: %s", query)
         logging.error("Error: %s", e)
         return None
