@@ -123,7 +123,7 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
 
 
 def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
-                               y_cols: list[str], title: str) -> alt.Chart:
+                               y_cols: list[str], title: str, y_axis: str) -> alt.Chart:
     """Generates a grouped bar chart with separate bars for each station"""
     df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
     delay_types = ['Arrival', 'Departure']
@@ -133,12 +133,12 @@ def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
 
     chart = alt.Chart(melted_df).mark_bar().encode(
         x=alt.X('Delay Type:N', title=None),
-        y=alt.Y('Minutes:Q', axis=alt.Axis(title='Delay (minutes)')),
+        y=alt.Y('Minutes:Q', axis=alt.Axis(title=y_axis)),
         color=alt.Color('Delay Type:N', legend=None),
         column=alt.Column(f'{x_col}:N', title='Station CRS', header=alt.Header(
             labelAngle=0, labelAlign='center')),
         tooltip=[alt.Tooltip(x_col, title='Station CRS'), alt.Tooltip(
-            'Minutes:Q', title='Delay (minutes)'), 'Delay Type:N']
+            'Minutes:Q', title=y_axis), 'Delay Type:N']
     ).properties(
         title=title,
         width=600/len(df[x_col].unique()),
@@ -158,7 +158,7 @@ def generate_bar_chart(df: pd.DataFrame, x_col: str, y_col: str, title: str) -> 
     """Generates a bar chart using Altair"""
     return alt.Chart(df).mark_bar().encode(
         x=alt.X(x_col, title="Station CRS"),
-        y=alt.Y(y_col, title="Cancellation Percentage"),
+        y=alt.Y(y_col, title="Percentage of Cancelled Trains (%)"),
         tooltip=[x_col, y_col]
     ).properties(
         title=title,
@@ -196,17 +196,21 @@ def transform_pdf() -> None:
 
     cancellation_chart = generate_bar_chart(
         cancelled_df, 'station_crs', 'cancellation_percentage',
-        'Cancellation Percentage by Station')
+        'Cancellation Percentage by Station (%)')
     delay_chart = generate_grouped_bar_chart(
         delayed_df, 'station_crs',
-        ['delayed_arrival_percentage', 'delayed_departure_percentage'], 'Average Delay by Station')
+        ['delayed_arrival_percentage',
+            'delayed_departure_percentage'], 'Delay Percentage by Station',
+        'Percentage of Delayed Trains (%)')
     avg_delay_chart = generate_grouped_bar_chart(
         avg_delay_df, 'station_crs',
-        ['avg_arrive_delay_minutes', 'avg_departure_delay_minutes'], 'Average Delay by Station')
+        ['avg_arrive_delay_minutes',
+            'avg_departure_delay_minutes'], 'Average Delay by Station',
+        'Average Delay (minutes)')
     avg_delay_long_chart = generate_grouped_bar_chart(
         avg_delay_long_df, 'station_crs',
         ['avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'],
-        'Average Long Delay by Station')
+        'Average Delay more than 1 min by Station', 'Average Delay more than 1 min (minutes)')
 
     cancellation_chart_embed = convert_altair_chart_to_html_embed(
         cancellation_chart)
