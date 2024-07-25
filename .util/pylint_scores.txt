@@ -1,8 +1,6 @@
-************* Module transform_pdf
-pdf_report/transform_pdf.py:188:0: R0914: Too many local variables (18/15) (too-many-locals)
 
------------------------------------
-Your code has been rated at 9.86/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
