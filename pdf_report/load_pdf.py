@@ -11,8 +11,7 @@ from dotenv import load_dotenv
 from boto3 import client
 from botocore.exceptions import NoCredentialsError, ClientError
 from psycopg2 import connect, Error as psycopg2_error
-from psycopg2.extensions import connection, cursor
-from psycopg2.extras import RealDictCursor
+from psycopg2.extensions import connection
 
 from extract_pdf import get_connection, get_cursor
 
@@ -41,7 +40,7 @@ def upload_pdf_to_s3(report_filename: str) -> None:
                      s3_file_name, bucket)
     except FileNotFoundError:
         logging.error("The file was not found.")
-    except Exception:
+    except Exception:  # pylint: skip broad exception
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
 
