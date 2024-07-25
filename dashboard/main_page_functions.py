@@ -77,7 +77,7 @@ def fetch_from_query(fetch_amount: str, query: str):
 
 
 def convert_datetime_to_string(input_date: dt.datetime) -> str:
-    """"""
+    """take a datetime object and return an appropriate formatted string."""
     try:
         return dt.datetime.strftime(input_date, "%d/%m/%Y")
     except ValueError:
@@ -106,15 +106,17 @@ def get_closest_scheduled_incident() -> str | None:
     return None
 
 
-def get_total_delays_for_every_station():
+def get_total_delays_for_every_station(date_range: str):
     """"""
-    query = """
+    date_range_query = get_date_range_query(date_range, "w.actual_arrival")
+    query = f"""
     SELECT
     s.station_name,
     ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
     EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
     FROM waypoint w
     JOIN station s ON w.station_id = s.station_id
+    {date_range_query}
     GROUP BY s.station_id, s.station_name
     ORDER BY total_delay_minutes DESC;
     """
