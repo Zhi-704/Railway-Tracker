@@ -1,12 +1,14 @@
 """ Unit tests to test load PDF functions. """
+
 import unittest
 from unittest.mock import MagicMock, patch
-import os
+from os import environ
 from io import BytesIO
 from datetime import datetime
 from email.mime.multipart import MIMEMultipart
+
 from botocore.exceptions import ClientError
-import psycopg2
+from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
 from load_pdf import (
