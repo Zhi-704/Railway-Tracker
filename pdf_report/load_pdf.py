@@ -2,11 +2,9 @@
 
 from os import environ, path
 import logging
-
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from io import BytesIO
 from datetime import datetime
 
 from dotenv import load_dotenv
@@ -15,6 +13,8 @@ from botocore.exceptions import NoCredentialsError, ClientError
 from psycopg2 import connect, Error as psycopg2_error
 from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
+
+from extract_pdf import get_connection, get_cursor
 
 
 def get_s3_client() -> client:
@@ -44,24 +44,6 @@ def upload_pdf_to_s3(report_filename: str) -> None:
     except Exception:
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
-
-
-def get_connection() -> connection:
-    """ Retrieves connection and returns it. """
-
-    return connect(
-        user=environ['DB_USERNAME'],
-        password=environ['DB_PASSWORD'],
-        host=environ['DB_IP'],
-        port=environ['DB_PORT'],
-        dbname=environ['DB_NAME']
-    )
-
-
-def get_cursor(conn: connection) -> cursor:
-    """ Retrieves cursor and returns it. """
-
-    return conn.cursor(cursor_factory=RealDictCursor)
 
 
 def get_subscribers(conn: connection) -> list:
