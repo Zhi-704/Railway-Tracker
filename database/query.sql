@@ -10,4 +10,3 @@ SELECT * FROM waypoint;
 SELECT * FROM operator;
 SELECT * FROM affected_operator;
 SELECT * FROM service;
-SELECT COUNT(*) FROM waypoint as waypoint_count;

@@ -36,6 +36,6 @@ python3 archive.py
 This script will read the RDS and extract any out of date data, clean the RDS and insert a compressed version into the archive table for long term storage.
 
 ## Creating a docker image to run locally:
-1. Build docker image: ```docker build -t railway-tracker-local .```
+1. Build docker image: ```docker build -t railway-tracker-archive-local .```
 2. View if docker image has been created locally:```docker image ls```
-3. Run docker image with environment variables: ```docker run --env-file .env railway-tracker-local```
+3. Run docker image with environment variables: ```docker run --env-file .env railway-tracker-archive-local```
