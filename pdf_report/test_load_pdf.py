@@ -37,28 +37,6 @@ from load_pdf import (
 class TestLoadPdf(unittest.TestCase):
     """ Tests for loading PDF into email attachment and to S3 bucket. """
 
-    # @patch("load_pdf.connect")
-    # def test_get_connection(self, mock_connect: connection):
-    #     """ Tests get_connection returns connection. """
-
-    #     mock_connect.return_value = "mock_connection"
-    #     db_connection = get_connection()
-
-    #     self.assertEqual(db_connection, "mock_connection")
-    #     mock_connect.assert_called_once()
-
-    # @patch("load_pdf.get_connection")
-    # def test_get_cursor(self, mock_get_connection: connection):
-    #     """ Tests get_cursor returns cursor. """
-
-    #     mock_connection = MagicMock()
-    #     mock_get_connection.return_value = mock_connection
-    #     db_cursor = get_cursor(mock_connection)
-
-    #     mock_connection.cursor.assert_called_once_with(
-    #         cursor_factory=RealDictCursor)
-    #     self.assertEqual(db_cursor, mock_connection.cursor())
-
     @patch('load_pdf.get_cursor')
     def test_successful_get_subscribers(self, mock_get_cursor):
         """ Tests retrieves list of subscribers from database successfully. """
