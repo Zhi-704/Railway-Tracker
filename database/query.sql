@@ -11,6 +11,6 @@ SELECT * FROM affected_operator;
 SELECT * FROM service;
 
 SELECT COUNT(*) AS waypoint_count FROM waypoint;
---  17947
+--  21157
 SELECT COUNT(*) AS archive_count FROM performance_archive;
 -- 1
