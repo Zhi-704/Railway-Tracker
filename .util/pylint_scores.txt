@@ -10,19 +10,19 @@ pdf_report/pdf_report.py:25:11: W0718: Catching too general exception Exception 
 Your code has been rated at 8.95/10
 
 ************* Module extract_pdf
-pdf_report/extract_pdf.py:38:4: W0702: No exception type(s) specified (bare-except)
+pdf_report/extract_pdf.py:38:0: E0011: Unrecognized file option 'exception' (unrecognized-inline-option)
+pdf_report/extract_pdf.py:38:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.58/10
+Your code has been rated at 7.60/10
 
 ************* Module load_pdf
-pdf_report/load_pdf.py:44:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:43:0: E0011: Unrecognized file option 'exception' (unrecognized-inline-option)
+pdf_report/load_pdf.py:43:11: W0718: Catching too general exception Exception (broad-exception-caught)
 pdf_report/load_pdf.py:13:0: W0611: Unused connect imported from psycopg2 (unused-import)
-pdf_report/load_pdf.py:14:0: W0611: Unused cursor imported from psycopg2.extensions (unused-import)
-pdf_report/load_pdf.py:15:0: W0611: Unused RealDictCursor imported from psycopg2.extras (unused-import)
 
 -----------------------------------
-Your code has been rated at 9.48/10
+Your code has been rated at 9.08/10
 
 
 ------------------------------------
