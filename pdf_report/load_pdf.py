@@ -32,7 +32,7 @@ def get_s3_client() -> client:
         return None
 
 
-def upload_pdf_data_to_s3(s3: client, bucket_name: str, s3_filename: str, pdf: BytesIO):
+def upload_pdf_data_to_s3(s3: client, bucket_name: str, s3_filename: str, pdf: BytesIO) -> None:
     """ Uploads pdf of summary report to S3 bucket. """
 
     s3.upload_fileobj(pdf, bucket_name, s3_filename)
