@@ -14,6 +14,7 @@ from psycopg2.extensions import connection, cursor
 load_dotenv()
 FETCH_TYPES = ["all", "one", "many"]
 
+
 def get_db_connection() -> connection | None:
     """return a database connection"""
     try:
@@ -24,7 +25,7 @@ def get_db_connection() -> connection | None:
             password=environ['DB_PASSWORD'],
             port=environ['DB_PORT']
         )
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
 
@@ -33,9 +34,10 @@ def get_db_cursor(conn: connection) -> cursor | None:
     """return a cursor object based on a given connection"""
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         st.write(e)
         return None
+
 
 def run_fetch_command(curs: cursor, fetch_amount):
     """"""
@@ -73,13 +75,14 @@ def fetch_from_query(fetch_amount: str, query: str):
         st.error(e)
         return None
 
-    
+
 def convert_datetime_to_string(input_date: dt.datetime) -> str:
     """"""
     try:
         return dt.datetime.strftime(input_date, "%d/%m/%Y")
     except ValueError:
         return ""
+
 
 def get_closest_scheduled_incident() -> str | None:
     """return the information on the closest incident scheduled
@@ -93,6 +96,7 @@ def get_closest_scheduled_incident() -> str | None:
     if res:
         return f"[ {convert_datetime_to_string(res["incident_start"])} ] {res["incident_summary"]}"
     return None
+
 
 def get_total_delays_for_every_station():
     """"""
@@ -109,6 +113,7 @@ def get_total_delays_for_every_station():
     res = fetch_from_query("all", query)
     return res
 
+
 def get_station_with_highest_delay():
     """get station with highest delay in seconds"""
     query = """
@@ -124,6 +129,7 @@ def get_station_with_highest_delay():
 
     res = fetch_from_query("one", query)
     return f"{res["station_name"]}: total delays of {res["total_delay_minutes"]} minutes"
+
 
 def get_trains_cancelled_per_station_percentage():
     """"""
@@ -156,6 +162,7 @@ def get_trains_cancelled_per_station_percentage():
     res = fetch_from_query("all", query)
     return res
 
+
 def get_average_delays_all():
     """"""
     query = """
@@ -170,6 +177,7 @@ def get_average_delays_all():
 
     res = fetch_from_query("all", query)
     return res
+
 
 def get_average_delays_over_a_minute():
     query = """
