@@ -24,10 +24,9 @@ def get_s3_client() -> client:
     """ Returns s3 client. """
     load_dotenv()
     try:
-        s3_client = client('s3',
+        return client('s3',
                            aws_access_key_id=environ['AWS_ACCESS_KEY'],
                            aws_secret_access_key=environ['AWS_SECRET_KEY'])
-        return s3_client
     except NoCredentialsError:
         logging.error("Error, no AWS credentials found")
         return None
