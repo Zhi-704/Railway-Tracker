@@ -74,8 +74,49 @@ def display_average_delays_over_a_minute() -> alt.Chart:
         float)
     return alt.Chart(avg_delay_long_df).mark_bar().encode(
         x=alt.X("station_name"),
-        y=alt.Y("avg_overall_delay_minutes")
+        y=alt.Y("avg_overall_delay_minutes", title="OVER A MINUTE")
     )
+
+
+def deploy_station_dashboard():
+    """"""
+    st.subheader("Next scheduled incident: ")
+    closest_future_incident = get_closest_scheduled_incident()
+    if closest_future_incident:
+        st.write(closest_future_incident)
+    else:
+        st.write("No incident scheduled in the near future could be found.")
+
+    date_range = st.selectbox(
+        "Select the span of time for the dashboard", TIME_RANGE_OPTIONS)
+    st.subheader(f"Station with the highest delay since ({date_range})")
+    date_range = TIME_RANGE_OPTIONS_DICT[date_range]
+    st.write(get_station_with_highest_delay(date_range))
+
+    # TODO: DO something with sigma radio
+    sigma = st.radio("label", ["arrival", "departure", "sum total"])
+    # st.altair_chart(display_train_cancellations())
+    bar_charts = st.columns(2, gap="small")
+    with bar_charts[0]:
+        st.header("Total Delay in minutes by Station")
+        st.altair_chart(display_total_delays(date_range))
+    with bar_charts[1]:
+        st.header("Percentage of Trains cancelled per station")
+        st.altair_chart(display_train_cancellation_percentage())
+
+    delays = st.columns(2, gap="large")
+    with delays[0]:
+
+        st.altair_chart(display_average_delay_all())
+    with delays[1]:
+
+        st.altair_chart(display_average_delays_over_a_minute())
+
+
+def deploy_operator_dashboard():
+    """"""
+    ...
+# TODO: check people can't dox emails
 
 
 def deploy_home_page():
@@ -92,30 +133,12 @@ def deploy_home_page():
         ]
     )
     st.title("Railway Tracker 🚆")
-    st.subheader("Next scheduled incident: ")
-    closest_future_incident = get_closest_scheduled_incident()
-    if closest_future_incident:
-        st.write(closest_future_incident)
-    else:
-        st.write("No incident could be found.")
 
-    date_range = st.selectbox(
-        "Select the span of time for the dashboard", TIME_RANGE_OPTIONS)
-    st.subheader(f"Station with the highest delay since ({date_range})")
-    date_range = TIME_RANGE_OPTIONS_DICT[date_range]
-    st.write(get_station_with_highest_delay(date_range))
-
-    # st.altair_chart(display_train_cancellations())
-    bar_charts = st.columns(2, gap="small")
-    with bar_charts[0]:
-        st.header("Total Delay in minutes by Station")
-        st.altair_chart(display_total_delays(date_range))
-    with bar_charts[1]:
-        st.header("Percentage of Trains cancelled per station")
-        st.altair_chart(display_train_cancellation_percentage())
-    st.altair_chart(display_average_delay_all())
-
-    st.altair_chart(display_average_delays_over_a_minute())
+    tab1, tab2 = st.tabs(["Stations", "Operators"])
+    with tab1:
+        deploy_station_dashboard()
+    with tab2:
+        deploy_operator_dashboard()
 
 
 if __name__ == "__main__":
