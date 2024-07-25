@@ -20,11 +20,13 @@ Your code has been rated at 9.17/10
 
 ************* Module load_pdf
 pdf_report/load_pdf.py:44:11: W0718: Catching too general exception Exception (broad-exception-caught)
-pdf_report/load_pdf.py:161:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
-pdf_report/load_pdf.py:9:0: W0611: Unused BytesIO imported from io (unused-import)
+pdf_report/load_pdf.py:143:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
+pdf_report/load_pdf.py:13:0: W0611: Unused connect imported from psycopg2 (unused-import)
+pdf_report/load_pdf.py:14:0: W0611: Unused cursor imported from psycopg2.extensions (unused-import)
+pdf_report/load_pdf.py:15:0: W0611: Unused RealDictCursor imported from psycopg2.extras (unused-import)
 
 -----------------------------------
-Your code has been rated at 9.14/10
+Your code has been rated at 8.83/10
 
 
 ------------------------------------
