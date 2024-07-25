@@ -2,12 +2,9 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module pdf_report
-pdf_report/pdf_report.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-pdf_report/pdf_report.py:25:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
------------------------------------
-Your code has been rated at 8.95/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 ************* Module extract_pdf
 pdf_report/extract_pdf.py:38:0: E0011: Unrecognized file option 'exception' (unrecognized-inline-option)
@@ -17,12 +14,10 @@ pdf_report/extract_pdf.py:38:11: W0718: Catching too general exception Exception
 Your code has been rated at 7.60/10
 
 ************* Module load_pdf
-pdf_report/load_pdf.py:43:0: E0011: Unrecognized file option 'exception' (unrecognized-inline-option)
-pdf_report/load_pdf.py:43:11: W0718: Catching too general exception Exception (broad-exception-caught)
 pdf_report/load_pdf.py:13:0: W0611: Unused connect imported from psycopg2 (unused-import)
 
 -----------------------------------
-Your code has been rated at 9.08/10
+Your code has been rated at 9.87/10
 
 
 ------------------------------------
