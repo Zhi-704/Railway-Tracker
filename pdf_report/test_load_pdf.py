@@ -18,7 +18,8 @@ from load_pdf import (
     create_ses_client,
     send_email,
     get_s3_client,
-    upload_pdf_data_to_s3
+    upload_pdf_to_s3
+    # upload_pdf_data_to_s3
 )
 
 
@@ -61,6 +62,7 @@ class TestLoadPdf(unittest.TestCase):
 
     @patch('load_pdf.get_cursor')
     def test_successful_get_subscribers(self, mock_get_cursor):
+        """ Tests retrieves list of subscribers from database successfully. """
 
         mock_cursor = MagicMock()
         mock_cursor.fetchall.return_value = [
@@ -78,6 +80,7 @@ class TestLoadPdf(unittest.TestCase):
     @patch('load_pdf.client')
     @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
     def test_successful_ses_client_creation(self, mock_boto_client):
+        """ Tests creates SES Client successfully. """
 
         mock_client = MagicMock()
         mock_boto_client.return_value = mock_client
@@ -95,6 +98,7 @@ class TestLoadPdf(unittest.TestCase):
     @patch('load_pdf.client')
     @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
     def test_create_ses_client_failure(self, mock_boto_client):
+        """ Tests creates SES Client unsuccessfully. """
 
         mock_boto_client.side_effect = ClientError(
             {"Error": {"Code": "InvalidClientTokenId",
@@ -109,6 +113,8 @@ class TestLoadPdf(unittest.TestCase):
             "Error creating SES client: An error occurred (InvalidClientTokenId)", str(context_manager.exception))
 
     def test_successful_email_send(self):
+        """ Tests sends email through SES Client successfully. """
+
         mock_ses_client = MagicMock()
         mock_ses_client.send_raw_email.return_value = {
             "MessageId": "fake-message-id"}
@@ -131,7 +137,8 @@ class TestLoadPdf(unittest.TestCase):
 
     @patch('load_pdf.client')
     @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
-    def test_successful_s3_client_creation(self, mock_boto_client):
+    def test_successful_get_s3_client(self, mock_boto_client):
+        """ Tests creates S3 Client successfully. """
 
         mock_client = MagicMock()
         mock_boto_client.return_value = mock_client
@@ -144,14 +151,21 @@ class TestLoadPdf(unittest.TestCase):
             aws_access_key_id='fake_access_key',
             aws_secret_access_key='fake_secret_key')
 
-    def test_pdf_upload_to_s3_successful(self):
+    @patch('load_pdf.get_s3_client')
+    @patch('load_pdf.datetime')
+    @patch.dict('load_pdf.environ', {'S3_BUCKET_NAME': 'test-bucket'})
+    def test_upload_pdf_to_s3_successful(self, mock_datetime, mock_get_s3_client):
+        """ Tests uploads PDF file to S3 successfully. """
+
         mock_s3_client = MagicMock()
-        bucket_name = 'test-bucket'
-        s3_filename = 'test.pdf'
-        pdf_content = BytesIO(b"Fake PDF content")
+        mock_get_s3_client.return_value = mock_s3_client
+        mock_datetime.now.return_value = '20240101'
 
-        upload_pdf_data_to_s3(mock_s3_client, bucket_name,
-                              s3_filename, pdf_content)
+        test_report_filename = 'test.pdf'
+        test_bucket = 'test-bucket'
+        test_s3_file_name = f"{mock_datetime.now()}_{test_report_filename}"
 
-        mock_s3_client.upload_fileobj.assert_called_once_with(
-            pdf_content, bucket_name, s3_filename)
+        upload_pdf_to_s3(test_report_filename)
+
+        mock_s3_client.upload_file.assert_called_once_with(
+            test_report_filename, test_bucket, test_s3_file_name)

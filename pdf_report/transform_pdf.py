@@ -10,7 +10,6 @@ import pandas as pd
 from psycopg2.extensions import connection
 from extract_pdf import get_connection, query_db
 
-REPORT_NAME = "performance_report.pdf"
 CSS_PATH = "./styles.css"
 
 
@@ -229,7 +228,7 @@ def convert_html_to_pdf(source_html: str, output_filename: str) -> bool:
     return pisa_status.err
 
 
-def transform_pdf() -> None:
+def transform_pdf(report_filename: str) -> None:
     """Main function which creates pdf"""
     conn = get_connection()
     cancelled_df = get_cancelled_percentage(conn)
@@ -257,7 +256,7 @@ def transform_pdf() -> None:
     html_report = generate_html_report(delayed_df, cancellation_chart,
                                        delay_chart, avg_delay_chart, avg_delay_long_chart)
 
-    result = convert_html_to_pdf(html_report, REPORT_NAME)
+    result = convert_html_to_pdf(html_report, report_filename)
 
     if result:
         logging.error("Failed to create PDF report.")
