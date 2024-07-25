@@ -6,9 +6,15 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module load_pdf
+pdf_report/load_pdf.py:54:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
---------------------------------------------------------------------
-Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
+-----------------------------------
+Your code has been rated at 9.88/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
@@ -57,6 +63,41 @@ national_rail/extract_national.py:8:0: W0611: Unused load_dotenv imported from d
 
 -----------------------------------
 Your code has been rated at 9.62/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+************* Module realtime_trains
+realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.52/10
+
+************* Module load_real
+realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
+realtime_trains/load_real.py:136:11: W0718: Catching too general exception Exception (broad-exception-caught)
+realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
+realtime_trains/load_real.py:265:15: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 9.67/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
