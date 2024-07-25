@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 from requests.auth import HTTPBasicAuth
 from requests.exceptions import RequestException
 from requests import get
-
 from psycopg2 import connect
 from psycopg2.extras import DictCursor
 from psycopg2.extensions import connection as DBConnection, cursor as DBCursor

@@ -10,6 +10,10 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+
+------------------------------------
+Your code has been rated at 10.00/10
+
 ************* Module db_connection
 archive/db_connection.py:44:15: W0718: Catching too general exception Exception (broad-exception-caught)
 archive/db_connection.py:52:15: W0718: Catching too general exception Exception (broad-exception-caught)
@@ -66,7 +70,7 @@ Your code has been rated at 10.00/10
 realtime_trains/realtime_trains.py:36:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 9.47/10
+Your code has been rated at 9.52/10
 
 ************* Module load_real
 realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
