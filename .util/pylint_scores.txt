@@ -14,21 +14,9 @@ Your code has been rated at 10.00/10 (previous run: 10.00/10, +0.00)
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module incident_alerts
-dashboard/pages/incident_alerts.py:135:71: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/pages/incident_alerts.py:56:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/incident_alerts.py:56:25: W0621: Redefining name 'client' from outer scope (line 8) (redefined-outer-name)
-dashboard/pages/incident_alerts.py:63:4: W0702: No exception type(s) specified (bare-except)
-dashboard/pages/incident_alerts.py:67:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/incident_alerts.py:67:17: W0621: Redefining name 'client' from outer scope (line 8) (redefined-outer-name)
-dashboard/pages/incident_alerts.py:74:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/incident_alerts.py:74:23: W0621: Redefining name 'client' from outer scope (line 8) (redefined-outer-name)
-dashboard/pages/incident_alerts.py:78:4: W0702: No exception type(s) specified (bare-except)
-dashboard/pages/incident_alerts.py:82:0: C0112: Empty function docstring (empty-docstring)
-dashboard/pages/incident_alerts.py:100:0: C0112: Empty function docstring (empty-docstring)
 
------------------------------------
-Your code has been rated at 8.75/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
