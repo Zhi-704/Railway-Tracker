@@ -6,7 +6,7 @@ Your code has been rated at 9.33/10
 
 ************* Module pdf_report
 pdf_report/pdf_report.py:1:0: C0114: Missing module docstring (missing-module-docstring)
-pdf_report/pdf_report.py:26:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/pdf_report.py:25:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
 Your code has been rated at 8.95/10
