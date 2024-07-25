@@ -140,4 +140,4 @@ def load_pdf(report_filename: str) -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    load_pdf()
+    load_pdf('performance_report.pdf')

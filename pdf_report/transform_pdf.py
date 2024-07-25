@@ -289,4 +289,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
     load_dotenv()
-    transform_pdf()
+    transform_pdf('performance_report.pdf')
