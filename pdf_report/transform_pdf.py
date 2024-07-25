@@ -243,14 +243,12 @@ def transform_pdf() -> None:
         'Cancellation Percentage by Station (%)')
     delay_chart = generate_grouped_bar_chart(
         delayed_df, 'station_crs',
-        ['delayed_arrival_percentage',
-            'delayed_departure_percentage'], 'Delay Percentage by Station',
-        'Percentage of Delayed Trains (%)')
+        ['delayed_arrival_percentage', 'delayed_departure_percentage'],
+        'Delay Percentage by Station', 'Percentage of Delayed Trains (%)')
     avg_delay_chart = generate_grouped_bar_chart(
         avg_delay_df, 'station_crs',
-        ['avg_arrive_delay_minutes',
-            'avg_departure_delay_minutes'], 'Average Delay by Station',
-        'Average Delay (minutes)')
+        ['avg_arrive_delay_minutes', 'avg_departure_delay_minutes'],
+        'Average Delay by Station', 'Average Delay (minutes)')
     avg_delay_long_chart = generate_grouped_bar_chart(
         avg_delay_long_df, 'station_crs',
         ['avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'],
