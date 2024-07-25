@@ -40,7 +40,7 @@ def upload_pdf_to_s3(report_filename: str) -> None:
                      s3_file_name, bucket)
     except FileNotFoundError:
         logging.error("The file was not found.")
-    except Exception:  # pylint: skip broad exception
+    except Exception:   # pylint: disable=broad-exception-caught
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
 

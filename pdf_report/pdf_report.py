@@ -1,3 +1,6 @@
+""" PDF report pipeline generates a PDF report of yesterday's UK railway performance,
+    emails to subscribed users and stores in S3 bucket. """
+
 import logging
 from dotenv import load_dotenv
 
@@ -22,7 +25,7 @@ def main(_event, _context):
         load_pdf(REPORT_FILENAME)
         logging.info("Loading to S3 and sending emails complete.")
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error(
             "An error occurred during the PDF Report pipeline execution: %s", e)
 
