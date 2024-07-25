@@ -84,6 +84,14 @@ def convert_datetime_to_string(input_date: dt.datetime) -> str:
         return ""
 
 
+def get_date_range_query(time_range, date_metric: str) -> str:
+    """return a single line that can be added to a postgres query.
+    this will help filter data by a time range."""
+    if not (time_range and date_metric):
+        return ""
+    return f"WHERE {date_metric} >= NOW() - interval '{time_range}'"
+
+
 def get_closest_scheduled_incident() -> str | None:
     """return the information on the closest incident scheduled
     after the current time."""
@@ -114,15 +122,18 @@ def get_total_delays_for_every_station():
     return res
 
 
-def get_station_with_highest_delay():
+def get_station_with_highest_delay(date_range: str):
     """get station with highest delay in seconds"""
-    query = """
+    date_range_query = get_date_range_query(
+        date_range, date_metric="w.actual_arrival")
+    query = f"""
     SELECT
     s.station_name,
     ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
     EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
     FROM waypoint w
     JOIN station s ON w.station_id = s.station_id
+    {date_range_query}
     GROUP BY s.station_id, s.station_name
     ORDER BY total_delay_minutes DESC;
     """
