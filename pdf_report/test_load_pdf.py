@@ -19,7 +19,6 @@ from load_pdf import (
     send_email,
     get_s3_client,
     upload_pdf_to_s3
-    # upload_pdf_data_to_s3
 )
 
 

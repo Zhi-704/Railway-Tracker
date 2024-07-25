@@ -4,6 +4,7 @@ import logging
 from io import BytesIO
 from base64 import b64encode
 
+from dotenv import load_dotenv
 from xhtml2pdf import pisa
 import altair as alt
 import pandas as pd
@@ -14,7 +15,8 @@ CSS_PATH = "./styles.css"
 
 
 def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
-    """Calculates the percentage of cancelled trains for each station"""
+    """ Calculates the percentage of cancelled trains for each station and returns as a 
+        pandas DataFrame. """
 
     data = query_db(conn, """
         WITH total_trains AS (
@@ -45,7 +47,8 @@ def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
 
 
 def get_delayed_percentage(conn: connection) -> pd.DataFrame:
-    """Calculates the percentage of delay for arrivals and departures for each station"""
+    """ Calculates the percentage of delay for arrivals and departures for each station, 
+        and returns as a pandas DataFrame. """
 
     data = query_db(conn, """
         WITH total_trains AS (
@@ -89,7 +92,8 @@ def get_delayed_percentage(conn: connection) -> pd.DataFrame:
 
 
 def get_avg_delay(conn: connection) -> pd.DataFrame:
-    """Calculates the average overall delay for each station"""
+    """Calculates the average overall delay for each station, and returns as a 
+        pandas DataFrame. """
 
     data = query_db(conn, """
         SELECT station_name, station_crs,
@@ -108,7 +112,8 @@ def get_avg_delay(conn: connection) -> pd.DataFrame:
 
 
 def get_avg_delay_long(conn: connection) -> pd.DataFrame:
-    """Calculates the average delay more than 1 min for each station"""
+    """Calculates the average delay more than 1 min for each station, and returns as a 
+        pandas DataFrame."""
 
     data = query_db(conn, """
         SELECT station_name, station_crs,
@@ -131,7 +136,8 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
 
 def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
                                y_cols: list[str], title: str, y_axis: str) -> alt.Chart:
-    """Generates a grouped bar chart with separate bars for each station"""
+    """Generates a grouped bar chart with separate bars for each station, and returns as a 
+        pandas DataFrame."""
 
     df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
     delay_types = ['Arrival', 'Departure']
@@ -163,7 +169,7 @@ def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
 
 
 def generate_bar_chart(df: pd.DataFrame, x_col: str, y_col: str, title: str) -> alt.Chart:
-    """ Generates a bar chart using Altair """
+    """ Generates and returns a bar chart using Altair """
 
     return alt.Chart(df).mark_bar().encode(
         x=alt.X(x_col, title="Station CRS"),
@@ -242,7 +248,8 @@ def convert_html_to_pdf(source_html: str, output_filename: str) -> bool:
 
 
 def transform_pdf(report_filename: str) -> None:
-    """ Main function which creates pdf """
+    """ Main function which creates pdf summary report containing performance 
+        statistics for yesterday's railway data. """
 
     conn = get_connection()
     cancelled_df = get_cancelled_percentage(conn)
@@ -281,4 +288,5 @@ def transform_pdf(report_filename: str) -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
+    load_dotenv()
     transform_pdf()

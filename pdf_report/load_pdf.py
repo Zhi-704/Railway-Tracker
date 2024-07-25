@@ -17,9 +17,6 @@ from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
 
 
-# REPORT_FILENAME = 'performance_report.pdf'
-
-
 def get_s3_client() -> client:
     """ Returns s3 client. """
     try:
