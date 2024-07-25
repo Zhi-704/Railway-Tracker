@@ -33,7 +33,7 @@ The main script to interact with the National Rail API is `national_rail.py`. Yo
 python3 national_rail.py
 ```
 
-This will retrieve information about any incidents occurring in NationalRail as well as alert any users of recent incidents. 
+This will retrieve information about any incidents occurring in NationalRail and alerts any subscribed any users of recent incidents. 
 
 ## Configuration
 
