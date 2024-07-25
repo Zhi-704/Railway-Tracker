@@ -10,9 +10,7 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 from boto3 import client
-from botocore.exceptions import NoCredentialsError
-import botocore.exceptions
-from botocore.exceptions import ClientError
+from botocore.exceptions import NoCredentialsError, ClientError
 from psycopg2 import connect, Error as psycopg2_error
 from psycopg2.extensions import connection, cursor
 from psycopg2.extras import RealDictCursor
@@ -104,7 +102,7 @@ def create_ses_client() -> client:
             aws_access_key_id=environ['AWS_ACCESS_KEY'],
             aws_secret_access_key=environ['AWS_SECRET_KEY']
         )
-    except botocore.exceptions.ClientError as e:
+    except ClientError as e:
         raise RuntimeError(f"Error creating SES client: {e}") from e
 
 
