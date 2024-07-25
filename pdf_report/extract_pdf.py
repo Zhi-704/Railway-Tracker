@@ -37,7 +37,7 @@ def query_db(conn: connection, query: str) -> list[tuple] | None:
 
     except:
         logging.error("Error occurred when executing query: %s", query)
-        return
+        return None
 
 
 if __name__ == "__main__":
