@@ -1,16 +1,28 @@
+************* Module transform_pdf
+pdf_report/transform_pdf.py:270:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.32/10
+
+************* Module pdf_report
+pdf_report/pdf_report.py:1:0: C0114: Missing module docstring (missing-module-docstring)
+pdf_report/pdf_report.py:10:0: C0116: Missing function or method docstring (missing-function-docstring)
+pdf_report/pdf_report.py:24:11: W0718: Catching too general exception Exception (broad-exception-caught)
+
+-----------------------------------
+Your code has been rated at 8.24/10
 
 
 ------------------------------------
 Your code has been rated at 10.00/10
 
 ************* Module load_pdf
-pdf_report/load_pdf.py:54:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:47:11: W0718: Catching too general exception Exception (broad-exception-caught)
+pdf_report/load_pdf.py:164:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
+pdf_report/load_pdf.py:9:0: W0611: Unused BytesIO imported from io (unused-import)
 
 -----------------------------------
-Your code has been rated at 9.88/10
+Your code has been rated at 9.14/10
 
 
 ------------------------------------
