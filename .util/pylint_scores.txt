@@ -70,26 +70,26 @@ Your code has been rated at 10.00/10
 
 ************* Module main_page
 dashboard/main_page.py:6:0: C0301: Line too long (233/100) (line-too-long)
-dashboard/main_page.py:29:0: C0301: Line too long (101/100) (line-too-long)
-dashboard/main_page.py:43:0: C0301: Line too long (135/100) (line-too-long)
-dashboard/main_page.py:55:0: C0301: Line too long (105/100) (line-too-long)
-dashboard/main_page.py:57:0: C0301: Line too long (109/100) (line-too-long)
-dashboard/main_page.py:73:0: C0301: Line too long (107/100) (line-too-long)
-dashboard/main_page.py:96:5: W0511: TODO: DO something with sigma radio (fixme)
-dashboard/main_page.py:119:1: W0511: TODO: check people can't dox emails (fixme)
-dashboard/main_page.py:13:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:26:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:28:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
-dashboard/main_page.py:39:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:52:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:70:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:81:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:97:4: W0612: Unused variable 'sigma' (unused-variable)
-dashboard/main_page.py:116:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:118:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
+dashboard/main_page.py:32:0: C0301: Line too long (101/100) (line-too-long)
+dashboard/main_page.py:46:0: C0301: Line too long (135/100) (line-too-long)
+dashboard/main_page.py:57:0: C0301: Line too long (105/100) (line-too-long)
+dashboard/main_page.py:59:0: C0301: Line too long (109/100) (line-too-long)
+dashboard/main_page.py:70:0: C0301: Line too long (107/100) (line-too-long)
+dashboard/main_page.py:99:5: W0511: TODO: change statistics collected (fixme)
+dashboard/main_page.py:16:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:29:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:42:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:54:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:67:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:79:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:81:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
+dashboard/main_page.py:84:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:100:4: W0612: Unused variable 'sigma' (unused-variable)
+dashboard/main_page.py:129:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:131:4: W2301: Unnecessary ellipsis constant (unnecessary-ellipsis)
 
 -----------------------------------
-Your code has been rated at 7.23/10
+Your code has been rated at 7.60/10
 
 ************* Module main_page_functions
 dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
