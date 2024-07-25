@@ -32,6 +32,15 @@ To destroy:
 terraform destroy
 ```
 
+## Terraformed AWS services:
+* RDS - database
+* Lambda - to run the archive process, scheduled for 9am everyday.
+* Lambda - to run the RealTimeTrains pipeline, scheduled for 12am everyday.
+* Lambda - to run the NationalRail incident pipeline, scheduled for every 5 minutes.
+* Lambda - to run the PDF report generation pipeline, scheduled for 6am everyday.
+* S3 bucket - long term storage to hold PDF summary reports.
+* ECS service - to run the dashboard.
+
 
 ## Configuration
 Before running the script, you need to set up your AWS credentials. Create a new file called `.terraform.tfvars` in the `terraform` directory and add the following lines, with your actual AWS keys and database details:
