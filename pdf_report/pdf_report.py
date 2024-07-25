@@ -26,3 +26,7 @@ def main(_event, _context):
             "An error occurred during the PDF Report pipeline execution: %s", e)
 
     logging.info("Report pipeline has ended.")
+
+
+if __name__ == "__main__":
+    main(None, None)
