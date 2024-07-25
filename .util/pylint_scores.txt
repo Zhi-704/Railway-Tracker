@@ -70,38 +70,32 @@ Your code has been rated at 10.00/10
 
 ************* Module main_page
 dashboard/main_page.py:6:0: C0301: Line too long (233/100) (line-too-long)
-dashboard/main_page.py:12:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page.py:20:0: C0301: Line too long (103/100) (line-too-long)
-dashboard/main_page.py:21:0: C0301: Line too long (141/100) (line-too-long)
-dashboard/main_page.py:33:0: C0301: Line too long (111/100) (line-too-long)
-dashboard/main_page.py:34:0: C0301: Line too long (115/100) (line-too-long)
-dashboard/main_page.py:48:0: C0301: Line too long (113/100) (line-too-long)
-dashboard/main_page.py:78:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page.py:82:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page.py:8:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:18:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:30:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:45:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:28:0: C0301: Line too long (135/100) (line-too-long)
+dashboard/main_page.py:43:0: C0301: Line too long (105/100) (line-too-long)
+dashboard/main_page.py:45:0: C0301: Line too long (109/100) (line-too-long)
+dashboard/main_page.py:61:0: C0301: Line too long (107/100) (line-too-long)
+dashboard/main_page.py:12:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:24:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:40:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:58:0: C0112: Empty function docstring (empty-docstring)
 
 -----------------------------------
-Your code has been rated at 6.98/10
+Your code has been rated at 8.04/10
 
 ************* Module main_page_functions
-dashboard/main_page_functions.py:76:0: C0303: Trailing whitespace (trailing-whitespace)
-dashboard/main_page_functions.py:186:0: C0304: Final newline missing (missing-final-newline)
 dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
-dashboard/main_page_functions.py:40:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:53:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:72:11: W0718: Catching too general exception Exception (broad-exception-caught)
-dashboard/main_page_functions.py:77:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:97:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:128:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:159:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page_functions.py:174:0: C0116: Missing function or method docstring (missing-function-docstring)
+dashboard/main_page_functions.py:42:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:55:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:74:11: W0718: Catching too general exception Exception (broad-exception-caught)
+dashboard/main_page_functions.py:79:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:101:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:134:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:166:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page_functions.py:182:0: C0116: Missing function or method docstring (missing-function-docstring)
 dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.42/10
+Your code has been rated at 8.68/10
 
 
 ------------------------------------
