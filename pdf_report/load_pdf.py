@@ -39,7 +39,7 @@ def upload_pdf_data_to_s3(s3: client, bucket_name: str, s3_filename: str, pdf: B
     logging.info("pdf file uploaded %s", s3_filename)
 
 
-def upload_pdf_to_s3():
+def upload_pdf_to_s3() -> None:
     """ Uploads a PDF file from local directory into S3 bucket. """
     s3 = get_s3_client()
     bucket = environ['S3_BUCKET_NAME']
