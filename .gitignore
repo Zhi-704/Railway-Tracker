@@ -3,6 +3,7 @@
 *.csv
 *.json
 *.xml
+*.pdf
 !national_rail/test_data.xml
 *.pdf
 

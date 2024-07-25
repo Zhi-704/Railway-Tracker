@@ -15,11 +15,11 @@ CREATE TABLE incident(
     creation_time TIMESTAMP(0) NOT NULL,
     incident_start TIMESTAMP(0) NOT NULL,
     incident_end TIMESTAMP(0) NOT NULL,
-    is_planned BOOLEAN NOT NULL,
-    incident_summary TEXT NOT NULL,
-    incident_description TEXT NOT NULL,
-    incident_uri TEXT NOT NULL,
-    affected_routes TEXT NOT NULL
+    is_planned BOOLEAN,
+    incident_summary TEXT,
+    incident_description TEXT,
+    incident_uri TEXT,
+    affected_routes TEXT
 );
 
 CREATE TABLE operator(
