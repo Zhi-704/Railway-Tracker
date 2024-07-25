@@ -56,7 +56,7 @@ class TestLoadPdf(unittest.TestCase):
         db_cursor = get_cursor(mock_connection)
 
         mock_connection.cursor.assert_called_once_with(
-            cursor_factory=psycopg2.extras.RealDictCursor)
+            cursor_factory=RealDictCursor)
         self.assertEqual(db_cursor, mock_connection.cursor())
 
     @patch('load_pdf.get_cursor')
