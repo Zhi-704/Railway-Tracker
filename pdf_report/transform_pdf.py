@@ -178,6 +178,50 @@ def convert_altair_chart_to_html_embed(chart: alt.Chart) -> str:
     return f"data:image/png;base64,{data}"
 
 
+def generate_html_report(delayed_df: pd.DataFrame, cancellation_chart: alt.Chart,
+                         delay_chart: alt.Chart, avg_delay_chart: alt.Chart,
+                         avg_delay_long_chart: alt.Chart) -> str:
+    """Generates the HTML report."""
+    cancellation_chart_embed = convert_altair_chart_to_html_embed(
+        cancellation_chart)
+    delay_chart_embed = convert_altair_chart_to_html_embed(delay_chart)
+    avg_delay_chart_embed = convert_altair_chart_to_html_embed(avg_delay_chart)
+    avg_delay_long_chart_embed = convert_altair_chart_to_html_embed(
+        avg_delay_long_chart)
+
+    station_info = delayed_df[['station_name',
+                               'station_crs']].drop_duplicates()
+
+    station_info_html = "<p><b>Station CRS</b> - <b>Station Name</b></p><ul>"
+    for _, row in station_info.iterrows():
+        station_info_html += f"<li>{row['station_crs']}\
+              - {row['station_name']}</li>"
+    station_info_html += "</ul>"
+
+    return f"""
+        <!DOCTYPE html>
+        <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+        <head>
+            <meta charset="utf-8"/>
+            <title>Train Delay and Cancellation Report</title>
+            <link rel="stylesheet" type="text/css" href="{CSS_PATH}"/>
+        </head>
+        <body>
+            <h1>Train Delay and Cancellation Report</h1>
+            <img src="{cancellation_chart_embed}" alt="Cancellation Chart">
+            <img src="{delay_chart_embed}" alt="Arrival Delay Chart">
+            <img src="{avg_delay_chart_embed}" alt="Overall Delay Chart">
+            <img src="{avg_delay_long_chart_embed}" alt="Long Delay Chart">
+
+            <h2>Station Common Reporting Standard (CRS)<h2>
+            <p>Station CRS is a unique identifier for each station in the UK.
+            It is used to identify the station in the train timetable data.</p>
+            {station_info_html}
+        </body>
+        </html>
+    """
+
+
 def convert_html_to_pdf(source_html: str, output_filename: str) -> bool:
     """Outputs HTML to a target file."""
     with open(output_filename, "w+b") as f:
@@ -212,44 +256,8 @@ def transform_pdf() -> None:
         ['avg_arrive_delay_long_minutes', 'avg_departure_delay_long_minutes'],
         'Average Delay more than 1 min by Station', 'Average Delay more than 1 min (minutes)')
 
-    cancellation_chart_embed = convert_altair_chart_to_html_embed(
-        cancellation_chart)
-    delay_chart_embed = convert_altair_chart_to_html_embed(delay_chart)
-    avg_delay_chart_embed = convert_altair_chart_to_html_embed(avg_delay_chart)
-    avg_delay_long_chart_embed = convert_altair_chart_to_html_embed(
-        avg_delay_long_chart)
-
-    station_info = delayed_df[['station_name',
-                               'station_crs']].drop_duplicates()
-
-    station_info_html = "<p><b>Station CRS</b> - <b>Station Name</b></p><ul>"
-    for _, row in station_info.iterrows():
-        station_info_html += f"<li>{row['station_crs']}\
-              - {row['station_name']}</li>"
-    station_info_html += "</ul>"
-
-    html_report = f"""
-        <!DOCTYPE html>
-        <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
-        <head>
-            <meta charset="utf-8"/>
-            <title>Train Delay and Cancellation Report</title>
-            <link rel="stylesheet" type="text/css" href="{CSS_PATH}"/>
-        </head>
-        <body>
-            <h1>Train Delay and Cancellation Report</h1>
-            <img src="{cancellation_chart_embed}" alt="Cancellation Chart">
-            <img src="{delay_chart_embed}" alt="Arrival Delay Chart">
-            <img src="{avg_delay_chart_embed}" alt="Overall Delay Chart">
-            <img src="{avg_delay_long_chart_embed}" alt="Long Delay Chart">
-
-            <h2>Station Common Reporting Standard (CRS)<h2>
-            <p>Station CRS is a unique identifier for each station in the UK.
-            It is used to identify the station in the train timetable data.</p>
-            {station_info_html}
-        </body>
-        </html>
-    """
+    html_report = generate_html_report(delayed_df, cancellation_chart,
+                                       delay_chart, avg_delay_chart, avg_delay_long_chart)
 
     result = convert_html_to_pdf(html_report, REPORT_NAME)
 
