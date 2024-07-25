@@ -1,5 +1,5 @@
 ************* Module transform_pdf
-pdf_report/transform_pdf.py:270:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
+pdf_report/transform_pdf.py:284:4: E1120: No value for argument 'report_filename' in function call (no-value-for-parameter)
 
 -----------------------------------
 Your code has been rated at 9.32/10
@@ -10,7 +10,7 @@ pdf_report/pdf_report.py:10:0: C0116: Missing function or method docstring (miss
 pdf_report/pdf_report.py:24:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
 -----------------------------------
-Your code has been rated at 8.24/10
+Your code has been rated at 8.42/10
 
 
 ------------------------------------
