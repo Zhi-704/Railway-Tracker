@@ -37,17 +37,20 @@ terraform destroy
 Before running the script, you need to set up your AWS credentials. Create a new file called `.terraform.tfvars` in the `terraform` directory and add the following lines, with your actual AWS keys and database details:
 
 ```text
-AWS_ACCESS_KEY=YOUR_AWS_ACCESS_KEY
-AWS_SECRET_KEY=YOUR_AWS_SECRET_KEY
+AWS_ACCESS_KEY=your_aws_access_key
+AWS_SECRET_KEY=your_aws_secret_key
 
-C11_VPC=YOUR_VPC
+C11_VPC=your_vpc
 
-DB_USERNAME=YOUR_DB_USERNAME
-DB_PASSWORD=YOUR_DB_PASSWORD
+DB_USERNAME=your_db_username
+DB_PASSWORD=your_db_password
 
-DB_NAME=YOUR_DB_NAME
-DB_IP=YOUR_DB_IP
-DB_PORT=YOUR_DB_PORT
+DB_NAME=your_db_name
+DB_IP=your_db_host_ip_address
+DB_PORT=your_db_port
+
+REALTIME_USERNAME=your_realtime_username
+REALTIME_PASSWORD=your_realtime_password
 ```
 
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Incidents xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:com="http://nationalrail.co.uk/xml/common" xsi:schemaLocation="http://internal.nationalrail.co.uk/xml/XsdSchemas/External/Version5.0/nre-incident-v5-0.xsd" xmlns="http://nationalrail.co.uk/xml/incident">
+  <PtIncident>
+    <CreationTime>2024-03-25T10:32:18.215Z</CreationTime>
+    <ChangeHistory>
+      <com:ChangedBy>NRE CMS Editor</com:ChangedBy>
+      <com:LastChangedDate>2024-07-10T13:38:06.621Z</com:LastChangedDate>
+    </ChangeHistory>
+    <IncidentNumber>randomIncidentNumber1</IncidentNumber>
+    <Version>20240710133806</Version>
+    <ValidityPeriod>
+      <com:StartTime>2024-06-01T00:00:00.000+01:00</com:StartTime>
+      <com:EndTime>2024-08-11T23:59:00.000+01:00</com:EndTime>
+    </ValidityPeriod>
+    <Planned>true</Planned>
+    <Summary><![CDATA[No service between Blackheath and Charlton from Saturday 1 June to Sunday 11 August]]></Summary>
+    <Description><![CDATA[<p><a href="https://www.networkrail.co.uk/running-the-railway/our-routes/kent/blackheath-tunnel-upgrade/" title="">Engineering work</a> is taking place between Blackheath and Charlton, closing the lines for 10 weeks.</p><p>Trains between London Cannon Street and Dartford via Blackheath and Charlton will instead run via Greenwich, calling additionally at Deptford, Greenwich, Maze Hill and Westcombe Park.</p><p>You can find more information about this work <a href="https://www.southeasternrailway.co.uk/travel-information/live-travel-information/line-closure-charlton-to-blackheath" title="">here</a>.</p><p><strong>Ticket Acceptance</strong></p><p>You can use the following alternative routes at no extra cost:</p><ul><li><strong>London Bus</strong> routes 89, 54, 380, 202 & SL3.</li><li><strong>Docklands Light Railway</strong> between Greenwich and Lewisham.</li><li><strong>Thameslink</strong> services between London Bridge and Dartford via Woolwich Arsenal.</li></ul><p><strong>Check before you travel:</strong></p><p>You can plan your journey using the National Rail Enquiries <a href="http://ojp.nationalrail.co.uk/" title="">Journey Planner</a> </p><p>You can plan your journey on London Buses / Docklands Light Railway by using the Transport for London <a href="https://tfl.gov.uk/plan-a-journey/" title="">Journey Planner</a></p>]]></Description>
+    <InfoLinks>
+      <InfoLink>
+        <Uri>https://www.nationalrail.co.uk/engineering-works/charlton-and-blackheath-20240601/</Uri>
+        <Label>Incident detail page</Label>
+      </InfoLink>
+    </InfoLinks>
+    <Affects>
+      <Operators>
+        <AffectedOperator>
+          <OperatorRef>SE</OperatorRef>
+          <OperatorName>Southeastern</OperatorName>
+        </AffectedOperator>
+      </Operators>
+      <RoutesAffected><![CDATA[<p>Southeastern between London Cannon Street and Dartford via Blackheath and Charlton</p>]]></RoutesAffected>
+    </Affects>
+    <IncidentPriority>2</IncidentPriority>
+  </PtIncident>
+  <PtIncident>
+    <CreationTime>2024-04-08T10:58:56.861Z</CreationTime>
+    <ChangeHistory>
+      <com:ChangedBy>NRE CMS Editor</com:ChangedBy>
+      <com:LastChangedDate>2024-07-03T09:06:08.829Z</com:LastChangedDate>
+    </ChangeHistory>
+    <IncidentNumber>randomIncidentNumber2</IncidentNumber>
+    <Version>20240703085248</Version>
+    <ValidityPeriod>
+      <com:StartTime>2024-07-03T00:00:00.000+01:00</com:StartTime>
+      <com:EndTime>2024-07-18T23:59:00.000+01:00</com:EndTime>
+    </ValidityPeriod>
+    <Planned>true</Planned>
+    <Summary><![CDATA[Amended service between Bristol Parkway and Severn Tunnel Junction from Wednesday 3 to Thursday 18 July]]></Summary>
+    <Description><![CDATA[<p><a href="https://www.networkrail.co.uk/running-the-railway/our-routes/wales/severn-tunnel-track-renewal/" title="">Major engineering work</a> is taking place between Filton Abbey Wood and Severn Tunnel Junction, closing all lines.</p><p><strong>CrossCountry:</strong></p><p><strong>Thursday 4 - Thursday 18 July (weekdays only):</strong></p><p>The 05:20 Bristol Temple Meads to Cardiff Central service will not run. A replacement bus will run between Bristol Temple Meads and Newport. Change at Newport for trains towards Cardiff Central.</p><p><strong>Great Western Railway:</strong></p><p><strong>Wednesday 3 - Thursday 18 July:</strong></p><p><strong>Long distance services:</strong></p><p>Trains between London Paddington and Cardiff Central / Swansea / Carmarthen will be diverted, and will call additionally at Gloucester. These trains will not call at Bristol Parkway. Journey times between London and Wales will be extended, and trains will be retimed to run <strong>earlier</strong> or <strong>later</strong> than usual.</p><p><strong>Local services:</strong></p><p>Replacement buses will run between:</p><ul><li>Bristol Parkway and Patchway / Severn Tunnel Junction (peak times only).</li><li>Bristol Parkway and Newport / Cardiff Central (limited service, late night / early mornings only).</li></ul><p>If you are travelling between Patchway and Bristol Parkway, you should use local bus services - rail tickets will be accepted on these services.</p><p>At Patchway, buses towards Bristol will stop to set customers down only. Buses from Bristol will stop to pick up customers only.</p><p>For Cardiff Central / Newport / Severn Tunnel Junction, you should travel via Gloucester for trains between Gloucester and Bristol Temple Meads to connect with amended train services.</p><p><strong>Check before you travel:</strong></p><p>You can plan your journey using the National Rail Enquiries <a href="http://ojp.nationalrail.co.uk/" title="">Journey Planner</a></p><p>You can plan your journey on buses by using use the Traveline <a href="http://www.traveline.info/" title="">website</a> </p><p><strong>Replacement Bus Travel Advice:</strong></p><p>For helpful advice if you need to travel on a rail replacement service, including accessibility and bicycle information, please use <a href="https://www.nationalrail.co.uk/travel-information/rail-replacement-services/" title="">this page</a>. </p><p>You can find the location of your bus replacement by checking station signs or by searching for your station on our station <a href="http://www.nationalrail.co.uk/stations_destinations/default.aspx" title="">information pages</a>. </p><p>Please be advised that, on occasion, replacement vehicles may be busier than usual, and you should allow extra time for your journey.</p>]]></Description>
+    <InfoLinks>
+      <InfoLink>
+        <Uri>https://www.nationalrail.co.uk/engineering-works/bristol-parkway-severn-tunnel-junction-20240703/</Uri>
+        <Label>Incident detail page</Label>
+      </InfoLink>
+    </InfoLinks>
+    <Affects>
+      <Operators>
+        <AffectedOperator>
+          <OperatorRef>XC</OperatorRef>
+          <OperatorName>CrossCountry</OperatorName>
+        </AffectedOperator>
+        <AffectedOperator>
+          <OperatorRef>GW</OperatorRef>
+          <OperatorName>Great Western Railway</OperatorName>
+        </AffectedOperator>
+      </Operators>
+      <RoutesAffected><![CDATA[<p>CrossCountry between Bristol Temple Meads and Cardiff Central</p><p>Great Western Railway between London Paddington / Portsmouth Harbour / Westbury / Taunton and Cardiff Central / Swansea / Carmarthen</p>]]></RoutesAffected>
+    </Affects>
+    <IncidentPriority>2</IncidentPriority>
+  </PtIncident>
+  </Incidents>
