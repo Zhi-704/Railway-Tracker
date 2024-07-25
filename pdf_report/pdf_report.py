@@ -10,8 +10,7 @@ REPORT_FILENAME = 'performance_report.pdf'
 def main(_event, _context):
     """ Lambda handler to run the PDF report pipeline. """
 
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
+    logging.getLogger().setLevel(logging.INFO)
     load_dotenv()
     try:
         logging.info("Report PDF pipeline has started")
