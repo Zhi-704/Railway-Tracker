@@ -22,11 +22,10 @@ LOCAL_FILE_PATH = 'performance_report.pdf'
 
 def get_s3_client() -> client:
     """ Returns s3 client. """
-    load_dotenv()
     try:
         return client('s3',
-                           aws_access_key_id=environ['AWS_ACCESS_KEY'],
-                           aws_secret_access_key=environ['AWS_SECRET_KEY'])
+                      aws_access_key_id=environ['AWS_ACCESS_KEY'],
+                      aws_secret_access_key=environ['AWS_SECRET_KEY'])
     except NoCredentialsError:
         logging.error("Error, no AWS credentials found")
         return None
@@ -60,7 +59,6 @@ def upload_pdf_to_s3() -> None:
 def get_connection() -> connection:
     """ Retrieves connection and returns it. """
 
-    load_dotenv()
     return connect(
         user=environ['DB_USERNAME'],
         password=environ['DB_PASSWORD'],
@@ -162,6 +160,7 @@ def email_performance_report():
 def send_pdf_to_email_and_s3():
     """ Sends the PDF of the performance report via email to subscribers
         Loads the PDF report to the s3 bucket with timestamp."""
+    load_dotenv()
     email_performance_report()
     upload_pdf_to_s3()
 
