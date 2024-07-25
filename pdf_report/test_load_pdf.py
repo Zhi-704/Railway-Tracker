@@ -23,7 +23,7 @@ from load_pdf import (
 
 
 @patch.dict(
-    os.environ,
+    environ,
     {
         "DB_IP": "localhost",
         "DB_NAME": "test_db",
