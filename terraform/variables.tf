@@ -42,3 +42,10 @@ variable "REALTIME_PASSWORD"{
 variable "NATIONAL_RAIL_API_KEY" {
     type = string
 }
+
+variable "SOURCE_EMAIL" {
+    type = string
+}
+variable "S3_BUCKET_NAME" {
+    type = string
+}

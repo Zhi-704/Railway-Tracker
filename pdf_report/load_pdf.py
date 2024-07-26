@@ -20,8 +20,8 @@ def get_s3_client() -> client:
     """ Returns s3 client. """
     try:
         return client('s3',
-                      aws_access_key_id=environ['AWS_ACCESS_KEY'],
-                      aws_secret_access_key=environ['AWS_SECRET_KEY'])
+                      aws_access_key_id=environ['ACCESS_KEY_ID'],
+                      aws_secret_access_key=environ['SECRET_ACCESS_KEY'])
     except NoCredentialsError:
         logging.error("Error, no AWS credentials found")
         return None
@@ -68,8 +68,8 @@ def create_ses_client() -> client:
         return client(
             "ses",
             region_name="eu-west-2",
-            aws_access_key_id=environ['AWS_ACCESS_KEY'],
-            aws_secret_access_key=environ['AWS_SECRET_KEY']
+            aws_access_key_id=environ['ACCESS_KEY_ID'],
+            aws_secret_access_key=environ['SECRET_ACCESS_KEY']
         )
     except ClientError as e:
         raise RuntimeError(f"Error creating SES client: {e}") from e

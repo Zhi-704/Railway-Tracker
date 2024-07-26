@@ -646,6 +646,8 @@ resource "aws_lambda_function" "c11-railway-tracker-report-lambda-function-new-t
       DB_PORT           = var.DB_PORT,
       REALTIME_USERNAME = var.REALTIME_USERNAME,
       REALTIME_PASSWORD = var.REALTIME_PASSWORD
+      SOURCE_EMAIL      = var.SOURCE_EMAIL,
+      S3_BUCKET_NAME    = var.S3_BUCKET_NAME
     }
   }
     logging_config {
@@ -709,4 +711,3 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-report-schedule-new-tf" {
     role_arn = aws_iam_role.c11-railway-tracker-report-scheduler_execution_role-tf.arn
   }
 }
-

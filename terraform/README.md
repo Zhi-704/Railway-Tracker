@@ -62,6 +62,9 @@ REALTIME_USERNAME=your_realtime_username
 REALTIME_PASSWORD=your_realtime_password
 
 NATIONAL_RAIL_API_KEY=your_nation_rail_key
+
+SOURCE_EMAIL=your_email
+S3_BUCKET_NAME=s3_bucket_name
 ```
 
 
