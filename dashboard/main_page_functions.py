@@ -175,7 +175,7 @@ def get_trains_cancelled_per_station_percentage():
     return res
 
 
-def get_average_delays_all():
+def get_avg_delays_all():
     """"""
     query = """
     SELECT
@@ -191,7 +191,7 @@ def get_average_delays_all():
     return res
 
 
-def get_average_delays_over_a_minute():
+def get_avg_delays_over_a_minute():
     query = """
     SELECT 
     s.station_name,
@@ -206,7 +206,7 @@ def get_average_delays_over_a_minute():
     return res
 
 
-def get_rolling_average():
+def get_rolling_avg():
     date_range_query = get_date_range_query("128 hours", "w.run_date")
     query = f"""
     SELECT
@@ -315,6 +315,32 @@ def get_proportion_of_large_delays_per_operator():
     FROM delay_counts
     ORDER BY percentage_delayed DESC
     LIMIT 10
+    """
+
+    return fetch_from_query("all", query)
+
+
+def get_rolling_cancellation_per_operator():
+    query = """
+    WITH delay_counts AS (
+    SELECT
+        w.run_date,
+        COUNT(w.waypoint_id) AS total_trains,
+        COUNT(CASE WHEN (
+                EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60 > 5
+                OR EXTRACT(EPOCH FROM (w.actual_departure - w.booked_departure)) / 60 > 5
+            ) THEN w.waypoint_id
+            ELSE NULL
+        END) AS total_delayed_trains
+    FROM operator op
+    LEFT JOIN service s USING (operator_id)
+    LEFT JOIN waypoint w USING (service_id)
+    LEFT JOIN cancellation c USING (waypoint_id)
+    GROUP BY w.run_date
+    )
+    SELECT run_date, total_delayed_trains
+    FROM delay_counts
+    WHERE run_date IS NOT NULL
     """
 
     return fetch_from_query("all", query)
