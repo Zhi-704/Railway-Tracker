@@ -69,34 +69,36 @@ Your code has been rated at 9.67/10
 Your code has been rated at 10.00/10
 
 ************* Module main_page
-dashboard/main_page.py:6:0: C0301: Line too long (391/100) (line-too-long)
-dashboard/main_page.py:32:0: C0301: Line too long (101/100) (line-too-long)
-dashboard/main_page.py:46:0: C0301: Line too long (135/100) (line-too-long)
-dashboard/main_page.py:57:0: C0301: Line too long (105/100) (line-too-long)
-dashboard/main_page.py:59:0: C0301: Line too long (109/100) (line-too-long)
-dashboard/main_page.py:70:0: C0301: Line too long (107/100) (line-too-long)
-dashboard/main_page.py:100:0: C0325: Unnecessary parens after 'return' keyword (superfluous-parens)
-dashboard/main_page.py:106:0: C0301: Line too long (121/100) (line-too-long)
-dashboard/main_page.py:108:0: C0301: Line too long (123/100) (line-too-long)
-dashboard/main_page.py:196:0: C0301: Line too long (109/100) (line-too-long)
-dashboard/main_page.py:127:5: W0511: TODO: change statistics collected (fixme)
-dashboard/main_page.py:16:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:29:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:42:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:54:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:67:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:79:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:85:4: C0104: Disallowed name "bar" (disallowed-name)
-dashboard/main_page.py:103:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:112:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:128:4: W0612: Unused variable 'sigma' (unused-variable)
-dashboard/main_page.py:162:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:178:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:191:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:205:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:6:0: C0301: Line too long (418/100) (line-too-long)
+dashboard/main_page.py:35:0: C0301: Line too long (101/100) (line-too-long)
+dashboard/main_page.py:49:0: C0301: Line too long (135/100) (line-too-long)
+dashboard/main_page.py:60:0: C0301: Line too long (105/100) (line-too-long)
+dashboard/main_page.py:62:0: C0301: Line too long (109/100) (line-too-long)
+dashboard/main_page.py:73:0: C0301: Line too long (107/100) (line-too-long)
+dashboard/main_page.py:103:0: C0325: Unnecessary parens after 'return' keyword (superfluous-parens)
+dashboard/main_page.py:109:0: C0301: Line too long (121/100) (line-too-long)
+dashboard/main_page.py:111:0: C0301: Line too long (123/100) (line-too-long)
+dashboard/main_page.py:199:0: C0301: Line too long (109/100) (line-too-long)
+dashboard/main_page.py:130:5: W0511: TODO: change statistics collected (fixme)
+dashboard/main_page.py:19:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:32:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:45:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:57:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:70:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:82:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:88:4: C0104: Disallowed name "bar" (disallowed-name)
+dashboard/main_page.py:106:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:115:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:131:4: W0612: Unused variable 'sigma' (unused-variable)
+dashboard/main_page.py:165:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:181:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:194:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:208:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:215:4: C0104: Disallowed name "bar" (disallowed-name)
+dashboard/main_page.py:233:0: C0112: Empty function docstring (empty-docstring)
 
 -----------------------------------
-Your code has been rated at 7.71/10
+Your code has been rated at 7.73/10
 
 ************* Module main_page_functions
 dashboard/main_page_functions.py:1:0: C0112: Empty module docstring (empty-docstring)
@@ -116,11 +118,12 @@ dashboard/main_page_functions.py:224:0: C0116: Missing function or method docstr
 dashboard/main_page_functions.py:257:0: C0116: Missing function or method docstring (missing-function-docstring)
 dashboard/main_page_functions.py:272:0: C0116: Missing function or method docstring (missing-function-docstring)
 dashboard/main_page_functions.py:291:0: C0116: Missing function or method docstring (missing-function-docstring)
+dashboard/main_page_functions.py:323:0: C0116: Missing function or method docstring (missing-function-docstring)
 dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (unused-import)
 dashboard/main_page_functions.py:9:0: W0611: Unused date_range imported from pandas (unused-import)
 
 -----------------------------------
-Your code has been rated at 8.12/10
+Your code has been rated at 8.08/10
 
 
 ------------------------------------
