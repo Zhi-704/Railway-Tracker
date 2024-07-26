@@ -6,6 +6,7 @@ from os import environ
 
 from boto3 import client
 from dotenv import load_dotenv
+from pandas import date_range
 import streamlit as st
 from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
@@ -203,5 +204,67 @@ def get_average_delays_over_a_minute():
     WHERE EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60 > 1
     GROUP BY s.station_name;
     """
+    res = fetch_from_query("all", query)
+    return res
+
+
+def get_rolling_average():
+    date_range_query = get_date_range_query("128 hours", "w.run_date")
+    query = f"""
+    SELECT
+    w.run_date,
+    ROUND((AVG(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival))) /60), 2)
+    AS average_delay_in_minutes
+    FROM waypoint w
+    GROUP BY w.run_date
+    """
+
+    res = fetch_from_query("all", query)
+    return res
+
+
+def get_avg_delay():
+    query = """
+    SELECT
+        s.station_name,
+        s.station_crs,
+        ROUND(AVG(CASE WHEN run_date = CURRENT_DATE - INTERVAL '1 day' THEN
+                    EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 +
+                    EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60
+                ELSE NULL
+                END), 2) AS avg_delay_yesterday_mins,
+        ROUND(AVG(CASE WHEN run_date = CURRENT_DATE - INTERVAL '2 day' THEN
+                    EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 +
+                    EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60
+                ELSE NULL
+                END), 2) AS avg_delay_day_before_mins
+    FROM waypoint w
+    JOIN station s ON w.station_id = s.station_id
+    WHERE run_date IN (CURRENT_DATE - INTERVAL '1 day', CURRENT_DATE - INTERVAL '2 day')
+    GROUP BY s.station_id, s.station_crs;
+    """
+
+    res = fetch_from_query("all", query)
+    return res
+
+
+# (
+#     SELECT
+#     ROUND((AVG(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival))) / 60), 2)
+#     FROM waypoint w
+#     WHERE w.run_date=NOW() - interval '48 hours'
+# ) AS avg_delay_day
+
+def get_cancellations_per_operator():
+    query = """
+    SELECT op.operator_name, COUNT(c.cancellation_id) AS number_of_cancellations
+    FROM operator op
+    LEFT JOIN service s USING (operator_id) 
+    LEFT JOIN waypoint w USING (service_id)
+    LEFT JOIN cancellation c USING (waypoint_id)
+    WHERE w.run_date >= CURRENT_DATE - INTERVAL '7 days'
+    GROUP BY op.operator_name
+    """
+
     res = fetch_from_query("all", query)
     return res

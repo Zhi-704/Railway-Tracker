@@ -3,7 +3,7 @@ import pandas
 import streamlit as st
 import altair as alt
 from st_pages import Page, show_pages
-from main_page_functions import get_average_delays_all, get_average_delays_over_a_minute, get_closest_scheduled_incident, get_station_with_highest_delay, get_total_delays_for_every_station, get_trains_cancelled_per_station_percentage
+from main_page_functions import get_average_delays_all, get_average_delays_over_a_minute, get_avg_delay, get_cancellations_per_operator, get_closest_scheduled_incident, get_rolling_average, get_station_with_highest_delay, get_total_delays_for_every_station, get_trains_cancelled_per_station_percentage
 
 TIME_RANGE_OPTIONS = ["last day", "last week", "All time"]
 TIME_RANGE_OPTIONS_DICT = {
@@ -78,7 +78,39 @@ def display_average_delays_over_a_minute() -> alt.Chart:
 
 def display_rolling_average_delay() -> alt.Chart:
     """"""
-    ...
+    rolling_avg_df = pandas.DataFrame(get_rolling_average())
+    rolling_avg_df["average_delay_in_minutes"] = rolling_avg_df["average_delay_in_minutes"].astype(
+        float)
+
+    bar = alt.Chart(rolling_avg_df).mark_bar().encode(
+        x=alt.X("run_date", title="Date"),
+        y=alt.Y("average_delay_in_minutes", title="Average Delay (mins)")
+    )
+
+    line = alt.Chart(rolling_avg_df).mark_line(color='red').transform_window(
+        # The field to average
+        rolling_mean='mean(average_delay_in_minutes)',
+        # The number of values before and after the current value to include.
+        frame=[-7, 0]
+    ).encode(
+        x='run_date',
+        y='rolling_mean:Q'
+    )
+
+    return (bar+line)
+
+
+def display_avg_delay_comparisons() -> alt.Chart:
+    """"""
+    avg_delays_per_station_df = pandas.DataFrame(get_avg_delay())
+    avg_delays_per_station_df["avg_delay_yesterday_mins"] = avg_delays_per_station_df["avg_delay_yesterday_mins"].astype(
+        float)
+    avg_delays_per_station_df["avg_delay_day_before_mins"] = avg_delays_per_station_df["avg_delay_day_before_mins"].astype(
+        float)
+
+    # for row in avg_delays_per_station_df:
+    #     st.metric("sun", value=row["avg_delay_yesterday_mins"],
+    #               delta=row["avg_delay_day_before_mins"])
 
 
 def deploy_station_dashboard():
@@ -123,12 +155,35 @@ def deploy_station_dashboard():
         st.subheader("Delay over")
         st.altair_chart(display_average_delays_over_a_minute())
 
-    # st.altair_chart(display_rolling_average_delay())
+    overall_stats = st.columns(2, gap="large")
+    with overall_stats[0]:
+        st.subheader("Rolling average for the average delay in minutes")
+        st.altair_chart(display_rolling_average_delay())
+    with overall_stats[1]:
+        st.write(display_avg_delay_comparisons())
+
+
+def display_cancellations_per_operator():
+    """"""
+    cancellations_df = pandas.DataFrame(get_cancellations_per_operator())
+
+    pie = alt.Chart(cancellations_df).mark_arc().encode(
+        theta=alt.Theta("number_of_cancellations", stack=True),
+        color=alt.Color("operator_name")
+    )
+
+    text = pie.mark_text(radius=175, size=20).encode(
+        text="number_of_cancellations")
+
+    return (pie + text).properties(width=600)
 
 
 def deploy_operator_dashboard():
     """"""
-    ...
+    cancellations_column = st.columns(2, gap="large")
+
+    with cancellations_column[0]:
+        st.altair_chart(display_cancellations_per_operator())
 
 
 def deploy_home_page():
