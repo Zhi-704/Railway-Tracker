@@ -60,6 +60,8 @@ DB_PORT=your_db_port
 
 REALTIME_USERNAME=your_realtime_username
 REALTIME_PASSWORD=your_realtime_password
+
+NATIONAL_RAIL_API_KEY=your_nation_rail_key
 ```
 
 

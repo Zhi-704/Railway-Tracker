@@ -37,3 +37,8 @@ variable "REALTIME_USERNAME" {
 variable "REALTIME_PASSWORD"{
     type = string
 }
+
+
+variable "NATIONAL_RAIL_API_KEY" {
+    type = string
+}
