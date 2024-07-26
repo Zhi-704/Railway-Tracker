@@ -47,6 +47,7 @@ Before running the script, you need to set up your Realtime Trains API credentia
 ```text
 REALTIME_USERNAME=your_username
 REALTIME_PASSWORD=your_password
+
 DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
 DB_NAME=your_db_name
