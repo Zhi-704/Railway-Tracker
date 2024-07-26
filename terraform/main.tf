@@ -411,6 +411,7 @@ resource "aws_ecs_service" "c11-railway-tracker-dashboard-service-tf" {
 
 # --------------- INCIDENT: LAMBDA & EVENT BRIDGE
 
+# IAM Policy Document for Lambda Assume Role
 data "aws_iam_policy_document" "lambda_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -422,14 +423,13 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
   }
 }
 
-
-# IAM Role for Lambda execution
+# IAM Role for Lambda Execution
 resource "aws_iam_role" "lambda_execution_role" {
   name               = "lambda_execution_role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
-
+# IAM Policy Document for Lambda Execution Role
 data "aws_iam_policy_document" "lambda_policy" {
   statement {
     actions   = [
@@ -442,18 +442,24 @@ data "aws_iam_policy_document" "lambda_policy" {
   }
 }
 
-# IAM Policy for Lambda execution role
+# IAM Policy for Lambda Execution Role
 resource "aws_iam_role_policy" "lambda_execution_role_policy" {
   name   = "lambda_execution_role_policy"
   role   = aws_iam_role.lambda_execution_role.id
   policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
+# CloudWatch Log Group for Lambda Logs
+resource "aws_cloudwatch_log_group" "lambda_log_group" {
+  name              = "/aws/lambda/c11-railway-tracker-national-rail"
+  retention_in_days = 14
+}
+
 # Lambda Function Resource
-resource "aws_lambda_function" "c11_trainwreck_national_rail" {
-  function_name = "c11-trainwreck-national-rail"
+resource "aws_lambda_function" "c11_railway_tracker_national_rail" {
+  function_name = "c11-railway-tracker-national-rail"
   role          = aws_iam_role.lambda_execution_role.arn
-  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-trainwreck-national:latest"
+  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-national:latest"
   package_type  = "Image"
   timeout       = 180
 
@@ -472,7 +478,7 @@ resource "aws_lambda_function" "c11_trainwreck_national_rail" {
 
   logging_config {
     log_format = "Text"
-    log_group  = "/aws/lambda/c11-trainwreck-national-rail"
+    log_group  = aws_cloudwatch_log_group.lambda_log_group.name
   }
 
   tracing_config {
@@ -480,6 +486,7 @@ resource "aws_lambda_function" "c11_trainwreck_national_rail" {
   }
 }
 
+# IAM Policy Document for AWS Scheduler Assume Role
 data "aws_iam_policy_document" "scheduler_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -497,16 +504,16 @@ resource "aws_iam_role" "scheduler_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.scheduler_assume_role_policy.json
 }
 
-# IAM Policy Document for AWS Scheduler role
+# IAM Policy Document for AWS Scheduler Role
 data "aws_iam_policy_document" "scheduler_policy" {
   statement {
     actions   = ["lambda:InvokeFunction"]
-    resources = [aws_lambda_function.c11_trainwreck_national_rail.arn]
+    resources = [aws_lambda_function.c11_railway_tracker_national_rail.arn]
     effect    = "Allow"
   }
 }
 
-# IAM Policy for AWS Scheduler role
+# IAM Policy for AWS Scheduler Role
 resource "aws_iam_role_policy" "scheduler_execution_role_policy" {
   name   = "scheduler_execution_role_policy"
   role   = aws_iam_role.scheduler_execution_role.id
@@ -514,8 +521,8 @@ resource "aws_iam_role_policy" "scheduler_execution_role_policy" {
 }
 
 # AWS Scheduler Schedule
-resource "aws_scheduler_schedule" "c11_trainwreck_national_rail_schedule" {
-  name                         = "c11-trainwreck-national-rail-schedule"
+resource "aws_scheduler_schedule" "c11_railway_tracker_national_rail_schedule" {
+  name                         = "c11-railway-tracker-national-rail-schedule"
   schedule_expression          = "cron(*/5 * * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
@@ -525,7 +532,7 @@ resource "aws_scheduler_schedule" "c11_trainwreck_national_rail_schedule" {
   }
 
   target {
-    arn      = aws_lambda_function.c11_trainwreck_national_rail.arn
+    arn      = aws_lambda_function.c11_railway_tracker_national_rail.arn
     role_arn = aws_iam_role.scheduler_execution_role.arn
   }
 }
