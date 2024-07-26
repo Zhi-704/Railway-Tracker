@@ -16,10 +16,10 @@ ROLLING_AVG_BEFORE = 7
 ROLLING_AVG_AFTER = 0
 
 
-def display_total_delays(date_range: str) -> alt.Chart:
+def display_total_delays(date_range: str, time_group: str) -> alt.Chart:
     """"""
     total_delays_df = pandas.DataFrame(
-        get_total_delays_for_every_station(date_range))
+        get_total_delays_for_every_station(date_range, time_group))
     total_delays_df["total_delay_minutes"] = total_delays_df["total_delay_minutes"].astype(
         float)
 
@@ -142,15 +142,16 @@ def deploy_station_dashboard():
 
     proportions_column = st.columns(2, gap="large")
     with proportions_column[0]:
-        st.altair_chart(display_train_cancellation_percentage())
+        st.write("Highest value stats")
+        # st.altair_chart(display_train_cancellation_percentage())
     with proportions_column[1]:
-        ...
+        st.write("More highest value stats")
         # st.altair_chart(display_train_cancellation_proportion())
 
     bar_charts = st.columns(2, gap="large")
     with bar_charts[0]:
         st.subheader("Total Delay in minutes by Station")
-        st.altair_chart(display_total_delays(date_range))
+        st.altair_chart(display_total_delays(date_range, time_group))
     with bar_charts[1]:
         st.subheader("Percentage of Trains cancelled per station")
         st.altair_chart(display_train_cancellation_percentage())

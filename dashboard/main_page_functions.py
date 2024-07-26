@@ -105,14 +105,14 @@ def get_closest_scheduled_incident() -> str | None:
     return None
 
 
-def get_total_delays_for_every_station(date_range: str):
+def get_total_delays_for_every_station(date_range: str, time_group: str):
     """"""
     date_range_query = get_date_range_query(date_range, "w.actual_arrival")
+    time_group_query = get_sum_for_range_query(time_group)
     query = f"""
     SELECT
     s.station_name,
-    ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
-    EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
+    {time_group_query}
     FROM waypoint w
     JOIN station s ON w.station_id = s.station_id
     {date_range_query}
@@ -123,7 +123,7 @@ def get_total_delays_for_every_station(date_range: str):
     return res
 
 
-def get_sum_for_range_query(time_group: str, datum: str) -> str:
+def get_sum_for_range_query(time_group: str) -> str:
     res = """"""
     match time_group:
         case "arrival":
@@ -139,7 +139,7 @@ def get_sum_for_range_query(time_group: str, datum: str) -> str:
     return res
 
 
-def get_avg_for_range_query(time_group: str, datum: str) -> str:
+def get_avg_for_range_query(time_group: str) -> str:
     res = """"""
     match time_group:
         case "arrival":
@@ -160,7 +160,7 @@ def get_station_with_highest_delay(date_range: str, time_group: str):
     date_range_query = get_date_range_query(
         date_range, date_metric="w.actual_arrival")
 
-    time_group_query = get_sum_for_range_query(time_group, "sum")
+    time_group_query = get_sum_for_range_query(time_group)
     query = f"""
     SELECT
     s.station_name,
