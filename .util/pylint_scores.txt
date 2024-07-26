@@ -22,11 +22,9 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module db_connection
-archive/db_connection.py:51:8: W0612: Unused variable 'e' (unused-variable)
 
------------------------------------
-Your code has been rated at 9.62/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
