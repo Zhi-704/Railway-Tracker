@@ -275,7 +275,7 @@ resource "aws_iam_role_policy_attachment" "scheduler_pipeline_realtime_lambda_in
 resource "aws_scheduler_schedule" "c11-railway-tracker-realtime-etl-schedule-tf" {
   name                         = "c11-railway-tracker-realtime-etl-schedule-tf"
   group_name                   = "default"
-  schedule_expression          = "cron(0 0 * * ? *)"
+  schedule_expression          = "cron(0 1 * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
   flexible_time_window {
@@ -411,48 +411,42 @@ resource "aws_ecs_service" "c11-railway-tracker-dashboard-service-tf" {
 
 # --------------- INCIDENT: LAMBDA & EVENT BRIDGE
 
+data "aws_iam_policy_document" "lambda_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+
 # IAM Role for Lambda execution
 resource "aws_iam_role" "lambda_execution_role" {
-  name = "lambda_execution_role"
+  name               = "lambda_execution_role"
+  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+}
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Principal = {
-          Service = "lambda.amazonaws.com"
-        }
-      }
+
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    actions   = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
     ]
-  })
+    resources = ["arn:aws:logs:*:*:*"]
+    effect    = "Allow"
+  }
 }
 
 # IAM Policy for Lambda execution role
-resource "aws_iam_role_policy" "lambda_execution_policy" {
-  name = "lambda_execution_policy"
-  role = aws_iam_role.lambda_execution_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      },
-      {
-        Action   = "dynamodb:Query"
-        Effect   = "Allow"
-        Resource = "*"
-      }
-    ]
-  })
+resource "aws_iam_role_policy" "lambda_execution_role_policy" {
+  name   = "lambda_execution_role_policy"
+  role   = aws_iam_role.lambda_execution_role.id
+  policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
 # Lambda Function Resource
@@ -486,39 +480,37 @@ resource "aws_lambda_function" "c11_trainwreck_national_rail" {
   }
 }
 
+data "aws_iam_policy_document" "scheduler_assume_role_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    effect  = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["scheduler.amazonaws.com"]
+    }
+  }
+}
+
 # IAM Role for AWS Scheduler
 resource "aws_iam_role" "scheduler_execution_role" {
-  name = "scheduler_execution_role"
+  name               = "scheduler_execution_role"
+  assume_role_policy = data.aws_iam_policy_document.scheduler_assume_role_policy.json
+}
 
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action    = "sts:AssumeRole"
-        Effect    = "Allow"
-        Principal = {
-          Service = "scheduler.amazonaws.com"
-        }
-      }
-    ]
-  })
+# IAM Policy Document for AWS Scheduler role
+data "aws_iam_policy_document" "scheduler_policy" {
+  statement {
+    actions   = ["lambda:InvokeFunction"]
+    resources = [aws_lambda_function.c11_trainwreck_national_rail.arn]
+    effect    = "Allow"
+  }
 }
 
 # IAM Policy for AWS Scheduler role
-resource "aws_iam_role_policy" "scheduler_execution_policy" {
-  name = "scheduler_execution_policy"
-  role = aws_iam_role.scheduler_execution_role.id
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action   = "lambda:InvokeFunction"
-        Effect   = "Allow"
-        Resource = aws_lambda_function.c11_trainwreck_national_rail.arn
-      }
-    ]
-  })
+resource "aws_iam_role_policy" "scheduler_execution_role_policy" {
+  name   = "scheduler_execution_role_policy"
+  role   = aws_iam_role.scheduler_execution_role.id
+  policy = data.aws_iam_policy_document.scheduler_policy.json
 }
 
 # AWS Scheduler Schedule
