@@ -49,7 +49,7 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
         try:
             result = cur.fetchall()
 
-        except Exception as e:
+        except Exception:
             result = None
 
     return result
