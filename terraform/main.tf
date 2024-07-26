@@ -276,7 +276,7 @@ resource "aws_iam_role_policy" "c11-railway-tracker-realtime-scheduler_execution
 # AWS Scheduler Schedule
 resource "aws_scheduler_schedule" "c11-railway-tracker-realtime-schedule-new-tf" {
   name                         = "c11-railway-tracker-realtime-schedule-new-tf"
-  schedule_expression          = "cron(0 0 * * ? *)"
+  schedule_expression          =  "cron(0 0 * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
   flexible_time_window {
@@ -425,8 +425,8 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 # IAM Role for Lambda Execution
-resource "aws_iam_role" "lambda_execution_role" {
-  name               = "lambda_execution_role"
+resource "aws_iam_role" "lambda_execution_role-incident" {
+  name               = "lambda_execution_role-incident"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 }
 
@@ -446,7 +446,7 @@ data "aws_iam_policy_document" "lambda_policy" {
 # IAM Policy for Lambda Execution Role
 resource "aws_iam_role_policy" "lambda_execution_role_policy" {
   name   = "lambda_execution_role_policy"
-  role   = aws_iam_role.lambda_execution_role.id
+  role   = aws_iam_role.lambda_execution_role-incident.id
   policy = data.aws_iam_policy_document.lambda_policy.json
 }
 
@@ -459,8 +459,8 @@ resource "aws_cloudwatch_log_group" "lambda_log_group" {
 # Lambda Function Resource
 resource "aws_lambda_function" "c11_railway_tracker_national_rail" {
   function_name = "c11-railway-tracker-national-rail"
-  role          = aws_iam_role.lambda_execution_role.arn
-  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-national:latest"
+  role          = aws_iam_role.lambda_execution_role-incident.arn
+  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-trainwreck-national:latest"
   package_type  = "Image"
   timeout       = 180
 
