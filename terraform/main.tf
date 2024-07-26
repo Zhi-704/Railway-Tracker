@@ -235,7 +235,7 @@ resource "aws_lambda_function" "c11-railway-tracker-realtime-etl-lambda-function
   }
 }
 
-# ARCHIVE EVENT BRIDGE SCHEDULE:
+# REALTIME EVENT BRIDGE SCHEDULE:
 data "aws_iam_policy_document" "c11-railway-tracker-realtime-schedule-policy-document" {
     statement {
             actions    = ["sts:AssumeRole"]

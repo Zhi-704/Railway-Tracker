@@ -4,18 +4,20 @@ import logging
 from io import BytesIO
 from base64 import b64encode
 
+from dotenv import load_dotenv
 from xhtml2pdf import pisa
 import altair as alt
 import pandas as pd
 from psycopg2.extensions import connection
 from extract_pdf import get_connection, query_db
 
-REPORT_NAME = "performance_report.pdf"
 CSS_PATH = "./styles.css"
 
 
 def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
-    """Calculates the percentage of cancelled trains for each station"""
+    """ Calculates the percentage of cancelled trains for each station and returns as a 
+        pandas DataFrame. """
+
     data = query_db(conn, """
         WITH total_trains AS (
             SELECT station_id, COUNT(*) AS total_count
@@ -38,13 +40,16 @@ def get_cancelled_percentage(conn: connection) -> pd.DataFrame:
         FROM total_trains
         JOIN cancelled_trains USING (station_id)
         JOIN station USING (station_id)""")
-    logging.info("percentage of cancelled trains for each station: %s", data)
+
+    logging.info("Percentage of cancelled trains for each station found.")
     return pd.DataFrame(
         data, columns=['station_name', 'station_crs', 'cancellation_percentage'])
 
 
 def get_delayed_percentage(conn: connection) -> pd.DataFrame:
-    """Calculates the percentage of delay for arrivals and departures for each station"""
+    """ Calculates the percentage of delay for arrivals and departures for each station, 
+        and returns as a pandas DataFrame. """
+
     data = query_db(conn, """
         WITH total_trains AS (
             SELECT station_id, COUNT(*) AS total_count
@@ -79,14 +84,17 @@ def get_delayed_percentage(conn: connection) -> pd.DataFrame:
         LEFT JOIN delayed_arrival_trains USING (station_id)
         LEFT JOIN delayed_departure_trains USING (station_id)
         JOIN station USING (station_id);""")
+
     logging.info(
-        "percentage of trains with delay for arrivals and departures for each station: %s", data)
+        "Percentage of trains with delay for arrivals and departures for each station found.")
     return pd.DataFrame(data, columns=['station_name', 'station_crs', 'delayed_arrival_percentage',
                                        'delayed_departure_percentage'])
 
 
 def get_avg_delay(conn: connection) -> pd.DataFrame:
-    """Calculates the average overall delay for each station"""
+    """Calculates the average overall delay for each station, and returns as a 
+        pandas DataFrame. """
+
     data = query_db(conn, """
         SELECT station_name, station_crs,
             ROUND(AVG(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2)::FLOAT
@@ -97,13 +105,16 @@ def get_avg_delay(conn: connection) -> pd.DataFrame:
         JOIN station USING (station_id)
         WHERE run_date = CURRENT_DATE - 1
         GROUP BY station_name, station_crs;""")
-    logging.info("average delay for each station: %s", data)
+
+    logging.info("Average delay for each station.")
     return pd.DataFrame(data, columns=['station_name', 'station_crs',
                                        'avg_arrive_delay_minutes', 'avg_departure_delay_minutes'])
 
 
 def get_avg_delay_long(conn: connection) -> pd.DataFrame:
-    """Calculates the average delay more than 1 min for each station"""
+    """Calculates the average delay more than 1 min for each station, and returns as a 
+        pandas DataFrame."""
+
     data = query_db(conn, """
         SELECT station_name, station_crs,
             ROUND(AVG( EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60), 2)::FLOAT
@@ -116,7 +127,8 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
             EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 > 1 AND
             run_date = CURRENT_DATE - 1
         GROUP BY station_name, station_crs;""")
-    logging.info("average delay more than 1 min for each station: %s", data)
+
+    logging.info("Average delay more than 1 min for each station.")
     return pd.DataFrame(data, columns=['station_name', 'station_crs',
                                        'avg_arrive_delay_long_minutes',
                                        'avg_departure_delay_long_minutes'])
@@ -124,7 +136,9 @@ def get_avg_delay_long(conn: connection) -> pd.DataFrame:
 
 def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
                                y_cols: list[str], title: str, y_axis: str) -> alt.Chart:
-    """Generates a grouped bar chart with separate bars for each station"""
+    """Generates a grouped bar chart with separate bars for each station, and returns as a 
+        pandas DataFrame."""
+
     df = df.rename(columns={y_cols[0]: 'Arrival', y_cols[1]: 'Departure'})
     delay_types = ['Arrival', 'Departure']
 
@@ -155,7 +169,8 @@ def generate_grouped_bar_chart(df: pd.DataFrame, x_col: str,
 
 
 def generate_bar_chart(df: pd.DataFrame, x_col: str, y_col: str, title: str) -> alt.Chart:
-    """Generates a bar chart using Altair"""
+    """ Generates and returns a bar chart using Altair """
+
     return alt.Chart(df).mark_bar().encode(
         x=alt.X(x_col, title="Station CRS"),
         y=alt.Y(y_col, title="Percentage of Cancelled Trains (%)"),
@@ -170,7 +185,8 @@ def generate_bar_chart(df: pd.DataFrame, x_col: str, y_col: str, title: str) -> 
 
 
 def convert_altair_chart_to_html_embed(chart: alt.Chart) -> str:
-    """Converts an Altair chart to a string representation."""
+    """ Converts an Altair chart to a string representation. """
+
     with BytesIO() as bs:
         chart.save(bs, format="png")
         bs.seek(0)
@@ -181,7 +197,8 @@ def convert_altair_chart_to_html_embed(chart: alt.Chart) -> str:
 def generate_html_report(delayed_df: pd.DataFrame, cancellation_chart: alt.Chart,
                          delay_chart: alt.Chart, avg_delay_chart: alt.Chart,
                          avg_delay_long_chart: alt.Chart) -> str:
-    """Generates the HTML report."""
+    """ Generates the HTML report. """
+
     cancellation_chart_embed = convert_altair_chart_to_html_embed(
         cancellation_chart)
     delay_chart_embed = convert_altair_chart_to_html_embed(delay_chart)
@@ -191,8 +208,8 @@ def generate_html_report(delayed_df: pd.DataFrame, cancellation_chart: alt.Chart
 
     station_info = delayed_df[['station_name',
                                'station_crs']].drop_duplicates()
-
     station_info_html = "<p><b>Station CRS</b> - <b>Station Name</b></p><ul>"
+
     for _, row in station_info.iterrows():
         station_info_html += f"<li>{row['station_crs']}\
               - {row['station_name']}</li>"
@@ -223,14 +240,17 @@ def generate_html_report(delayed_df: pd.DataFrame, cancellation_chart: alt.Chart
 
 
 def convert_html_to_pdf(source_html: str, output_filename: str) -> bool:
-    """Outputs HTML to a target file."""
+    """ Outputs HTML to a target file. """
+
     with open(output_filename, "w+b") as f:
         pisa_status = pisa.CreatePDF(source_html, dest=f)
     return pisa_status.err
 
 
-def transform_pdf() -> None:
-    """Main function which creates pdf"""
+def transform_pdf(report_filename: str) -> None:
+    """ Main function which creates pdf summary report containing performance 
+        statistics for yesterday's railway data. """
+
     conn = get_connection()
     cancelled_df = get_cancelled_percentage(conn)
     delayed_df = get_delayed_percentage(conn)
@@ -257,7 +277,7 @@ def transform_pdf() -> None:
     html_report = generate_html_report(delayed_df, cancellation_chart,
                                        delay_chart, avg_delay_chart, avg_delay_long_chart)
 
-    result = convert_html_to_pdf(html_report, REPORT_NAME)
+    result = convert_html_to_pdf(html_report, report_filename)
 
     if result:
         logging.error("Failed to create PDF report.")
@@ -268,4 +288,5 @@ def transform_pdf() -> None:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-    transform_pdf()
+    load_dotenv()
+    transform_pdf('performance_report.pdf')

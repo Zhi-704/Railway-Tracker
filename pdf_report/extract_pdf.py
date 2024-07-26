@@ -11,7 +11,6 @@ from psycopg2.extras import RealDictCursor
 
 def get_connection() -> connection:
     """Retrieves connection and returns it."""
-    load_dotenv()
     logging.info("Retrieving database connection")
     return connect(
         user=environ['DB_USERNAME'],
@@ -28,15 +27,21 @@ def get_cursor(conn: connection) -> cursor:
     return conn.cursor(cursor_factory=RealDictCursor)
 
 
-def query_db(conn: connection, query: str) -> list[tuple]:
+def query_db(conn: connection, query: str) -> list[tuple] | None:
     """Queries the database and returns the data."""
-    with get_cursor(conn) as cur:
-        cur.execute(query)
-        data = cur.fetchall()
-    logging.info("Database query successful: %s", query)
-    return data
+    try:
+        with get_cursor(conn) as cur:
+            cur.execute(query)
+            data = cur.fetchall()
+        return data
+
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logging.error("Error occurred when executing query: %s", query)
+        logging.error("Error: %s", e)
+        return None
 
 
 if __name__ == "__main__":
+    load_dotenv()
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
