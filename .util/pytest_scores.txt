@@ -5,7 +5,8 @@ collected 65 items
 
 national_rail/test_load_national.py ......                               [  9%]
 national_rail/test_transform_national.py ...................             [ 38%]
-pdf_report/test_load_pdf.py ........                                     [ 50%]
+pdf_report/test_extract_pdf.py ..                                        [ 41%]
+pdf_report/test_load_pdf.py ......                                       [ 50%]
 realtime_trains/test_extract_real.py ......                              [ 60%]
 realtime_trains/test_load_real.py .........                              [ 73%]
 realtime_trains/test_transform_real.py .................                 [100%]

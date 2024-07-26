@@ -2,22 +2,18 @@
 
 from os import environ, path
 import logging
-
 from email.mime.application import MIMEApplication
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from io import BytesIO
 from datetime import datetime
 
 from dotenv import load_dotenv
 from boto3 import client
 from botocore.exceptions import NoCredentialsError, ClientError
-from psycopg2 import connect, Error as psycopg2_error
-from psycopg2.extensions import connection, cursor
-from psycopg2.extras import RealDictCursor
+from psycopg2 import Error as psycopg2_error
+from psycopg2.extensions import connection
 
-
-LOCAL_FILE_PATH = 'performance_report.pdf'
+from extract_pdf import get_connection, get_cursor
 
 
 def get_s3_client() -> client:
@@ -31,47 +27,22 @@ def get_s3_client() -> client:
         return None
 
 
-def upload_pdf_data_to_s3(s3: client, bucket_name: str, s3_filename: str, pdf: BytesIO) -> None:
-    """ Uploads pdf of summary report to S3 bucket. """
-
-    s3.upload_fileobj(pdf, bucket_name, s3_filename)
-    logging.info("pdf file uploaded %s", s3_filename)
-
-
-def upload_pdf_to_s3() -> None:
+def upload_pdf_to_s3(report_filename: str) -> None:
     """ Uploads a PDF file from local directory into S3 bucket. """
     s3 = get_s3_client()
     bucket = environ['S3_BUCKET_NAME']
     prefix = datetime.now()
-    s3_file_name = f"{prefix}_{LOCAL_FILE_PATH}"
+    s3_file_name = f"{prefix}_{report_filename}"
 
     try:
-        s3.upload_file(LOCAL_FILE_PATH, bucket, s3_file_name)
+        s3.upload_file(report_filename, bucket, s3_file_name)
         logging.info("Upload Successful: %s, to bucket: %s",
                      s3_file_name, bucket)
     except FileNotFoundError:
         logging.error("The file was not found.")
-    except Exception:
+    except Exception:   # pylint: disable=broad-exception-caught
         logging.error(
             "Error occurred when connecting and uploading to S3 bucket.")
-
-
-def get_connection() -> connection:
-    """ Retrieves connection and returns it. """
-
-    return connect(
-        user=environ['DB_USERNAME'],
-        password=environ['DB_PASSWORD'],
-        host=environ['DB_IP'],
-        port=environ['DB_PORT'],
-        dbname=environ['DB_NAME']
-    )
-
-
-def get_cursor(conn: connection) -> cursor:
-    """ Retrieves cursor and returns it. """
-
-    return conn.cursor(cursor_factory=RealDictCursor)
 
 
 def get_subscribers(conn: connection) -> list:
@@ -104,7 +75,7 @@ def create_ses_client() -> client:
         raise RuntimeError(f"Error creating SES client: {e}") from e
 
 
-def format_email() -> None:
+def format_email(report_filename) -> None:
     """ Formats email with subject, body and attachment of PDF, and returns it. """
 
     body = "See the PDF document attached for insights into the performance of stations in the UK."
@@ -115,10 +86,10 @@ def format_email() -> None:
     msg["From"] = sender
     msg.attach(MIMEText(body, "html"))
 
-    with open(LOCAL_FILE_PATH, "rb") as attachment:
+    with open(report_filename, "rb") as attachment:
         part = MIMEApplication(attachment.read(), _subtype="pdf")
         part.add_header(
-            "Content-Disposition", "attachment", filename=path.basename(LOCAL_FILE_PATH)
+            "Content-Disposition", "attachment", filename=path.basename(report_filename)
         )
         msg.attach(part)
 
@@ -145,7 +116,7 @@ def send_email(ses_client: client, sender: str, subscribers: list[str], msg: MIM
             )
 
 
-def email_performance_report():
+def email_performance_report(report_filename: str) -> None:
     """ Main function to perform sending emails to subscribers:
         - Retrieves subscribers list from database.
         - Creates SES client to send email with.
@@ -153,20 +124,19 @@ def email_performance_report():
 
     subscribers = get_subscribers(get_connection())
     ses_client = create_ses_client()
-    sender, message = format_email()
+    sender, message = format_email(report_filename)
     send_email(ses_client, sender, subscribers, message)
 
 
-def send_pdf_to_email_and_s3():
+def load_pdf(report_filename: str) -> None:
     """ Sends the PDF of the performance report via email to subscribers
         Loads the PDF report to the s3 bucket with timestamp."""
     load_dotenv()
-    email_performance_report()
-    upload_pdf_to_s3()
+    email_performance_report(report_filename)
+    upload_pdf_to_s3(report_filename)
 
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO,
                         format="%(asctime)s - %(levelname)s - %(message)s")
-
-    send_pdf_to_email_and_s3()
+    load_pdf('performance_report.pdf')

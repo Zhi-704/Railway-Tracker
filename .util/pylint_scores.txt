@@ -6,11 +6,13 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module load_pdf
-pdf_report/load_pdf.py:54:11: W0718: Catching too general exception Exception (broad-exception-caught)
 
------------------------------------
-Your code has been rated at 9.88/10
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
