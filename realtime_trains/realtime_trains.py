@@ -33,7 +33,7 @@ def main(_event, _context):
         print("Load finished.")
         print("Pipeline has finished.")
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error("An error occurred during ETL pipeline execution: %s", e)
 
 

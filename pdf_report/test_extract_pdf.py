@@ -10,6 +10,7 @@ from psycopg2.extensions import connection, cursor
 from extract_pdf import (
     get_connection,
     get_cursor,
+    query_db
 )
 
 
@@ -49,3 +50,19 @@ class TestExtractPdf(unittest.TestCase):
         mock_connection.cursor.assert_called_once_with(
             cursor_factory=RealDictCursor)
         self.assertEqual(db_cursor, mock_connection.cursor())
+
+    @patch("extract_pdf.get_cursor")
+    def test_query_success(self, mock_get_cursor):
+
+        mock_cursor = MagicMock()
+        mock_get_cursor.return_value.__enter__.return_value = mock_cursor
+        mock_cursor.fetchall.return_value = [('row1',), ('row2',)]
+        mock_conn = MagicMock()
+        test_query = "SELECT * FROM table"
+
+        result = query_db(mock_conn, test_query)
+
+        mock_get_cursor.assert_called_once_with(mock_conn)
+        mock_cursor.execute.assert_called_once_with(test_query)
+        mock_cursor.fetchall.assert_called_once()
+        self.assertEqual(result, [('row1',), ('row2',)])
