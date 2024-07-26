@@ -103,6 +103,11 @@ def process_pt_incidents(incidents: list[ET.Element], namespaces: dict) -> list[
         end_time = find_text_element(
             incident, 'ns:ValidityPeriod/com:EndTime', namespaces)
 
+        if not start_time:
+            start_time = creation_time
+        if not end_time:
+            end_time = start_time
+
         is_planned = find_text_element(incident, 'ns:Planned', namespaces)
 
         summary = find_text_element(incident, 'ns:Summary', namespaces)

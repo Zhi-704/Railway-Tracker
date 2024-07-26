@@ -27,7 +27,7 @@ def get_month_old_waypoints(conn: connection, station_id: str) -> list[dict]:
     query = """
         SELECT *
         FROM waypoint
-        WHERE run_date <= CURRENT_DATE - INTERVAL '1 month' 
+        WHERE run_date <= CURRENT_DATE - INTERVAL '1 month'
             AND station_id = %s;
     """
 
@@ -41,7 +41,7 @@ def compute_avg_delay_for_station(conn: connection, station_id: int) -> dict:
         arrived/ departed over a month ago. """
 
     query = """
-        SELECT 
+        SELECT
             station_id,
             AVG((actual_arrival - booked_arrival)+(actual_departure - booked_departure))avg_overall_delay
         FROM waypoint
@@ -62,7 +62,7 @@ def compute_cancellation_count_for_station(conn: connection, station_id: int) ->
     query = """
         SELECT COUNT(cancellation_id) AS cancellation_count
         FROM waypoint w
-        JOIN cancellation c 
+        JOIN cancellation c
         ON c.waypoint_id = w.waypoint_id
         WHERE w.station_id = %s
             AND run_date <= CURRENT_DATE - INTERVAL '1 month';
@@ -78,7 +78,7 @@ def insert_performance_archive(conn: connection, archive_data: dict) -> None:
         Creation date is date of inserting into archive. """
 
     query = """
-        INSERT INTO performance_archive (station_id, avg_delay, cancellation_count, creation_date) 
+        INSERT INTO performance_archive (station_id, avg_delay, cancellation_count, creation_date)
         VALUES (%s, %s, %s, TIMEZONE('Europe/London', CURRENT_TIMESTAMP));
     """
 

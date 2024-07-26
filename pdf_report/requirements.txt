@@ -1,0 +1,8 @@
+boto3
+python-dotenv
+xhtml2pdf
+psycopg2-binary
+altair
+pandas
+vl-convert-python
+python-bidi==0.4.2

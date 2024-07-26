@@ -30,3 +30,15 @@ variable "DB_PORT"{
     type = string
 }
 
+
+variable "REALTIME_USERNAME" {
+    type = string
+}
+variable "REALTIME_PASSWORD"{
+    type = string
+}
+
+
+variable "NATIONAL_RAIL_API_KEY" {
+    type = string
+}

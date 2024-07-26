@@ -1,0 +1,17 @@
+/* Only some styles are permitted: https://xhtml2pdf.readthedocs.io/en/latest/reference.html#supported-css-properties */
+
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 40px;
+}
+h1 {
+    color: #333; 
+}
+h2 {
+    color: #666;
+}
+img {
+    display: block;
+    margin: 20px 0;
+}
