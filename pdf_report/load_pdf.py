@@ -32,7 +32,7 @@ def upload_pdf_to_s3(report_filename: str) -> None:
     s3 = get_s3_client()
     bucket = environ['S3_BUCKET_NAME']
     prefix = datetime.now()
-    s3_file_name = f"{prefix}_{report_filename}"
+    s3_file_name = f"{report_filename.split(".pdf")[0]}_{prefix}.pdf"
 
     try:
         s3.upload_file(report_filename, bucket, s3_file_name)

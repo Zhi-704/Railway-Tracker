@@ -632,6 +632,7 @@ resource "aws_lambda_function" "c11-railway-tracker-report-lambda-function-new-t
   image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-report-ecr:latest"
 
   timeout       = 720
+  memory_size   = 256
   depends_on    = [aws_cloudwatch_log_group.lambda_log_group]
 
   environment {
