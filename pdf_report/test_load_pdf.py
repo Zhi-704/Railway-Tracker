@@ -138,9 +138,9 @@ class TestLoadPdf(unittest.TestCase):
         mock_get_s3_client.return_value = mock_s3_client
         mock_datetime.now.return_value = '20240101'
 
-        test_report_filename = 'test.pdf'
+        test_report_filename = 'test'
         test_bucket = 'test-bucket'
-        test_s3_file_name = f"{mock_datetime.now()}_{test_report_filename}"
+        test_s3_file_name = f"{test_report_filename}_{mock_datetime.now()}.pdf"
 
         upload_pdf_to_s3(test_report_filename)
 
