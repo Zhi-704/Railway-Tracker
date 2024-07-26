@@ -48,7 +48,7 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
         try:
             result = cur.fetchall()
 
-        except Exception as e:  # pylint: disable=broad-exception-caught
+        except Exception:  # pylint: disable=broad-exception-caught
             result = None
 
     return result
