@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from transform_pdf import transform_pdf
 from load_pdf import load_pdf
 
-REPORT_FILENAME = 'performance_report.pdf'
+REPORT_FILENAME = "/tmp/performance_report.pdf"
 
 
 def main(_event, _context):

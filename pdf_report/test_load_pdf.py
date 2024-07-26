@@ -30,8 +30,8 @@ from load_pdf import (
         "DB_USERNAME": "test_username",
         "DB_PASSWORD": "test_password",
         "DB_PORT": "test_port",
-        "AWS_ACCESS_KEY": 'fake_access_key',
-        'AWS_SECRET_KEY': 'fake_secret_key'
+        "ACCESS_KEY_ID": 'fake_access_key',
+        'SECRET_ACCESS_KEY': 'fake_secret_key'
     },
 )
 class TestLoadPdf(unittest.TestCase):
@@ -55,7 +55,7 @@ class TestLoadPdf(unittest.TestCase):
         mock_cursor.fetchall.assert_called_once()
 
     @patch('load_pdf.client')
-    @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
+    @patch('load_pdf.environ', {'ACCESS_KEY_ID': 'fake_access_key', 'SECRET_ACCESS_KEY': 'fake_secret_key'})
     def test_successful_ses_client_creation(self, mock_boto_client):
         """ Tests creates SES Client successfully. """
 
@@ -73,7 +73,7 @@ class TestLoadPdf(unittest.TestCase):
         )
 
     @patch('load_pdf.client')
-    @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
+    @patch('load_pdf.environ', {'ACCESS_KEY_ID': 'fake_access_key', 'SECRET_ACCESS_KEY': 'fake_secret_key'})
     def test_create_ses_client_failure(self, mock_boto_client):
         """ Tests creates SES Client unsuccessfully. """
 
@@ -113,7 +113,7 @@ class TestLoadPdf(unittest.TestCase):
         mock_ses_client.send_raw_email.assert_has_calls(calls)
 
     @patch('load_pdf.client')
-    @patch('load_pdf.environ', {'AWS_ACCESS_KEY': 'fake_access_key', 'AWS_SECRET_KEY': 'fake_secret_key'})
+    @patch('load_pdf.environ', {'ACCESS_KEY_ID': 'fake_access_key', 'SECRET_ACCESS_KEY': 'fake_secret_key'})
     def test_successful_get_s3_client(self, mock_boto_client):
         """ Tests creates S3 Client successfully. """
 
@@ -138,9 +138,9 @@ class TestLoadPdf(unittest.TestCase):
         mock_get_s3_client.return_value = mock_s3_client
         mock_datetime.now.return_value = '20240101'
 
-        test_report_filename = 'test.pdf'
+        test_report_filename = 'test'
         test_bucket = 'test-bucket'
-        test_s3_file_name = f"{mock_datetime.now()}_{test_report_filename}"
+        test_s3_file_name = f"{test_report_filename}_{mock_datetime.now()}.pdf"
 
         upload_pdf_to_s3(test_report_filename)
 

@@ -83,9 +83,11 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module main_page
+dashboard/main_page.py:6:0: E0611: No name 'show_pages' in module 'st_pages' (no-name-in-module)
 
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.66/10
 
 
 ------------------------------------

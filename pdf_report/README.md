@@ -39,8 +39,8 @@ This will retrieve information about any incidents occurring in NationalRail.
 Before running the script, you need to set up your National Rail API credentials. Create a new file called `.env` in the `pdf_report` directory and add the following lines:
 
 ```text
-AWS_ACCESS_KEY=your_aws_access_key
-AWS_SECRET_KEY=your_aws_secret_access_key
+ACCESS_KEY_ID=your_aws_access_key
+SECRET_ACCESS_KEY=your_aws_secret_access_key
 
 DB_PASSWORD=your_database_password
 DB_USERNAME=your_database_username
