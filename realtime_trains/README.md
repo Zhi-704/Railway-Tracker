@@ -51,7 +51,7 @@ REALTIME_PASSWORD=your_password
 DB_USERNAME=your_db_username
 DB_PASSWORD=your_db_password
 DB_NAME=your_db_name
-DB_IP=your_db_host_ip_address
+DB_IP=your_DB_IP_ip_address
 DB_PORT=your_db_port
 ```
 

@@ -17,8 +17,8 @@ TIME_RANGE_OPTIONS = ["last day", "last week", "All time"]
 TIME_RANGE_OPTIONS_DICT = {
     "last day": '24 hours', "last week": '128 hours', "All time": None}
 
-LOGO_URL = "../diagrams/train_logo.png"
-LOGO_ICON_URL = "../diagrams/train_logo.png"
+LOGO_URL = "train_logo.png"
+LOGO_ICON_URL = "train_logo.png"
 
 ROLLING_AVG_BEFORE = 7
 ROLLING_AVG_AFTER = 0
