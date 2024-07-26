@@ -455,6 +455,37 @@ resource "aws_iam_role_policy" "lambda_execution_policy" {
   })
 }
 
+# Lambda Function Resource
+resource "aws_lambda_function" "c11_trainwreck_national_rail" {
+  function_name = "c11-trainwreck-national-rail"
+  role          = aws_iam_role.lambda_execution_role.arn
+  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-trainwreck-national:latest"
+  package_type  = "Image"
+  timeout       = 180
+
+  environment {
+    variables = {
+      ACCESS_KEY_ID         = var.AWS_ACCESS_KEY,
+      SECRET_ACCESS_KEY     = var.AWS_SECRET_KEY,
+      DB_IP                 = var.DB_IP,
+      DB_NAME               = var.DB_NAME,
+      DB_USERNAME           = var.DB_USERNAME,
+      DB_PASSWORD           = var.DB_PASSWORD,
+      DB_PORT               = var.DB_PORT,
+      NATIONAL_RAIL_API_KEY = var.NATIONAL_RAIL_API_KEY
+    }
+  }
+
+  logging_config {
+    log_format = "Text"
+    log_group  = "/aws/lambda/c11-trainwreck-national-rail"
+  }
+
+  tracing_config {
+    mode = "PassThrough"
+  }
+}
+
 # IAM Role for AWS Scheduler
 resource "aws_iam_role" "scheduler_execution_role" {
   name = "scheduler_execution_role"
@@ -488,37 +519,6 @@ resource "aws_iam_role_policy" "scheduler_execution_policy" {
       }
     ]
   })
-}
-
-# Lambda Function Resource
-resource "aws_lambda_function" "c11_trainwreck_national_rail" {
-  function_name = "c11-trainwreck-national-rail"
-  role          = aws_iam_role.lambda_execution_role.arn
-  image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-trainwreck-national:latest"
-  package_type  = "Image"
-  timeout       = 180
-
-  environment {
-    variables = {
-      ACCESS_KEY_ID         = var.AWS_ACCESS_KEY,
-      SECRET_ACCESS_KEY     = var.AWS_SECRET_KEY,
-      DB_IP                 = var.DB_IP,
-      DB_NAME               = var.DB_NAME,
-      DB_USERNAME           = var.DB_USERNAME,
-      DB_PASSWORD           = var.DB_PASSWORD,
-      DB_PORT               = var.DB_PORT,
-      NATIONAL_RAIL_API_KEY = var.NATIONAL_RAIL_API_KEY
-    }
-  }
-
-  logging_config {
-    log_format = "Text"
-    log_group  = "/aws/lambda/c11-trainwreck-national-rail"
-  }
-
-  tracing_config {
-    mode = "PassThrough"
-  }
 }
 
 # AWS Scheduler Schedule
