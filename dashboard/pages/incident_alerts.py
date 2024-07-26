@@ -21,7 +21,7 @@ def get_db_connection() -> connection | None:
     """return a database connection"""
     try:
         return connect(
-            host=environ['DB_HOST'],
+            host=environ['DB_IP'],
             dbname=environ['DB_NAME'],
             user=environ['DB_USERNAME'],
             password=environ['DB_PASSWORD'],

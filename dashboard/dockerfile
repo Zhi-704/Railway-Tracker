@@ -13,7 +13,9 @@ COPY ./pages ./pages
 RUN mkdir ./streamlit
 COPY ./.streamlit ./.streamlit
 
+COPY train_logo.png .
 COPY main_page.py .
+COPY main_page_functions.py .
 
 CMD streamlit run main_page.py --server.port 8501
 
