@@ -77,7 +77,7 @@ dashboard/main_page.py:73:0: C0301: Line too long (107/100) (line-too-long)
 dashboard/main_page.py:103:0: C0325: Unnecessary parens after 'return' keyword (superfluous-parens)
 dashboard/main_page.py:110:0: C0301: Line too long (121/100) (line-too-long)
 dashboard/main_page.py:112:0: C0301: Line too long (123/100) (line-too-long)
-dashboard/main_page.py:209:0: C0301: Line too long (109/100) (line-too-long)
+dashboard/main_page.py:210:0: C0301: Line too long (109/100) (line-too-long)
 dashboard/main_page.py:141:5: W0511: TODO: change statistics collected (fixme)
 dashboard/main_page.py:19:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page.py:32:0: C0112: Empty function docstring (empty-docstring)
@@ -89,12 +89,12 @@ dashboard/main_page.py:82:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page.py:88:4: C0104: Disallowed name "bar" (disallowed-name)
 dashboard/main_page.py:106:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page.py:124:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:175:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:191:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:204:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:218:0: C0112: Empty function docstring (empty-docstring)
-dashboard/main_page.py:225:4: C0104: Disallowed name "bar" (disallowed-name)
-dashboard/main_page.py:243:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:176:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:192:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:205:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:219:0: C0112: Empty function docstring (empty-docstring)
+dashboard/main_page.py:226:4: C0104: Disallowed name "bar" (disallowed-name)
+dashboard/main_page.py:244:0: C0112: Empty function docstring (empty-docstring)
 
 -----------------------------------
 Your code has been rated at 7.56/10
@@ -113,9 +113,7 @@ dashboard/main_page_functions.py:73:11: W0718: Catching too general exception Ex
 dashboard/main_page_functions.py:108:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page_functions.py:108:39: W0621: Redefining name 'date_range' from outer scope (line 9) (redefined-outer-name)
 dashboard/main_page_functions.py:126:0: C0116: Missing function or method docstring (missing-function-docstring)
-dashboard/main_page_functions.py:126:45: W0613: Unused argument 'datum' (unused-argument)
 dashboard/main_page_functions.py:142:0: C0116: Missing function or method docstring (missing-function-docstring)
-dashboard/main_page_functions.py:142:45: W0613: Unused argument 'datum' (unused-argument)
 dashboard/main_page_functions.py:158:35: W0621: Redefining name 'date_range' from outer scope (line 9) (redefined-outer-name)
 dashboard/main_page_functions.py:181:0: C0112: Empty function docstring (empty-docstring)
 dashboard/main_page_functions.py:213:0: C0112: Empty function docstring (empty-docstring)
@@ -132,7 +130,7 @@ dashboard/main_page_functions.py:7:0: W0611: Unused client imported from boto3 (
 dashboard/main_page_functions.py:9:0: W0611: Unused date_range imported from pandas (unused-import)
 
 -----------------------------------
-Your code has been rated at 7.56/10
+Your code has been rated at 7.74/10
 
 
 ------------------------------------
