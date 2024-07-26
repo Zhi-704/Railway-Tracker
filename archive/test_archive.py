@@ -1,12 +1,13 @@
 """ Unit tests to test archive functions. """
-from psycopg2.extensions import connection, cursor
-import psycopg2
-from db_connection import get_connection, get_cursor, execute
-import db_connection
-import unittest
 import os
+import unittest
 from unittest.mock import MagicMock, patch
 
+from psycopg2.extensions import connection
+from psycopg2.extras import RealDictCursor
+
+
+from db_connection import get_connection, get_cursor, execute
 from clean_real_time_trains import (
     get_all_station_ids,
     get_month_old_waypoints,
@@ -21,21 +22,6 @@ from clean_real_time_trains import (
 
 class ArchiveTests(unittest.TestCase):
     """ Class for testing functions from the archive directory. """
-
-    def setUp(self):
-
-        incidents = {
-            'incident_id': '1',
-            'incident_number': '1',
-            'creation_time': '',
-            'incident_start': '',
-            'incident_end': '',
-            'is_planned': True,
-            'incident_summary': "incident summary",
-            'incident_description': 'incident description',
-            'incident_uri': 'uri',
-            'affected_routes': 'routes'
-        }
 
     @patch.dict(
         os.environ,
@@ -68,13 +54,13 @@ class ArchiveTests(unittest.TestCase):
         db_cursor = get_cursor(mock_connection)
 
         mock_connection.cursor.assert_called_once_with(
-            cursor_factory=psycopg2.extras.RealDictCursor)
+            cursor_factory=RealDictCursor)
         self.assertIsNotNone(db_cursor)
         assert db_cursor == mock_connection.cursor()
 
-    # @patch('db_connection.get_connection')
     @patch("db_connection.get_cursor")
     def test_execute_success(self, mock_get_cursor):
+        """ Test successful execute. """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
         mock_cursor.fetchall.return_value = [('row1',), ('row2',)]
@@ -91,6 +77,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_get_station_ids(self, mock_get_cursor):
+        """ Test successful stations id. """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
         mock_cursor.fetchall.return_value = [
@@ -109,6 +96,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_get_month_old_waypoints(self, mock_get_cursor):
+        """ Test get month old waypoints. """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
         mock_cursor.fetchall.return_value = [
@@ -129,6 +117,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_compute_avg_delay_for_station(self, mock_get_cursor):
+        """ Test get average delay for stations successful.  """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
         mock_cursor.fetchall.return_value = [{'avg_overall_delay': 1.0}]
@@ -151,6 +140,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_compute_cancellation_count_for_station(self, mock_get_cursor):
+        """ Test compute cancellation count successful. """
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
         mock_cursor.fetchall.return_value = [{'cancellation_count': 1}]
@@ -172,6 +162,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_insert_performance_archive(self, mock_get_cursor):
+        """ Test insert performance archive successful. """
 
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
@@ -188,13 +179,15 @@ class ArchiveTests(unittest.TestCase):
         mock_cursor.execute.assert_called_once_with("""
         INSERT INTO performance_archive (station_id, avg_delay, cancellation_count, creation_date)
         VALUES (%s, %s, %s, TIMEZONE('Europe/London', CURRENT_TIMESTAMP));
-    """, (archive_data["station_id"], archive_data["avg_delay"], archive_data["cancellation_count"]))
+    """, (archive_data["station_id"], archive_data["avg_delay"], archive_data["cancellation_count"])
+        )
 
         mock_cursor.fetchall.assert_called_once()
         self.assertEqual(result, None)
 
     @patch("db_connection.get_cursor")
     def test_delete_cancellation(self, mock_get_cursor):
+        """ Test delete cancellation successful """
 
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
@@ -213,6 +206,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_delete_waypoint(self, mock_get_cursor):
+        """ Test delete waypoint successful """
 
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
@@ -231,6 +225,7 @@ class ArchiveTests(unittest.TestCase):
 
     @patch("db_connection.get_cursor")
     def test_get_table_size(self, mock_get_cursor):
+        """ Test get table size successful """
 
         mock_cursor = MagicMock()
         mock_get_cursor.return_value.__enter__.return_value = mock_cursor
