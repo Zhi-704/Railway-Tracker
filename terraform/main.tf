@@ -276,7 +276,7 @@ resource "aws_iam_role_policy" "c11-railway-tracker-realtime-scheduler_execution
 # AWS Scheduler Schedule
 resource "aws_scheduler_schedule" "c11-railway-tracker-realtime-schedule-new-tf" {
   name                         = "c11-railway-tracker-realtime-schedule-new-tf"
-  schedule_expression          = "cron(*/5 * * * ? *)"
+  schedule_expression          = "cron(* 0 * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
   flexible_time_window {
