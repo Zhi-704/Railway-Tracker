@@ -13,7 +13,7 @@ from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
 load_dotenv()
-FETCH_TYPES = ["all", "one", "many"]
+FETCH_TYPES = ["all", "one"]
 
 
 def get_db_connection() -> connection | None:
@@ -64,8 +64,6 @@ def fetch_from_query(fetch_amount: str, query: str):
             match(fetch_amount):
                 case "all":
                     res = curs.fetchall()
-                case "many":
-                    res = curs.fetchmany()
                 case "one":
                     res = curs.fetchone()
                 case _:
@@ -98,7 +96,7 @@ def get_closest_scheduled_incident() -> str | None:
     after the current time."""
     query = """
     SELECT incident_summary, incident_start
-    FROM incident WHERE incident_start >= CURRENT_DATE
+    FROM incident WHERE incident_start >= NOW()
     ORDER BY incident_start
     """
     res = fetch_from_query("one", query)
@@ -142,7 +140,7 @@ def get_station_with_highest_delay(date_range: str):
     """
 
     res = fetch_from_query("one", query)
-    return f"{res["station_name"]}: total delays of {res["total_delay_minutes"]} minutes"
+    return f"{res["station_name"]}, with a sum total of {res["total_delay_minutes"]} minutes"
 
 
 def get_trains_cancelled_per_station_percentage():
@@ -241,7 +239,7 @@ def get_avg_delay():
     FROM waypoint w
     JOIN station s ON w.station_id = s.station_id
     WHERE run_date IN (CURRENT_DATE - INTERVAL '1 day', CURRENT_DATE - INTERVAL '2 day')
-    GROUP BY s.station_id, s.station_crs;
+    GROUP BY s.station_name, s.station_crs;
     """
 
     res = fetch_from_query("all", query)
@@ -255,16 +253,68 @@ def get_avg_delay():
 #     WHERE w.run_date=NOW() - interval '48 hours'
 # ) AS avg_delay_day
 
+# ---------- OPERATOR FUNCTIONS ----------
 def get_cancellations_per_operator():
     query = """
-    SELECT op.operator_name, COUNT(c.cancellation_id) AS number_of_cancellations
+    SELECT op.operator_id, op.operator_name, COUNT(c.cancellation_id) AS number_of_cancellations
     FROM operator op
-    LEFT JOIN service s USING (operator_id) 
-    LEFT JOIN waypoint w USING (service_id)
-    LEFT JOIN cancellation c USING (waypoint_id)
+    JOIN service s USING (operator_id) 
+    JOIN waypoint w USING (service_id)
+    JOIN cancellation c USING (waypoint_id)
     WHERE w.run_date >= CURRENT_DATE - INTERVAL '7 days'
-    GROUP BY op.operator_name
+    GROUP BY op.operator_id, op.operator_name
     """
 
     res = fetch_from_query("all", query)
     return res
+
+
+def get_delay_count_over_5_minutes_per_operator():
+    query = """
+    SELECT
+    op.operator_name,
+    COUNT(w.waypoint_id) AS number_of_delayed_trains
+    FROM operator op
+    LEFT JOIN service s USING (operator_id)
+    LEFT JOIN waypoint w USING (service_id)
+    WHERE (
+    EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60 > 5
+    OR EXTRACT(EPOCH FROM (w.actual_departure - w.booked_departure)) / 60 > 5
+    )
+    GROUP BY op.operator_id, op.operator_name
+    ORDER BY number_of_delayed_trains DESC
+    """
+
+    return fetch_from_query("all", query)
+
+
+def get_proportion_of_large_delays_per_operator():
+    query = """
+    WITH delay_counts AS (
+    SELECT
+        op.operator_id,
+        op.operator_name,
+        COUNT(w.waypoint_id) AS total_trains,
+        COUNT(CASE WHEN (
+                EXTRACT(EPOCH FROM (w.actual_arrival - w.booked_arrival)) / 60 > 5
+                OR EXTRACT(EPOCH FROM (w.actual_departure - w.booked_departure)) / 60 > 5
+            ) THEN w.waypoint_id
+            ELSE NULL
+        END) AS total_delayed_trains
+    FROM operator op
+    LEFT JOIN service s USING (operator_id)
+    LEFT JOIN waypoint w USING (service_id)
+    LEFT JOIN cancellation c USING (waypoint_id)
+    GROUP BY op.operator_id, op.operator_name
+    )
+    SELECT operator_id, operator_name, total_trains, total_delayed_trains,
+        CASE WHEN total_trains > 0 
+            THEN ROUND((total_delayed_trains * 100.0 / total_trains), 2) 
+            ELSE 0
+        END AS percentage_delayed
+    FROM delay_counts
+    ORDER BY percentage_delayed DESC
+    LIMIT 10
+    """
+
+    return fetch_from_query("all", query)

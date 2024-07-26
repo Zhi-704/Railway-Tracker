@@ -3,7 +3,7 @@ import pandas
 import streamlit as st
 import altair as alt
 from st_pages import Page, show_pages
-from main_page_functions import get_average_delays_all, get_average_delays_over_a_minute, get_avg_delay, get_cancellations_per_operator, get_closest_scheduled_incident, get_rolling_average, get_station_with_highest_delay, get_total_delays_for_every_station, get_trains_cancelled_per_station_percentage
+from main_page_functions import get_average_delays_all, get_average_delays_over_a_minute, get_avg_delay, get_cancellations_per_operator, get_closest_scheduled_incident, get_delay_count_over_5_minutes_per_operator, get_proportion_of_large_delays_per_operator, get_rolling_average, get_station_with_highest_delay, get_total_delays_for_every_station, get_trains_cancelled_per_station_percentage
 
 TIME_RANGE_OPTIONS = ["last day", "last week", "All time"]
 TIME_RANGE_OPTIONS_DICT = {
@@ -108,10 +108,6 @@ def display_avg_delay_comparisons() -> alt.Chart:
     avg_delays_per_station_df["avg_delay_day_before_mins"] = avg_delays_per_station_df["avg_delay_day_before_mins"].astype(
         float)
 
-    # for row in avg_delays_per_station_df:
-    #     st.metric("sun", value=row["avg_delay_yesterday_mins"],
-    #               delta=row["avg_delay_day_before_mins"])
-
 
 def deploy_station_dashboard():
     """"""
@@ -167,23 +163,57 @@ def display_cancellations_per_operator():
     """"""
     cancellations_df = pandas.DataFrame(get_cancellations_per_operator())
 
-    pie = alt.Chart(cancellations_df).mark_arc().encode(
-        theta=alt.Theta("number_of_cancellations", stack=True),
-        color=alt.Color("operator_name")
+    pie = alt.Chart(cancellations_df).mark_arc(radius=125).encode(
+        theta=alt.Theta("number_of_cancellations",
+                        title="Number of Cancellations", stack=True),
+        color=alt.Color("operator_name", title="Operator")
     )
 
-    text = pie.mark_text(radius=175, size=20).encode(
+    text = pie.mark_text(radius=145, size=20).encode(
         text="number_of_cancellations")
 
     return (pie + text).properties(width=600)
 
 
+def display_5_min_delays_per_operator():
+    """"""
+    five_min_delays_df = pandas.DataFrame(
+        get_delay_count_over_5_minutes_per_operator())
+
+    pie = alt.Chart(five_min_delays_df).mark_bar().encode(
+        x=alt.X("number_of_delayed_trains", title="Number of trains delayed"),
+        y=alt.Y("operator_name", title="Operator", sort="x")
+    )
+
+    return pie
+
+
+def display_proportion_of_long_delays_per_operator():
+    """"""
+    proportion_long_delays_df = pandas.DataFrame(
+        get_proportion_of_large_delays_per_operator())
+
+    proportion_long_delays_df["percentage_delayed"] = proportion_long_delays_df["percentage_delayed"].astype(
+        float)
+
+    return alt.Chart(proportion_long_delays_df).mark_bar().encode(
+        x=alt.X("percentage_delayed", title="% of trains delayed"),
+        y=alt.Y("operator_name", title="Operator", sort="x")
+    )
+
+
 def deploy_operator_dashboard():
     """"""
-    cancellations_column = st.columns(2, gap="large")
 
+    st.subheader("Proportion of cancellations per Operator")
+    st.altair_chart(display_cancellations_per_operator())
+
+    st.subheader("Data on train delays over five minutes")
+    cancellations_column = st.columns(2, gap="large")
     with cancellations_column[0]:
-        st.altair_chart(display_cancellations_per_operator())
+        st.altair_chart(display_5_min_delays_per_operator())
+    with cancellations_column[1]:
+        st.altair_chart(display_proportion_of_long_delays_per_operator())
 
 
 def deploy_home_page():
