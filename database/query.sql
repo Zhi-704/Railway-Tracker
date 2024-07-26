@@ -1,4 +1,5 @@
 -- A file to query the database
+
 SELECT incident_number, creation_time FROM incident;
 SELECT * FROM cancellation;
 SELECT * FROM performance_archive;

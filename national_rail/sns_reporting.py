@@ -177,7 +177,7 @@ End Date: {incident_end}\n
         logging.error("Error: No AWS credentials found.")
     except PartialCredentialsError:
         logging.error("Error: Incomplete AWS credentials.")
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error("An error occurred: %s", e)
     return None
 
