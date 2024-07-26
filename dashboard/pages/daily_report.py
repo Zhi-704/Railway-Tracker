@@ -13,6 +13,7 @@ from psycopg2 import connect
 from psycopg2.extras import RealDictCursor
 from psycopg2.extensions import connection, cursor
 
+
 def get_db_connection() -> connection | None:
     """return a database connection"""
     try:
@@ -40,7 +41,8 @@ def get_db_cursor(conn: connection) -> cursor | None:
 def is_email_already_subscribed(email: str, conn: connection) -> bool:
     """check if the email given has already subscribed to the database"""
     with get_db_cursor(conn) as curs:
-        curs.execute("SELECT COUNT(*) FROM subscriber WHERE email=%s", (email, ))
+        curs.execute(
+            "SELECT COUNT(*) FROM subscriber WHERE email=%s", (email, ))
         res = curs.fetchone()
     return res["count"] == 1
 
@@ -63,16 +65,19 @@ def get_email_from_subscription_form() -> str | None:
         st.error("This is not a valid email.")
     return None
 
+
 def upload_new_subscriber(conn: connection, email: str):
     """Take the email given and attempt to upload it to the database. """
     try:
         with get_db_cursor(conn) as curs:
-            curs.execute("INSERT INTO subscriber (email) VALUES (%s)", (email, ))
+            curs.execute(
+                "INSERT INTO subscriber (email) VALUES (%s)", (email, ))
             conn.commit()
         return 1
     except Exception as e: # pylint: disable=broad-exception-caught
         logging.error(e)
         return None
+
 
 def deploy_subscription_page():
     """This contains the main code for the subscription page."""
