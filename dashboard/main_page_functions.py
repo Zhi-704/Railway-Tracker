@@ -123,15 +123,48 @@ def get_total_delays_for_every_station(date_range: str):
     return res
 
 
-def get_station_with_highest_delay(date_range: str):
+def get_sum_for_range_query(time_group: str, datum: str) -> str:
+    res = """"""
+    match time_group:
+        case "arrival":
+            return """ROUND(SUM(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival))) / 60, 2) AS total_delay_minutes"""
+        case "departure":
+            return """ROUND(SUM(EXTRACT(EPOCH FROM(w.actual_departure - w.booked_departure))) / 60, 2) AS total_delay_minutes"""
+        case "sum total":
+            return """ROUND(SUM(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival)) +
+               EXTRACT(EPOCH FROM(w.actual_departure - w.booked_departure))) / 60, 2) AS total_delay_minutes"""
+        case _:
+            st.write("ERROR")
+
+    return res
+
+
+def get_avg_for_range_query(time_group: str, datum: str) -> str:
+    res = """"""
+    match time_group:
+        case "arrival":
+            return """ROUND(AVG(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival))) / 60, 2) AS total_delay_minutes"""
+        case "departure":
+            return """ROUND(AVG(EXTRACT(EPOCH FROM(w.actual_departure - w.booked_departure))) / 60, 2) AS total_delay_minutes"""
+        case "sum total":
+            return """ROUND(AVG(EXTRACT(EPOCH FROM(w.actual_arrival - w.booked_arrival)) +
+               EXTRACT(EPOCH FROM(w.actual_departure - w.booked_departure))) / 60, 2) AS total_delay_minutes"""
+        case _:
+            st.write("ERROR")
+
+    return res
+
+
+def get_station_with_highest_delay(date_range: str, time_group: str):
     """get station with highest delay in seconds"""
     date_range_query = get_date_range_query(
         date_range, date_metric="w.actual_arrival")
+
+    time_group_query = get_sum_for_range_query(time_group, "sum")
     query = f"""
     SELECT
     s.station_name,
-    ROUND(SUM(EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) +
-    EXTRACT(EPOCH FROM (actual_departure - booked_departure))) / 60, 2) AS total_delay_minutes
+    {time_group_query}
     FROM waypoint w
     JOIN station s ON w.station_id = s.station_id
     {date_range_query}
@@ -140,7 +173,9 @@ def get_station_with_highest_delay(date_range: str):
     """
 
     res = fetch_from_query("one", query)
-    return f"{res["station_name"]}, with a sum total of {res["total_delay_minutes"]} minutes"
+    if res:
+        return f"{res["station_name"]}, with a sum total of {res["total_delay_minutes"]} minutes"
+    return "Unable to retrieve this information at this time."
 
 
 def get_trains_cancelled_per_station_percentage():
@@ -225,7 +260,6 @@ def get_avg_delay():
     query = """
     SELECT
         s.station_name,
-        s.station_crs,
         ROUND(AVG(CASE WHEN run_date = CURRENT_DATE - INTERVAL '1 day' THEN
                     EXTRACT(EPOCH FROM (actual_arrival - booked_arrival)) / 60 +
                     EXTRACT(EPOCH FROM (actual_departure - booked_departure)) / 60
@@ -313,8 +347,8 @@ def get_proportion_of_large_delays_per_operator():
             ELSE 0
         END AS percentage_delayed
     FROM delay_counts
+    WHERE total_delayed_trains > 0
     ORDER BY percentage_delayed DESC
-    LIMIT 10
     """
 
     return fetch_from_query("all", query)

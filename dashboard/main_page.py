@@ -31,15 +31,15 @@ def display_total_delays(date_range: str) -> alt.Chart:
 
 def display_train_cancellation_proportion() -> alt.Chart:
     """"""
-    return alt.Chart()
-    # pie = alt.Chart(train_cancellation_percentages_df).mark_arc(innerRadius=50, radius=100).encode(
-    #     theta=alt.Theta("cancellation_percentage").stack(True),
-    #     color=alt.Color("station_name").legend(None)
-    # )
-    # text = pie.mark_text(radius=120, size=20).encode(
-    #     text="cancellation_percentage")
+    # return alt.Chart()
+    pie = alt.Chart(train_cancellation_percentages_df).mark_arc(innerRadius=50, radius=100).encode(
+        theta=alt.Theta("cancellation_percentage").stack(True),
+        color=alt.Color("station_name").legend(None)
+    )
+    text = pie.mark_text(radius=120, size=20).encode(
+        text="cancellation_percentage")
 
-    # return pie+text
+    return pie+text
 
 
 def display_train_cancellation_percentage() -> alt.Chart:
@@ -105,11 +105,20 @@ def display_rolling_avg_delay() -> alt.Chart:
 
 def display_avg_delay_comparisons() -> alt.Chart:
     """"""
-    avg_delays_per_station_df = pandas.DataFrame(get_avg_delay())
+    avg_delays_per_station_df = pandas.DataFrame(
+        get_avg_delay()).set_index("station_name")
     avg_delays_per_station_df["avg_delay_yesterday_mins"] = avg_delays_per_station_df["avg_delay_yesterday_mins"].astype(
         float)
     avg_delays_per_station_df["avg_delay_day_before_mins"] = avg_delays_per_station_df["avg_delay_day_before_mins"].astype(
         float)
+
+    avg_delays_per_station_df = avg_delays_per_station_df.rename(columns={
+        "station_name": "Station",
+        "avg_delay_yesterday_mins": "Yesterday",
+        "avg_delay_day_before_mins": "Day Before"
+    })
+
+    return avg_delays_per_station_df
 
 
 def deploy_station_dashboard():
@@ -123,12 +132,13 @@ def deploy_station_dashboard():
 
     date_range = st.selectbox(
         "Select the span of time for the dashboard", TIME_RANGE_OPTIONS)
+    time_group = st.radio("Select what group of times to analyse",
+                          ["arrival", "departure", "sum total"])
     st.subheader(f"Station with the highest delay since ({date_range})")
     date_range = TIME_RANGE_OPTIONS_DICT[date_range]
-    st.write(get_station_with_highest_delay(date_range))
+    st.write(get_station_with_highest_delay(date_range, time_group))
 
     # TODO: change statistics collected
-    sigma = st.radio("label", ["arrival", "departure", "sum total"])
 
     proportions_column = st.columns(2, gap="large")
     with proportions_column[0]:
