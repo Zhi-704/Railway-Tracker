@@ -65,29 +65,59 @@ resource "aws_security_group" "c11-railway-tracker-RDS-sg-terrafrom" {
 
 # --------------- ARCHIVE: LAMBDA & EVENT BRIDGE
 
-data "aws_iam_policy_document" "c11-railway-tracker-archive-lambda-policy-document" {
-    statement {
-        actions    = ["sts:AssumeRole"]
-        effect     = "Allow"
-        principals {
-            type        = "Service"
-            identifiers = ["lambda.amazonaws.com"]
+resource "aws_iam_role" "c11-railway-tracker-archive-lambda_execution_role-new-tf" {
+  name = "c11-railway-tracker-archive-lambda_execution_role-new-tf"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
         }
-  }
+      }
+    ]
+  })
 }
 
-resource "aws_iam_role" "c11-railway-tracker-archive-lambda-role" {
-  name               = "c11-railway-tracker-archive-lambda-role"
-  assume_role_policy = data.aws_iam_policy_document.c11-railway-tracker-archive-lambda-policy-document.json
+# IAM Policy for Lambda execution role
+resource "aws_iam_role_policy" "c11-railway-tracker-archive-lambda_execution_policy-new-tf" {
+  name = "c11-railway-tracker-archive-lambda_execution_policy-new-tf"
+  role = aws_iam_role.c11-railway-tracker-archive-lambda_execution_role-new-tf.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+      {
+        Action   = "dynamodb:Query"
+        Effect   = "Allow"
+        Resource = "*"
+      }
+    ]
+  })
 }
 
 
 resource "aws_lambda_function" "c11-railway-tracker-archive-lambda-function" {
-  role          = aws_iam_role.c11-railway-tracker-archive-lambda-role.arn
+  role          = aws_iam_role.c11-railway-tracker-archive-lambda_execution_role-new-tf.arn
   function_name = "c11-railway-tracker-archive-lambda-function"
   package_type  = "Image"
   architectures = ["x86_64"]
   image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-archive-lambda-ecr:latest"
+
+  timeout       = 720
+  depends_on    = [aws_cloudwatch_log_group.lambda_log_group]
 
   environment {
     variables = {
@@ -100,7 +130,16 @@ resource "aws_lambda_function" "c11-railway-tracker-archive-lambda-function" {
       DB_PORT           = var.DB_PORT,
     }
   }
+  logging_config {
+    log_format = "Text"
+    log_group  = "/aws/lambda/c11-railway-tracker-archive-lambda-function"
+  }
+
+  tracing_config {
+    mode = "PassThrough"
+  }
 }
+
 
 # ARCHIVE EVENT BRIDGE SCHEDULE:
 
@@ -203,7 +242,7 @@ resource "aws_iam_role_policy" "c11-railway-tracker-realtime-lambda_execution_po
 }
 
 resource "aws_lambda_function" "c11-railway-tracker-realtime-etl-lambda-function-new-tf" {
-  role          = aws_iam_role.c11-railway-tracker-archive-lambda-role.arn
+  role          = aws_iam_role.c11-railway-tracker-realtime-lambda_execution_role-new-tf.arn
   function_name = "c11-railway-tracker-realtime-etl-lambda-function-new-tf"
   package_type  = "Image"
   architectures = ["x86_64"]
@@ -560,8 +599,8 @@ resource "aws_iam_role" "c11-railway-tracker-report_execution_role-new-tf" {
 }
 
 # IAM Policy for Lambda execution role
-resource "aws_iam_role_policy" "c11-railway-tracker-realtime-lambda_execution_policy-new-tf" {
-  name = "c11-railway-tracker-realtime-lambda_execution_policy-new-tf"
+resource "aws_iam_role_policy" "c11-railway-tracker-report-lambda_execution_policy-new-tf" {
+  name = "c11-railway-tracker-report-lambda_execution_policy-new-tf"
   role = aws_iam_role.c11-railway-tracker-report_execution_role-new-tf.id
 
   policy = jsonencode({
@@ -593,6 +632,7 @@ resource "aws_lambda_function" "c11-railway-tracker-report-lambda-function-new-t
   image_uri     = "129033205317.dkr.ecr.eu-west-2.amazonaws.com/c11-railway-tracker-report-ecr:latest"
 
   timeout       = 720
+  memory_size   = 256
   depends_on    = [aws_cloudwatch_log_group.lambda_log_group]
 
   environment {
@@ -606,6 +646,8 @@ resource "aws_lambda_function" "c11-railway-tracker-report-lambda-function-new-t
       DB_PORT           = var.DB_PORT,
       REALTIME_USERNAME = var.REALTIME_USERNAME,
       REALTIME_PASSWORD = var.REALTIME_PASSWORD
+      SOURCE_EMAIL      = var.SOURCE_EMAIL,
+      S3_BUCKET_NAME    = var.S3_BUCKET_NAME
     }
   }
     logging_config {
@@ -618,7 +660,7 @@ resource "aws_lambda_function" "c11-railway-tracker-report-lambda-function-new-t
   }
 }
 
-# REALTIME EVENT BRIDGE SCHEDULE:
+# REPORT EVENT BRIDGE SCHEDULE:
 # new
 # IAM Role for AWS Scheduler
 resource "aws_iam_role" "c11-railway-tracker-report-scheduler_execution_role-tf" {
@@ -657,7 +699,7 @@ resource "aws_iam_role_policy" "c11-railway-tracker-report-scheduler_execution_p
 # AWS Scheduler Schedule
 resource "aws_scheduler_schedule" "c11-railway-tracker-report-schedule-new-tf" {
   name                         = "c11-railway-tracker-report-schedule-new-tf"
-  schedule_expression          =  "cron(0 6 * * ? *)"
+  schedule_expression          =  "cron(*/5 * * * ? *)"
   schedule_expression_timezone = "Europe/London"
 
   flexible_time_window {
@@ -669,4 +711,3 @@ resource "aws_scheduler_schedule" "c11-railway-tracker-report-schedule-new-tf" {
     role_arn = aws_iam_role.c11-railway-tracker-report-scheduler_execution_role-tf.arn
   }
 }
-
