@@ -133,7 +133,7 @@ def insert_or_get_waypoint(station_id: int,
         conn.commit()
         return waypoint_id
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         conn.rollback()
         logging.error(
             "Load: Error occurred inserting Waypoint: %s", e)
@@ -262,7 +262,7 @@ def insert_or_get_entry(table_name: str,
             cur.execute(query, tuple(insert_values.values()))
             table_id = cur.fetchone()[0]
             conn.commit()
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             conn.rollback()
             logging.error("Load: Error occurred inserting %s %s: %s",
                           table_name.capitalize(), entry_name, e)

@@ -55,7 +55,7 @@ def upload_incident(conn: connection, incident: dict) -> int:
         cur.close()
         logging.info("Load: Inserted incident")
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         conn.rollback()
         logging.error("Load: Error occurred inserting incident %s", e)
         incident_id = None
@@ -102,7 +102,7 @@ def upload_affected_operator(conn: connection, incident_id: int, operator_id: st
         cur.close()
         logging.info("Load: Inserted affected operator")
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         conn.rollback()
         logging.error("Load: Error occurred inserting affected operator %s", e)
 

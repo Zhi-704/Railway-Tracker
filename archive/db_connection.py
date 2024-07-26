@@ -34,14 +34,13 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
 
     with get_cursor(conn) as cur:
         try:
-            cur = get_cursor(conn)
             cur.execute(query, (data))
             conn.commit()
 
             logging.info("Clean: successful for %s, for %s.",
                          query_command, data)
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-exception-caught
             conn.rollback()
             logging.error("Clean: Error occurred for %s -  %s.",
                           query_command, e)
@@ -49,7 +48,7 @@ def execute(conn: connection, query: str, data: tuple) -> list[dict] | None:
         try:
             result = cur.fetchall()
 
-        except Exception:
+        except Exception:  # pylint: disable=broad-exception-caught
             result = None
 
     return result

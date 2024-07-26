@@ -39,7 +39,7 @@ def main(_event, _context):
             send_message(incidents_data)
             logging.info("Messaging has finished.")
 
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error("An error occurred during ETL pipeline execution: %s", e)
 
     logging.info("Pipeline has ended.")
