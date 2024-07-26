@@ -24,9 +24,7 @@ def handler(_event, _context):
         1. cleans national rail incident data 
         2. cleans and archives the real time train data """
 
-    logging.basicConfig(level=logging.INFO,
-                        format="%(asctime)s - %(levelname)s - %(message)s")
-
+    logging.getLogger().setLevel(logging.INFO)
     clean_rail_tracker()
 
 
