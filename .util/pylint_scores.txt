@@ -2,45 +2,15 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-************* Module sns_reporting
-national_rail/sns_reporting.py:93:11: W0718: Catching too general exception Exception (broad-exception-caught)
-national_rail/sns_reporting.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
-national_rail/sns_reporting.py:125:0: R0914: Too many local variables (19/15) (too-many-locals)
+************* Module main_page
+dashboard/main_page.py:6:0: E0611: No name 'show_pages' in module 'st_pages' (no-name-in-module)
 
 -----------------------------------
-Your code has been rated at 9.71/10
+Your code has been rated at 9.66/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
@@ -64,6 +34,14 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module sns_reporting
+national_rail/sns_reporting.py:93:11: W0718: Catching too general exception Exception (broad-exception-caught)
+national_rail/sns_reporting.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
+national_rail/sns_reporting.py:125:0: R0914: Too many local variables (19/15) (too-many-locals)
+
+-----------------------------------
+Your code has been rated at 9.71/10
+
 
 ------------------------------------
 Your code has been rated at 10.00/10
@@ -83,11 +61,33 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module main_page
-dashboard/main_page.py:6:0: E0611: No name 'show_pages' in module 'st_pages' (no-name-in-module)
 
------------------------------------
-Your code has been rated at 9.66/10
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
