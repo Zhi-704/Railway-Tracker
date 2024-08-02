@@ -18,13 +18,13 @@ def get_db_connection() -> connection | None:
     """return a database connection"""
     try:
         return connect(
-            host=environ['DB_HOST'],
+            host=environ['DB_IP'],
             dbname=environ['DB_NAME'],
             user=environ['DB_USERNAME'],
             password=environ['DB_PASSWORD'],
             port=environ['DB_PORT']
         )
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error(e)
         return None
 
@@ -33,7 +33,7 @@ def get_db_cursor(conn: connection) -> cursor | None:
     """return a cursor object based on a given connection"""
     try:
         return conn.cursor(cursor_factory=RealDictCursor)
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error(e)
         return None
 
@@ -74,7 +74,7 @@ def upload_new_subscriber(conn: connection, email: str):
                 "INSERT INTO subscriber (email) VALUES (%s)", (email, ))
             conn.commit()
         return 1
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error(e)
         return None
 
@@ -90,10 +90,12 @@ def deploy_subscription_page():
         st.error("This email is already subscribed to the summary report.")
     elif subscriber_email:
         if upload_new_subscriber(conn, subscriber_email) is not None:
-            st.success(f"{subscriber_email} is now subscribed to the summary report.")
+            st.success(
+                f"{subscriber_email} is now subscribed to the summary report.")
             logging.info("New email added: %s", subscriber_email)
         else:
-            st.error(f"An error occurred when trying to add {subscriber_email} to the database.")
+            st.error(f"An error occurred when trying to add {
+                     subscriber_email} to the database.")
             logging.error("Error occurred when trying to enter a user email")
 
 

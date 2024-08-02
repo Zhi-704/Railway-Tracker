@@ -5,7 +5,6 @@ import logging
 
 from requests import get
 from requests.exceptions import RequestException
-from dotenv import load_dotenv
 
 
 def get_data_from_api(apikey: str) -> str | None:
