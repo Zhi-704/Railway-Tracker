@@ -101,7 +101,7 @@ There are several directories within the repository to maintain an organised pro
 >Clicking on the link provided will redirect you to the README in that directory which provides more information
 
 - [`archive`](./archive/README.md). - Contains scripts that archive month-old data in the database to avoid over-inflation of data storage. 
-- [`dashboard`](./database/README.md) - Contains all the scripts involved in creating and hosting the dashboard.
+- [`dashboard`](./dashboard/README.md) - Contains all the scripts involved in creating and hosting the dashboard.
 - [`database`](./database/README.md). - Contains the schema used to create the RDS hosted on AWS as well as any auxiliary functions.
 - `diagrams` - Only contains the .png files of the diagrams used in this README.
 - [`national_rail`](./national_rail/README.md).- Contains all scripts involved in creating the ETL pipeline for tracking incidents as well as scripts required to send emails/sms to subscribers to notify them when an incident has occurred.
