@@ -20,11 +20,9 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module extract_national
-national_rail/extract_national.py:8:0: W0611: Unused load_dotenv imported from dotenv (unused-import)
 
------------------------------------
-Your code has been rated at 9.62/10
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
