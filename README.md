@@ -9,6 +9,8 @@
 ### Description
 Welcome to the Railway Tracker! Train data is extracted via an ETL pipeline from National Rail and Realtime Train, which is then used to create three different outputs. These outputs will provide various information on a station's cancellations, delays, and departures/arrivals. Furthermore, any incidents will send an alert notification to all subscribed users. The code for these outputs are in the folder: **dashboard**, **national_rail**, and **pdf_report**. This results in our **tracker** which is provided to consumers as a service.
 
+To learn more about our project, check out our [presentation](https://www.canva.com/design/DAGLqcmmyNY/o8H9YaQZmQQfKWKZw8g_4w/edit?utm_content=DAGLqcmmyNY&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)!
+
 ### Dashboard Demo
 Here is what our dashboard looks like!
 
@@ -22,7 +24,6 @@ Here is what our dashboard looks like!
 - Automatic alerts for delays/cancellations for certain train operators.
 - Regular PDF summary reports directly emailed to subscribers.
 - Visualisation of stations' data on the dashboard.
-
 
 ## Design
 
@@ -99,15 +100,14 @@ There are several directories within the repository to maintain an organised pro
 #### **IMPORTANT**
 >Clicking on the link provided will redirect you to the README in that directory which provides more information
 
-- `archive` - Contains scripts that archive month-old data in the database to avoid over-inflation of data storage. [**Click here**](./archive/README.md).
-- `dashboard` - Contains all the scripts involved in creating and hosting the dashboard. [**Click here**](./dashboard/README.md).
-- `database` - Contains the schema used to create the RDS hosted on AWS as well as any auxiliary functions. [**Click here**](./database/README.md).
+- [`archive`](./archive/README.md). - Contains scripts that archive month-old data in the database to avoid over-inflation of data storage. 
+- [`dashboard`](./dashboard/README.md) - Contains all the scripts involved in creating and hosting the dashboard.
+- [`database`](./database/README.md). - Contains the schema used to create the RDS hosted on AWS as well as any auxiliary functions.
 - `diagrams` - Only contains the .png files of the diagrams used in this README.
-- `national_rail` - Contains all scripts involved in creating the ETL pipeline for tracking incidents as well as scripts required to send emails/sms to subscribers to notify them when an incident has occurred.
- [**Click here**](./national_rail/README.md).
-- `pdf_report` - Contains all the scripts required to send a daily email to registered subscribers which contains the PDF on the data from yesterday. [**Click here**](./pdf_report/README.md)
-- `realtime_trains` - Contains all the scripts involved in creating the ETL pipeline for import stations data to the database. [**Click here**](./realtime_trains/README.md).
-- `terraform` - Contains the main terraform script used to host the tracker on the cloud. [**Click here**](./terraform/README.md).
+- [`national_rail`](./national_rail/README.md).- Contains all scripts involved in creating the ETL pipeline for tracking incidents as well as scripts required to send emails/sms to subscribers to notify them when an incident has occurred.
+- [`pdf_report`](./pdf_report/README.md) - Contains all the scripts required to send a daily email to registered subscribers which contains the PDF on the data from yesterday.
+- [`realtime_trains`](./realtime_trains/README.md) - Contains all the scripts involved in creating the ETL pipeline for import stations data to the database.
+- [`terraform`](./terraform/README.md) - Contains the main terraform script used to host the tracker on the cloud.
 
 
 ### Cloud Resources
@@ -130,9 +130,13 @@ Common issues which people face are:
 - For any other problems, make sure to reach out and contact us so we can support you further.
 
 
+
 ## Authors
-- https://github.com/FarihaChoudhury
-- https://github.com/Zhi-704
-- https://github.com/A-Faris
-- https://github.com/fm1psy
+
+| Name | Github Profile |
+|---|---|
+| **Fariha Choudhury** | **[FarihaChoudhury](https://github.com/FarihaChoudhury)**|
+| **Faris Abulula** | **[A-Faris](https://github.com/A-Faris)**|
+| **Freddy Martinez Rosero** | **[fm1psy](https://github.com/fm1psy)**|
+| **Zhi Loh** | **[Zhi-704](https://github.com/Zhi-704)**|
 
