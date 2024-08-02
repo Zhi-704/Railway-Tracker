@@ -46,8 +46,8 @@ def get_sns_client():
     try:
         return client(
             'sns',
-            aws_access_key_id=environ['AWS_ACCESS_KEY'],
-            aws_secret_access_key=environ['AWS_SECRET_KEY'],
+            aws_access_key_id=environ['ACCESS_KEY'],
+            aws_secret_access_key=environ['SECRET_ACCESS_KEY'],
         )
     except Exception as e:  # pylint: disable=broad-exception-caught
         logging.error(e)

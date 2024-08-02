@@ -14,6 +14,8 @@ This folder contains code for the dashboard.
 3. Create a `.env` file in the same directory as the other files, and add the following lines, replacing the placeholders with your actual database connection details:
 
 ```text
+ACCESS_KEY=your_aws_access_key
+SECRET_ACCESS_KEY=your_aws_secret_access_key
 DB_PASSWORD=your_database_password
 DB_USERNAME=your_database_username
 DB_NAME=your_database_name
