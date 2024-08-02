@@ -2,11 +2,13 @@
 ------------------------------------
 Your code has been rated at 10.00/10
 
-************* Module main_page
-dashboard/main_page.py:6:0: E0611: No name 'show_pages' in module 'st_pages' (no-name-in-module)
 
------------------------------------
-Your code has been rated at 9.66/10
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
 
 
 ------------------------------------
@@ -44,6 +46,26 @@ Your code has been rated at 9.71/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
+
+------------------------------------
+Your code has been rated at 10.00/10
+
 ************* Module load_real
 realtime_trains/load_real.py:53:0: R0914: Too many local variables (24/15) (too-many-locals)
 realtime_trains/load_real.py:240:0: R0913: Too many arguments (6/5) (too-many-arguments)
@@ -59,33 +81,11 @@ Your code has been rated at 10.00/10
 ------------------------------------
 Your code has been rated at 10.00/10
 
+************* Module main_page
+dashboard/main_page.py:6:0: E0611: No name 'show_pages' in module 'st_pages' (no-name-in-module)
 
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
-
-
-------------------------------------
-Your code has been rated at 10.00/10
+-----------------------------------
+Your code has been rated at 9.66/10
 
 
 ------------------------------------
