@@ -9,6 +9,14 @@
 ### Description
 Welcome to the Railway Tracker! Train data is extracted via an ETL pipeline from National Rail and Realtime Train, which is then used to create three different outputs. These outputs will provide various information on a station's cancellations, delays, and departures/arrivals. Furthermore, any incidents will send an alert notification to all subscribed users. The code for these outputs are in the folder: **dashboard**, **national_rail**, and **pdf_report**. This results in our **tracker** which is provided to consumers as a service.
 
+### Dashboard Demo
+Here is what our dashboard looks like!
+
+<figure>
+ <img src="diagrams/demo.gif" alt="Railway Tracker Dashboard Demo" width="600">
+ <figcaption>Railway Tracker Dashboard Demo</figcaption>
+</figure>
+
 ### Deliverables
 - Two full data pipeline hosted in the cloud.
 - Automatic alerts for delays/cancellations for certain train operators.
